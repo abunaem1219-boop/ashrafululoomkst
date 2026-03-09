@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jamia Arabia Ashraful Ulum Kushtia</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #0f7a4d;
+            --primary-dark: #0a5736;
+            --secondary: #e6f2ed;
+            --accent: #f59e0b;
+            --text-main: #333333;
+            --text-muted: #666666;
+            --bg-light: #f8faf9;
+            --white: #ffffff;
+            --danger: #ef4444;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+            --radius: 8px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Hind Siliguri', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        img { max-width: 100%; height: auto; }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            font-weight: 700;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: var(--accent);
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        section {
+            padding: 5rem 0;
+        }
+
+        /* Header & Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+        }
+
+        .logo-area img {
+            height: 50px;
+            width: auto;
+        }
+
+        .logo-text h1 {
+            font-size: 1.2rem;
+            color: var(--primary);
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-menu li a {
+            font-weight: 500;
+            color: var(--text-main);
+            transition: var(--transition);
+            padding: 8px 12px;
+            border-radius: var(--radius);
+        }
+
+        .nav-menu li a:hover {
+            background: var(--secondary);
+            color: var(--primary);
+        }
+
+        .hamburger {
+            display: none;
+            font-size: 1.5rem;
+            color: var(--primary);
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        #hero {
+            margin-top: 80px;
+            height: calc(100vh - 80px);
+            background: linear-gradient(rgba(15, 122, 77, 0.8), rgba(15, 122, 77, 0.8)), url('https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?auto=format&fit=crop&q=80&w=1920') center/cover;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: var(--white);
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .hero-btns {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            outline: none;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: var(--text-main);
+        }
+
+        .btn-primary:hover {
+            background: #e58e00;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid var(--white);
+        }
+
+        .btn-outline:hover {
+            background: var(--white);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* About Section */
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .about-card {
+            background: var(--white);
+            padding: 25px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .about-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .about-card i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .about-card h3 {
+            margin-bottom: 10px;
+            color: var(--primary-dark);
+        }
+
+        /* Teachers Section */
+        .teachers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .teacher-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .teacher-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .teacher-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 20px auto 10px;
+            border: 3px solid var(--secondary);
+        }
+
+        .teacher-info {
+            padding: 0 20px 20px;
+        }
+
+        .teacher-info h3 {
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .teacher-info p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        /* Results Section */
+        .results-controls {
+            background: var(--white);
+            padding: 20px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: var(--bg-light);
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            padding: 5px 20px;
+        }
+
+        .search-box i {
+            color: var(--text-muted);
+        }
+
+        .search-box input {
+            border: none;
+            background: transparent;
+            padding: 10px;
+            width: 100%;
+            outline: none;
+            font-size: 1rem;
+        }
+
+        .class-filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 8px 15px;
+            border: 1px solid var(--primary);
+            background: transparent;
+            color: var(--primary);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background: var(--primary);
+            color: var(--white);
+            font-weight: 500;
+        }
+
+        tr:hover {
+            background: var(--secondary);
+        }
+
+        .grade-rasib {
+            color: var(--danger);
+            font-weight: bold;
+        }
+        .grade-pass {
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        /* Gallery Section */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: var(--radius);
+            overflow: hidden;
+            cursor: pointer;
+            aspect-ratio: 4/3;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 122, 77, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        .gallery-overlay i {
+            color: var(--white);
+            font-size: 2rem;
+        }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 80vh;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: var(--white);
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary-dark);
+            color: var(--white);
+            padding: 3rem 0 1rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 2rem;
+        }
+
+        .footer-info h3 {
+            margin-bottom: 15px;
+            color: var(--accent);
+        }
+
+        .footer-info p {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 200px;
+            border: 0;
+            border-radius: var(--radius);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.9rem;
+        }
+
+        /* Admin Modals */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: var(--white);
+            width: 90%;
+            max-width: 500px;
+            border-radius: var(--radius);
+            padding: 30px;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+        }
+
+        .modal-content.large {
+            max-width: 900px;
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px; right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: inherit;
+        }
+
+        .admin-btn {
+            width: 100%;
+            padding: 10px;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Admin Dashboard Tabs */
+        .admin-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 10px;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            padding: 8px 15px;
+            border: none;
+            background: var(--secondary);
+            color: var(--text-main);
+            border-radius: 5px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .tab-content {
+            display: none;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .admin-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: var(--bg-light);
+            margin-bottom: 5px;
+            border-radius: 5px;
+            border: 1px solid #eee;
+        }
+
+        .del-btn {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-menu {
+                position: absolute;
+                top: 80px;
+                left: -100%;
+                flex-direction: column;
+                background: var(--white);
+                width: 100%;
+                text-align: center;
+                padding: 20px 0;
+                box-shadow: var(--shadow-md);
+                transition: var(--transition);
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="container nav-container">
+            <div class="logo-area" id="madrasaLogoBtn">
+                <img src="https://i.ibb.co.com/qFRmPqgK/20260310-005555.png" alt="Logo">
+                <div class="logo-text">
+                    <h1 id="navMadrasaName">Jamia Arabia Ashraful Ulum Kushtia</h1>
+                </div>
+            </div>
+            <div class="hamburger" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#hero" onclick="closeMenu()">Home</a></li>
+                <li><a href="#about" onclick="closeMenu()">About Madrasa</a></li>
+                <li><a href="#teachers" onclick="closeMenu()">Teachers</a></li>
+                <li><a href="#results" onclick="closeMenu()">Results</a></li>
+                <li><a href="#gallery" onclick="closeMenu()">Gallery</a></li>
+                <li><a href="#footer" onclick="closeMenu()">Contact</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero">
+        <div class="container hero-content">
+            <h1 id="heroMadrasaName">Jamia Arabia Ashraful Ulum Kushtia</h1>
+            <p id="heroIntro">An ideal Islamic educational institution based on pure Deeni environment and modern management.</p>
+            <div class="hero-btns">
+                <button class="btn btn-primary" onclick="location.href='#about'">Learn About Madrasa</button>
+                <button class="btn btn-outline" onclick="location.href='#results'">View Exam Results</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="container">
+            <h2 class="section-title">About Madrasa</h2>
+            <div class="about-grid" id="aboutGrid">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Teachers Section -->
+    <section id="teachers">
+        <div class="container">
+            <h2 class="section-title">Our Teachers (Asatizah)</h2>
+            <div class="teachers-grid" id="teachersGrid">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Exam Results Section -->
+    <section id="results">
+        <div class="container">
+            <h2 class="section-title">Exam Results System</h2>
+            
+            <div class="results-controls">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search by Student Name or Serial/Roll..." onkeyup="filterResults()">
+                </div>
+                <div class="class-filters" id="classFilters">
+                    <!-- Injected via JS -->
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Serial / Roll</th>
+                            <th>Student Name</th>
+                            <th>Class</th>
+                            <th>Total Marks</th>
+                            <th>Average</th>
+                            <th>Grade</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultTableBody">
+                        <!-- Injected via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery">
+        <div class="container">
+            <h2 class="section-title">Photo Gallery</h2>
+            <div class="gallery-grid" id="galleryGrid">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <i class="fas fa-times lightbox-close" onclick="closeLightbox()"></i>
+        <img id="lightboxImg" src="" alt="Gallery Image">
+    </div>
+
+    <!-- Footer -->
+    <footer id="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-info">
+                    <h3 id="footerName">Jamia Arabia Ashraful Ulum Kushtia</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> <span id="footerAddress">Kushtia, Bangladesh</span></p>
+                    <p><i class="fas fa-phone"></i> <span id="footerPhone">+880 1234-567890</span></p>
+                    <p><i class="fas fa-envelope"></i> <span id="footerEmail">info@jaauk.edu.bd</span></p>
+                </div>
+                <div class="map-container">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3648.740523456789!2d89.1234567!3d23.9012345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjPCsDU0JzA0LjQiTiA4OcKwMDcnMjQuNCJF!5e0!3m2!1sen!2sbd!4v1620000000000!5m2!1sen!2sbd" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; <span id="currentYear"></span> <span id="copyName">Jamia Arabia Ashraful Ulum Kushtia</span>. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Admin Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeAdminLogin()">&times;</span>
+            <h2 style="margin-bottom: 20px; color: var(--primary); text-align: center;">Admin Panel Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="adminPassword" class="form-control" placeholder="Enter password (admin123)">
+                </div>
+                <button type="submit" class="admin-btn">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard Modal -->
+    <div class="modal" id="dashboardModal">
+        <div class="modal-content large">
+            <span class="close-modal" onclick="closeDashboard()">&times;</span>
+            <h2 style="margin-bottom: 20px; color: var(--primary);">Admin Dashboard</h2>
+            
+            <div class="admin-tabs">
+                <button class="tab-btn active" onclick="switchTab('tabInfo')">Information</button>
+                <button class="tab-btn" onclick="switchTab('tabTeachers')">Teachers</button>
+                <button class="tab-btn" onclick="switchTab('tabResults')">Results</button>
+                <button class="tab-btn" onclick="switchTab('tabGallery')">Gallery</button>
+            </div>
+
+            <!-- Tab: Info -->
+            <div id="tabInfo" class="tab-content active">
+                <form id="infoForm">
+                    <div class="form-group"><label>Madrasa Name</label><input type="text" id="iName" class="form-control"></div>
+                    <div class="form-group"><label>Location</label><input type="text" id="iLoc" class="form-control"></div>
+                    <div class="form-group"><label>Established Year</label><input type="text" id="iEst" class="form-control"></div>
+                    <div class="form-group"><label>Founder / Director</label><input type="text" id="iDir" class="form-control"></div>
+                    <div class="form-group"><label>Phone</label><input type="text" id="iPhone" class="form-control"></div>
+                    <button type="submit" class="admin-btn">Save Information</button>
+                </form>
+            </div>
+
+            <!-- Tab: Teachers -->
+            <div id="tabTeachers" class="tab-content">
+                <form id="teacherForm" style="margin-bottom: 20px; background: #f9f9f9; padding: 15px; border-radius: 5px;">
+                    <h4>Add Teacher</h4>
+                    <div class="form-group"><input type="text" id="tName" class="form-control" placeholder="Name" required></div>
+                    <div class="form-group"><input type="text" id="tDesig" class="form-control" placeholder="Designation" required></div>
+                    <div class="form-group"><input type="text" id="tPhone" class="form-control" placeholder="Phone" required></div>
+                    <div class="form-group"><input type="url" id="tPhoto" class="form-control" placeholder="Photo URL (Optional)"></div>
+                    <button type="submit" class="admin-btn">Add Teacher</button>
+                </form>
+                <h4>Teacher List</h4>
+                <div id="adminTeacherList"></div>
+            </div>
+
+            <!-- Tab: Results -->
+            <div id="tabResults" class="tab-content">
+                <form id="resultForm" style="margin-bottom: 20px; background: #f9f9f9; padding: 15px; border-radius: 5px;">
+                    <h4>Add Result</h4>
+                    <div class="form-group">
+                        <select id="rClass" class="form-control" required>
+                            <option value="Noorani">Noorani</option>
+                            <option value="Hifz">Hifz</option>
+                            <option value="Kitab Department">Kitab Department</option>
+                            <option value="Dawra-e-Hadith">Dawra-e-Hadith</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><input type="text" id="rSerial" class="form-control" placeholder="Serial / Roll Number" required></div>
+                    <div class="form-group"><input type="text" id="rName" class="form-control" placeholder="Student Name" required></div>
+                    <div class="form-group"><input type="text" id="rMarks" class="form-control" placeholder="Subject Marks (Comma separated e.g., 85,90,75)" required></div>
+                    <button type="submit" class="admin-btn">Add Result</button>
+                </form>
+                <h4>Result List</h4>
+                <div id="adminResultList"></div>
+            </div>
+
+            <!-- Tab: Gallery -->
+            <div id="tabGallery" class="tab-content">
+                <form id="galleryForm" style="margin-bottom: 20px; background: #f9f9f9; padding: 15px; border-radius: 5px;">
+                    <h4>Add Image</h4>
+                    <div class="form-group"><input type="url" id="gUrl" class="form-control" placeholder="Direct Image URL" required></div>
+                    <button type="submit" class="admin-btn">Add Image</button>
+                </form>
+                <h4>Gallery Images</h4>
+                <div id="adminGalleryList"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Default Data Initialization
+        const defaultData = {
+            info: {
+                name: "Jamia Arabia Ashraful Ulum Kushtia",
+                location: "Kushtia, Bangladesh",
+                est: "1990",
+                director: "Mufti Abdur Rahman",
+                phone: "+880 1234-567890",
+                intro: "An ideal Islamic educational institution based on pure Deeni environment and modern management."
+            },
+            features: [
+                { icon: 'fa-mosque', title: 'Location', key: 'location' },
+                { icon: 'fa-calendar-alt', title: 'Establishment', key: 'est' },
+                { icon: 'fa-user-tie', title: 'Founder / Director', key: 'director' },
+                { icon: 'fa-building', title: 'Infrastructure', val: 'Modern Campus with Masjid' },
+                { icon: 'fa-book-open', title: 'Departments', val: 'Noorani, Hifz, Kitab, Ifta' },
+                { icon: 'fa-bullseye', title: 'Goals', val: 'Spreading Quranic Knowledge' }
+            ],
+            teachers: [
+                { id: 1, name: "Maulana Abdullah", designation: "Mudir (Principal)", phone: "01700000000", photo: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
+                { id: 2, name: "Mufti Ibrahim", designation: "Shaikhul Hadith", phone: "01700000001", photo: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" }
+            ],
+            results: [
+                { id: 1, serial: "101", name: "Ahmad Hasan", class: "Dawra-e-Hadith", marks: [85, 90, 88, 75, 82] },
+                { id: 2, serial: "102", name: "Mahmudul Islam", class: "Hifz", marks: [60, 65, 70] },
+                { id: 3, serial: "103", name: "Abdur Rahim", class: "Kitab Department", marks: [40, 45, 38] },
+                { id: 4, serial: "104", name: "Hasan Ali", class: "Noorani", marks: [20, 30, 25] }
+            ],
+            gallery: [
+                "https://images.unsplash.com/photo-1564767609342-620cb19b2357?auto=format&fit=crop&q=80&w=800",
+                "https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?auto=format&fit=crop&q=80&w=800",
+                "https://images.unsplash.com/photo-1604014237800-1c9102c219da?auto=format&fit=crop&q=80&w=800"
+            ],
+            classes: ["Noorani", "Hifz", "Kitab Department", "Dawra-e-Hadith"]
+        };
+
+        // Load or Initialize LocalStorage
+        function loadData() {
+            if(!localStorage.getItem('madrasaData')) {
+                localStorage.setItem('madrasaData', JSON.stringify(defaultData));
+            }
+            return JSON.parse(localStorage.getItem('madrasaData'));
+        }
+
+        function saveData(data) {
+            localStorage.setItem('madrasaData', JSON.stringify(data));
+        }
+
+        let appData = loadData();
+        let currentFilterClass = 'All';
+
+        // Set Current Year
+        document.getElementById('currentYear').innerText = new Date().getFullYear();
+
+        // Navbar Mobile Toggle
+        const navMenu = document.getElementById('navMenu');
+        function toggleMenu() { navMenu.classList.toggle('active'); }
+        function closeMenu() { navMenu.classList.remove('active'); }
+
+        // Core Render Functions
+        function renderAll() {
+            renderInfo();
+            renderTeachers();
+            renderResultFilters();
+            renderResults();
+            renderGallery();
+        }
+
+        function renderInfo() {
+            const info = appData.info;
+            document.title = info.name;
+            document.getElementById('navMadrasaName').innerText = info.name;
+            document.getElementById('heroMadrasaName').innerText = info.name;
+            document.getElementById('heroIntro').innerText = info.intro;
+            document.getElementById('footerName').innerText = info.name;
+            document.getElementById('copyName').innerText = info.name;
+            document.getElementById('footerAddress').innerText = info.location;
+            document.getElementById('footerPhone').innerText = info.phone;
+
+            const aboutGrid = document.getElementById('aboutGrid');
+            aboutGrid.innerHTML = appData.features.map(f => `
+                <div class="about-card">
+                    <i class="fas ${f.icon}"></i>
+                    <h3>${f.title}</h3>
+                    <p>${f.key ? info[f.key] : f.val}</p>
+                </div>
+            `).join('');
+        }
+
+        function renderTeachers() {
+            const grid = document.getElementById('teachersGrid');
+            grid.innerHTML = appData.teachers.map(t => `
+                <div class="teacher-card">
+                    <img src="${t.photo || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'}" alt="${t.name}" class="teacher-img">
+                    <div class="teacher-info">
+                        <h3>${t.name}</h3>
+                        <p><strong>${t.designation}</strong></p>
+                        <p><i class="fas fa-phone-alt" style="font-size:0.8rem;color:var(--primary);"></i> ${t.phone}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Result Logic
+        function calculateGrade(avg) {
+            if(avg >= 80) return { text: 'মুমতাজ (Mumtaz)', class: 'grade-pass' };
+            if(avg >= 65) return { text: 'জায়্যিদ জিদ্দান (Jayyid Jiddan)', class: 'grade-pass' };
+            if(avg >= 50) return { text: 'জায়্যিদ (Jayyid)', class: 'grade-pass' };
+            if(avg >= 33) return { text: 'মাকবুল (Maqbul)', class: 'grade-pass' };
+            return { text: 'রাসিব (Rasib)', class: 'grade-rasib' };
+        }
+
+        function renderResultFilters() {
+            const container = document.getElementById('classFilters');
+            let html = `<button class="filter-btn active" onclick="setFilterClass('All', this)">All Classes</button>`;
+            html += appData.classes.map(c => `<button class="filter-btn" onclick="setFilterClass('${c}', this)">${c}</button>`).join('');
+            container.innerHTML = html;
+        }
+
+        function setFilterClass(cls, btn) {
+            currentFilterClass = cls;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            if(btn) btn.classList.add('active');
+            filterResults();
+        }
+
+        function filterResults() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const tbody = document.getElementById('resultTableBody');
+            
+            let filtered = appData.results.filter(r => {
+                const matchClass = currentFilterClass === 'All' || r.class === currentFilterClass;
+                const matchSearch = r.name.toLowerCase().includes(query) || r.serial.toLowerCase().includes(query);
+                return matchClass && matchSearch;
+            });
+
+            tbody.innerHTML = filtered.map(r => {
+                const total = r.marks.reduce((a,b)=>a+b, 0);
+                const avg = Math.round(total / r.marks.length);
+                const grade = calculateGrade(avg);
+                return `
+                    <tr>
+                        <td>${r.serial}</td>
+                        <td><strong>${r.name}</strong></td>
+                        <td>${r.class}</td>
+                        <td>${total}</td>
+                        <td>${avg}</td>
+                        <td class="${grade.class}">${grade.text}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function renderResults() {
+            filterResults();
+        }
+
+        function renderGallery() {
+            const grid = document.getElementById('galleryGrid');
+            grid.innerHTML = appData.gallery.map(url => `
+                <div class="gallery-item" onclick="openLightbox('${url}')">
+                    <img src="${url}" alt="Gallery Image">
+                    <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
+                </div>
+            `).join('');
+        }
+
+        // Lightbox
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+        function openLightbox(url) {
+            lightboxImg.src = url;
+            lightbox.style.display = 'flex';
+        }
+        function closeLightbox() {
+            lightbox.style.display = 'none';
+        }
+
+        // --- Admin Panel Logic ---
+        let clickCount = 0;
+        let clickTimer;
+        
+        document.getElementById('madrasaLogoBtn').addEventListener('click', (e) => {
+            clickCount++;
+            clearTimeout(clickTimer);
+            clickTimer = setTimeout(() => clickCount = 0, 2000);
+            if(clickCount >= 5) {
+                document.getElementById('loginModal').style.display = 'flex';
+                clickCount = 0;
+            }
+        });
+
+        function closeAdminLogin() { document.getElementById('loginModal').style.display = 'none'; }
+        function closeDashboard() { document.getElementById('dashboardModal').style.display = 'none'; }
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const pass = document.getElementById('adminPassword').value;
+            if(pass === 'admin123') {
+                document.getElementById('adminPassword').value = '';
+                closeAdminLogin();
+                openDashboard();
+            } else {
+                alert('Incorrect Password!');
+            }
+        });
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function openDashboard() {
+            document.getElementById('dashboardModal').style.display = 'flex';
+            populateAdminForms();
+            renderAdminLists();
+        }
+
+        function populateAdminForms() {
+            document.getElementById('iName').value = appData.info.name;
+            document.getElementById('iLoc').value = appData.info.location;
+            document.getElementById('iEst').value = appData.info.est;
+            document.getElementById('iDir').value = appData.info.director;
+            document.getElementById('iPhone').value = appData.info.phone;
+        }
+
+        function renderAdminLists() {
+            // Teachers
+            document.getElementById('adminTeacherList').innerHTML = appData.teachers.map(t => `
+                <div class="admin-list-item">
+                    <span>${t.name} (${t.designation})</span>
+                    <button class="del-btn" onclick="deleteItem('teachers', ${t.id})">Delete</button>
+                </div>
+            `).join('');
+
+            // Results
+            document.getElementById('adminResultList').innerHTML = appData.results.map(r => `
+                <div class="admin-list-item">
+                    <span>[${r.class}] ${r.name} - Roll: ${r.serial}</span>
+                    <button class="del-btn" onclick="deleteItem('results', ${r.id})">Delete</button>
+                </div>
+            `).join('');
+
+            // Gallery
+            document.getElementById('adminGalleryList').innerHTML = appData.gallery.map((g, i) => `
+                <div class="admin-list-item">
+                    <img src="${g}" style="height:30px; width:40px; object-fit:cover;">
+                    <button class="del-btn" onclick="deleteGallery(${i})">Delete</button>
+                </div>
+            `).join('');
+        }
+
+        // Admin Forms Submission
+        document.getElementById('infoForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            appData.info.name = document.getElementById('iName').value;
+            appData.info.location = document.getElementById('iLoc').value;
+            appData.info.est = document.getElementById('iEst').value;
+            appData.info.director = document.getElementById('iDir').value;
+            appData.info.phone = document.getElementById('iPhone').value;
+            saveData(appData);
+            renderAll();
+            alert('Information Updated!');
+        });
+
+        document.getElementById('teacherForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const newT = {
+                id: Date.now(),
+                name: document.getElementById('tName').value,
+                designation: document.getElementById('tDesig').value,
+                phone: document.getElementById('tPhone').value,
+                photo: document.getElementById('tPhoto').value
+            };
+            appData.teachers.push(newT);
+            saveData(appData);
+            this.reset();
+            renderAdminLists();
+            renderAll();
+        });
+
+        document.getElementById('resultForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const marksStr = document.getElementById('rMarks').value;
+            const marksArr = marksStr.split(',').map(m => Number(m.trim())).filter(m => !isNaN(m));
+            
+            if(marksArr.length === 0) return alert('Invalid Marks!');
+
+            const newR = {
+                id: Date.now(),
+                class: document.getElementById('rClass').value,
+                serial: document.getElementById('rSerial').value,
+                name: document.getElementById('rName').value,
+                marks: marksArr
+            };
+            appData.results.push(newR);
+            saveData(appData);
+            this.reset();
+            renderAdminLists();
+            renderAll();
+        });
+
+        document.getElementById('galleryForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            appData.gallery.push(document.getElementById('gUrl').value);
+            saveData(appData);
+            this.reset();
+            renderAdminLists();
+            renderAll();
+        });
+
+        function deleteItem(type, id) {
+            if(confirm('Are you sure?')) {
+                appData[type] = appData[type].filter(item => item.id !== id);
+                saveData(appData);
+                renderAdminLists();
+                renderAll();
+            }
+        }
+
+        function deleteGallery(index) {
+            if(confirm('Are you sure?')) {
+                appData.gallery.splice(index, 1);
+                saveData(appData);
+                renderAdminLists();
+                renderAll();
+            }
+        }
+
+        // Init
+        window.onload = renderAll;
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+    </script>
+</body>
+</html>
