@@ -695,10 +695,10 @@
     <section id="hero">
         <div class="container hero-content">
             <h1 id="heroMadrasaName">Jamia Arabia Ashraful Ulum Kushtia</h1>
-            <p id="heroIntro">An ideal Islamic educational institution based on pure Deeni environment and modern management.</p>
+            <p id="heroIntro">কুষ্টিয়া জেলার একটি আধুনিক এবং ঐতিহ্যবাহী দ্বীনি প্রতিষ্ঠান.</p>
             <div class="hero-btns">
-                <button class="btn btn-primary" onclick="location.href='#about'">Learn About Madrasa</button>
-                <button class="btn btn-outline" onclick="location.href='#results'">View Exam Results</button>
+                <button class="btn btn-primary" onclick="location.href='#about'">মাদ্রাসা সম্পর্কে তথ্য</button>
+                <button class="btn btn-outline" onclick="location.href='#results'">পরীক্ষার ফলাফল দেখুন</button>
             </div>
         </div>
     </section>
@@ -847,7 +847,7 @@
             <form id="loginForm">
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" id="adminPassword" class="form-control" placeholder="Enter password (admin123)">
+                    <input type="password" id="adminPassword" class="form-control" placeholder="Enter password">
                 </div>
                 <button type="submit" class="admin-btn">Login</button>
             </form>
@@ -938,7 +938,7 @@
                 est: "1990",
                 director: "Mufti Abdur Rahman",
                 phone: "+880 1234-567890",
-                intro: "An ideal Islamic educational institution based on pure Deeni environment and modern management."
+                intro: "কুষ্টিয়া জেলার একটি আধুনিক এবং ঐতিহ্যবাহী দ্বীনি শিক্ষা প্রতিষ্ঠান "
             },
             features: [
                 { icon: 'fa-mosque', title: 'Location', key: 'location' },
@@ -1128,7 +1128,7 @@
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const pass = document.getElementById('adminPassword').value;
-            if(pass === 'admin123') {
+            if(pass === 'N-1234') {
                 document.getElementById('adminPassword').value = '';
                 closeAdminLogin();
                 openDashboard();
