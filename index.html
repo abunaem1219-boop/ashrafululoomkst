@@ -703,7 +703,7 @@
         </div>
     </section>
 
-    <!-- Adsterra Slot 1 (Between Hero & About) -->
+    <!-- Adsterra Slot 3 (Between Gallery & Footer) -->
     <div class="ad-container">
         <span class="ad-label">- Advertisement -</span>
         <script type="text/javascript">
@@ -801,7 +801,7 @@
     <!-- Adsterra Slot 3 (Between Gallery & Footer) -->
     <div class="ad-container">
         <span class="ad-label">- Advertisement -</span>
-        <script type="text/javascript">
+         type="text/javascript">
             atOptions = {
                 'key' : 'aa67b74916611d0d8cffbfa6539409c8',
                 'format' : 'iframe',
@@ -928,7 +928,11 @@
         </div>
     </div>
 
-    <!-- Scripts -->
+   <!-- Scripts -->
+    <!-- ১. ফায়ারবেস লাইব্রেরি (যা আপনি মিস করেছিলেন) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
     <script>
         // Default Data Initialization
         const defaultData = {
@@ -966,19 +970,39 @@
             classes: ["Noorani", "Hifz", "Kitab Department", "Dawra-e-Hadith"]
         };
 
-        // Load or Initialize LocalStorage
-        function loadData() {
-            if(!localStorage.getItem('madrasaData')) {
-                localStorage.setItem('madrasaData', JSON.stringify(defaultData));
-            }
-            return JSON.parse(localStorage.getItem('madrasaData'));
-        }
+        // ২. ফায়ারবেস কনফিগারেশন (databaseURL যুক্ত করা হয়েছে)
+        const firebaseConfig = {
+            apiKey: "AIzaSyBXBgFGqDyPiE6ZVER249FA0a91ukICO_U",
+            authDomain: "ashraful-uloom-madrasa.firebaseapp.com",
+            databaseURL: "https://ashraful-uloom-madrasa-default-rtdb.firebaseio.com",
+            projectId: "ashraful-uloom-madrasa",
+            storageBucket: "ashraful-uloom-madrasa.firebasestorage.app",
+            messagingSenderId: "180777617285",
+            appId: "1:180777617285:web:f4ab13a6a2aa0d6cda66ec"
+        };
 
+        // ৩. ফায়ারবেস ইনিশিয়ালাইজ করা (এটি মিসিং ছিল, এ কারণেই db error দিচ্ছিল)
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        let appData = {};
+
+        // ফায়ারবেসে ডাটা সেভ করার ফাংশন
         function saveData(data) {
-            localStorage.setItem('madrasaData', JSON.stringify(data));
+            db.ref('madrasaData').set(data);
         }
 
-        let appData = loadData();
+        // ফায়ারবেস থেকে লাইভ ডাটা লোড করার ফাংশন
+        db.ref('madrasaData').on('value', (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                appData = data;
+                renderAll(); 
+            } else {
+                appData = defaultData;
+                saveData(appData); 
+            }
+        });
         let currentFilterClass = 'All';
 
         // Set Current Year
@@ -1261,8 +1285,6 @@
             }
         }
 
-        // Init
-        window.onload = renderAll;
 
         // Smooth Scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
