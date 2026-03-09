@@ -3,31 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jamia Arabia Ashraful Ulum Kushtia</title>
-    
-    <!-- Fonts -->
+    <title>জামিয়া আরাবিয়া আশরাফুল উলূম কুষ্টিয়া</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Noto+Sans+Bengali:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- PDF Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <style>
         :root {
-            --primary: #0f7a4d;
-            --primary-dark: #0a5736;
-            --secondary: #e6f2ed;
-            --accent: #f59e0b;
-            --text-main: #333333;
-            --text-muted: #666666;
-            --bg-light: #f8faf9;
-            --white: #ffffff;
-            --danger: #ef4444;
-            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
-            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
-            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+            --primary: #056C46; /* Islamic Green */
+            --primary-light: #0f8f5e;
+            --primary-dark: #03482e;
+            --bg-color: #f8fafc;
+            --surface: #ffffff;
+            --text-main: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
             --radius: 8px;
+            --rasib-color: #dc2626;
             --transition: all 0.3s ease;
         }
 
@@ -35,24 +34,30 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Hind Siliguri', sans-serif;
+            font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif;
         }
 
         body {
-            background-color: var(--bg-light);
+            background-color: var(--bg-color);
             color: var(--text-main);
             line-height: 1.6;
             overflow-x: hidden;
         }
 
-        a { text-decoration: none; color: inherit; }
-        ul { list-style: none; }
-        img { max-width: 100%; height: auto; }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
 
         .container {
-            width: 90%;
+            width: 100%;
             max-width: 1200px;
             margin: 0 auto;
+            padding: 0 20px;
         }
 
         .section-title {
@@ -61,15 +66,14 @@
             color: var(--primary);
             margin-bottom: 2rem;
             font-weight: 700;
-            position: relative;
         }
 
         .section-title::after {
             content: '';
             display: block;
             width: 60px;
-            height: 3px;
-            background: var(--accent);
+            height: 4px;
+            background: var(--primary);
             margin: 10px auto 0;
             border-radius: 2px;
         }
@@ -78,59 +82,53 @@
             padding: 5rem 0;
         }
 
-        /* Header & Navigation */
+        /* Header & Nav */
         header {
-            position: fixed;
+            background: var(--surface);
+            box-shadow: var(--shadow-md);
+            position: sticky;
             top: 0;
-            left: 0;
-            width: 100%;
-            background: var(--white);
-            box-shadow: var(--shadow-sm);
             z-index: 1000;
-            transition: var(--transition);
         }
 
-        .nav-container {
+        .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             height: 80px;
         }
 
-        .logo-area {
+        .brand {
             display: flex;
             align-items: center;
             gap: 15px;
             cursor: pointer;
         }
 
-        .logo-area img {
+        .brand img {
             height: 50px;
             width: auto;
         }
 
-        .logo-text h1 {
+        .brand h1 {
             font-size: 1.2rem;
             color: var(--primary);
             font-weight: 700;
             line-height: 1.2;
         }
 
-        .nav-menu {
+        .nav-links {
             display: flex;
             gap: 20px;
         }
 
-        .nav-menu li a {
-            font-weight: 500;
+        .nav-links a {
+            font-weight: 600;
             color: var(--text-main);
             transition: var(--transition);
-            padding: 8px 12px;
-            border-radius: var(--radius);
         }
 
-        .nav-menu li a:hover {
-            background: var(--secondary);
+        .nav-links a:hover {
             color: var(--primary);
         }
 
@@ -142,245 +140,253 @@
         }
 
         /* Hero Section */
-        #hero {
-            margin-top: 80px;
-            height: calc(100vh - 80px);
-            background: linear-gradient(rgba(15, 122, 77, 0.8), rgba(15, 122, 77, 0.8)), url('https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?auto=format&fit=crop&q=80&w=1920') center/cover;
+        .hero {
+            background: linear-gradient(rgba(5, 108, 70, 0.8), rgba(5, 108, 70, 0.8)), url('https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?auto=format&fit=crop&q=80') center/cover;
+            height: 80vh;
             display: flex;
             align-items: center;
             text-align: center;
-            color: var(--white);
+            color: white;
+            padding: 0 20px;
         }
 
-        .hero-content {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .hero-content h1 {
+        .hero h1 {
             font-size: 3rem;
             margin-bottom: 1rem;
-            font-weight: 700;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
 
-        .hero-content p {
+        .hero p {
             font-size: 1.2rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto 2rem;
         }
 
-        .hero-btns {
+        /* Hero Buttons Container */
+        .hero-buttons {
             display: flex;
-            justify-content: center;
             gap: 15px;
-            flex-wrap: wrap;
+            justify-content: center;
+            flex-wrap: wrap; /* মোবাইলে জায়গা না পেলে নিচে নিচে সুন্দরভাবে বসবে */
+            margin-top: 30px;
         }
 
         .btn {
-            padding: 12px 25px;
-            border-radius: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px; /* আইকন এবং লেখার মাঝের ফাঁকা জায়গা */
+            padding: 14px 30px;
+            border-radius: 50px; /* সুন্দর গোলাকার আকৃতি (Pill shape) */
             font-weight: 600;
+            font-size: 1.1rem;
             cursor: pointer;
-            transition: var(--transition);
+            transition: all 0.3s ease;
             border: none;
-            outline: none;
-            font-size: 1rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15); /* সফট শ্যাডো */
         }
 
         .btn-primary {
-            background: var(--accent);
-            color: var(--text-main);
+            background: #ffffff;
+            color: var(--primary);
         }
 
         .btn-primary:hover {
-            background: #e58e00;
-            transform: translateY(-2px);
+            background: #f8fafc;
+            transform: translateY(-4px); /* মাউস নিলে একটু উপরে উঠবে */
+            box-shadow: 0 8px 25px rgba(255,255,255,0.3); /* সুন্দর গ্লো ইফেক্ট */
         }
 
         .btn-outline {
-            background: transparent;
-            color: var(--white);
-            border: 2px solid var(--white);
+            background: rgba(255, 255, 255, 0.1); /* গ্লাস ইফেক্ট */
+            backdrop-filter: blur(5px);
+            color: #ffffff;
+            border: 2px solid #ffffff;
         }
 
         .btn-outline:hover {
-            background: var(--white);
+            background: #ffffff;
             color: var(--primary);
-            transform: translateY(-2px);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(255,255,255,0.3);
         }
 
-        /* About Section */
-        .about-grid {
+        .btn-success {
+            background: var(--primary);
+            color: white;
+        }
+        .btn-success:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Adsterra Wrapper */
+        .ad-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 0;
+            background: var(--bg-color);
+            overflow: hidden;
+        }
+
+        /* Intro Section */
+        .intro-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
         }
 
-        .about-card {
-            background: var(--white);
-            padding: 25px;
+        .intro-card {
+            background: var(--surface);
+            padding: 2rem;
             border-radius: var(--radius);
-            box-shadow: var(--shadow-md);
+            box-shadow: var(--shadow-sm);
             text-align: center;
             transition: var(--transition);
+            border-bottom: 3px solid transparent;
         }
 
-        .about-card:hover {
+        .intro-card:hover {
             transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
+            box-shadow: var(--shadow-md);
+            border-bottom-color: var(--primary);
         }
 
-        .about-card i {
+        .intro-card i {
             font-size: 2.5rem;
             color: var(--primary);
-            margin-bottom: 15px;
-        }
-
-        .about-card h3 {
-            margin-bottom: 10px;
-            color: var(--primary-dark);
+            margin-bottom: 1rem;
         }
 
         /* Teachers Section */
         .teachers-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
         }
 
         .teacher-card {
-            background: var(--white);
+            background: var(--surface);
             border-radius: var(--radius);
             overflow: hidden;
-            box-shadow: var(--shadow-md);
+            box-shadow: var(--shadow-sm);
             text-align: center;
-            transition: var(--transition);
+            padding: 1.5rem;
         }
 
-        .teacher-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .teacher-img {
+        .teacher-photo {
             width: 100px;
             height: 100px;
             border-radius: 50%;
             object-fit: cover;
-            margin: 20px auto 10px;
-            border: 3px solid var(--secondary);
+            margin: 0 auto 1rem;
+            border: 3px solid var(--primary-light);
         }
 
-        .teacher-info {
-            padding: 0 20px 20px;
-        }
-
-        .teacher-info h3 {
+        .teacher-name {
+            font-size: 1.2rem;
+            font-weight: 700;
             color: var(--primary);
-            margin-bottom: 5px;
         }
 
-        .teacher-info p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-bottom: 5px;
-        }
-
-        /* Results Section */
-        .results-controls {
-            background: var(--white);
-            padding: 20px;
+        /* Exam Results */
+        .result-container {
+            background: var(--surface);
+            padding: 2rem;
             border-radius: var(--radius);
             box-shadow: var(--shadow-md);
-            margin-bottom: 20px;
+        }
+
+        .result-controls {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 1rem;
+            margin-bottom: 2rem;
         }
 
         .search-box {
             display: flex;
-            align-items: center;
-            background: var(--bg-light);
-            border: 1px solid #ddd;
-            border-radius: 30px;
-            padding: 5px 20px;
-        }
-
-        .search-box i {
-            color: var(--text-muted);
+            gap: 10px;
+            width: 100%;
         }
 
         .search-box input {
-            border: none;
-            background: transparent;
-            padding: 10px;
-            width: 100%;
-            outline: none;
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
             font-size: 1rem;
         }
 
-        .class-filters {
+        .class-tabs {
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
-            justify-content: center;
         }
 
-        .filter-btn {
-            padding: 8px 15px;
-            border: 1px solid var(--primary);
-            background: transparent;
-            color: var(--primary);
+        .class-tab {
+            padding: 8px 16px;
+            background: var(--bg-color);
+            border: 1px solid var(--border);
             border-radius: 20px;
             cursor: pointer;
             transition: var(--transition);
         }
 
-        .filter-btn.active, .filter-btn:hover {
+        .class-tab.active {
             background: var(--primary);
-            color: var(--white);
+            color: white;
+            border-color: var(--primary);
         }
 
         .table-responsive {
             overflow-x: auto;
-            background: var(--white);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-md);
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            text-align: left;
+            margin-top: 1rem;
         }
 
         th, td {
-            padding: 15px;
-            border-bottom: 1px solid #eee;
+            padding: 12px 15px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
         }
 
         th {
             background: var(--primary);
-            color: var(--white);
-            font-weight: 500;
+            color: white;
+            font-weight: 600;
         }
 
         tr:hover {
-            background: var(--secondary);
+            background-color: #f1f5f9;
         }
 
         .grade-rasib {
-            color: var(--danger);
-            font-weight: bold;
-        }
-        .grade-pass {
-            color: var(--primary);
+            color: var(--rasib-color);
             font-weight: bold;
         }
 
-        /* Gallery Section */
+        .btn-view-marks, .btn-download {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: white;
+            transition: var(--transition);
+        }
+
+        .btn-view-marks { background: #3b82f6; }
+        .btn-view-marks:hover { background: #2563eb; }
+        .btn-download { background: var(--primary); }
+        .btn-download:hover { background: var(--primary-dark); }
+
+        /* Gallery */
         .gallery-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -399,136 +405,88 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.4s ease;
+            transition: transform 0.5s ease;
         }
 
         .gallery-item:hover img {
             transform: scale(1.1);
         }
 
-        .gallery-overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 122, 77, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: var(--transition);
-        }
-
-        .gallery-item:hover .gallery-overlay {
-            opacity: 1;
-        }
-
-        .gallery-overlay i {
-            color: var(--white);
-            font-size: 2rem;
-        }
-
         /* Lightbox */
         .lightbox {
-            display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.9);
-            z-index: 2000;
-            align-items: center;
+            display: none;
             justify-content: center;
-            flex-direction: column;
+            align-items: center;
+            z-index: 2000;
         }
-
         .lightbox img {
             max-width: 90%;
-            max-height: 80vh;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-lg);
+            max-height: 90vh;
+            border-radius: 4px;
         }
-
         .lightbox-close {
             position: absolute;
-            top: 20px;
-            right: 30px;
-            color: var(--white);
+            top: 20px; right: 30px;
+            color: white;
             font-size: 2rem;
             cursor: pointer;
         }
 
         /* Footer */
         footer {
-            background: var(--primary-dark);
-            color: var(--white);
+            background: var(--text-main);
+            color: white;
             padding: 3rem 0 1rem;
         }
-
-        .footer-grid {
+        .footer-content {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 30px;
             margin-bottom: 2rem;
         }
-
-        .footer-info h3 {
-            margin-bottom: 15px;
-            color: var(--accent);
-        }
-
-        .footer-info p {
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .map-container iframe {
-            width: 100%;
-            height: 200px;
-            border: 0;
-            border-radius: var(--radius);
-        }
-
-        .copyright {
+        .footer-bottom {
             text-align: center;
-            padding-top: 1.5rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 1rem;
+            border-top: 1px solid #334155;
             font-size: 0.9rem;
         }
 
-        /* Admin Modals */
+        /* Modals (Subject Marks, Admin Login, Admin Dashboard) */
         .modal {
-            display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.6);
-            z-index: 3000;
-            align-items: center;
+            display: none;
             justify-content: center;
-            backdrop-filter: blur(5px);
+            align-items: center;
+            z-index: 3000;
+            padding: 20px;
         }
 
         .modal-content {
-            background: var(--white);
-            width: 90%;
-            max-width: 500px;
+            background: var(--surface);
+            padding: 2rem;
             border-radius: var(--radius);
-            padding: 30px;
-            box-shadow: var(--shadow-lg);
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
             position: relative;
         }
 
         .modal-content.large {
-            max-width: 900px;
-            height: 90vh;
-            display: flex;
-            flex-direction: column;
+            max-width: 1000px;
         }
 
         .close-modal {
             position: absolute;
-            top: 15px; right: 15px;
+            top: 15px; right: 20px;
             font-size: 1.5rem;
             cursor: pointer;
-            color: var(--text-muted);
+            color: var(--text-light);
         }
 
         .form-group {
@@ -538,130 +496,135 @@
         .form-group label {
             display: block;
             margin-bottom: 5px;
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .form-control {
             width: 100%;
             padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-family: inherit;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 1rem;
         }
 
-        .admin-btn {
-            width: 100%;
-            padding: 10px;
-            background: var(--primary);
-            color: var(--white);
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        /* Admin Dashboard Tabs */
-        .admin-tabs {
+        /* Admin Dashboard Specific */
+        .admin-nav {
             display: flex;
             gap: 10px;
             margin-bottom: 20px;
-            border-bottom: 2px solid var(--secondary);
+            border-bottom: 1px solid var(--border);
             padding-bottom: 10px;
-            overflow-x: auto;
+            flex-wrap: wrap;
         }
 
-        .tab-btn {
+        .admin-nav button {
             padding: 8px 15px;
-            border: none;
-            background: var(--secondary);
-            color: var(--text-main);
-            border-radius: 5px;
+            background: var(--bg-color);
+            border: 1px solid var(--border);
+            border-radius: 4px;
             cursor: pointer;
-            white-space: nowrap;
         }
-
-        .tab-btn.active {
+        .admin-nav button.active {
             background: var(--primary);
-            color: var(--white);
+            color: white;
         }
 
-        .tab-content {
+        .admin-section {
             display: none;
-            flex: 1;
-            overflow-y: auto;
         }
-
-        .tab-content.active {
+        .admin-section.active {
             display: block;
         }
 
-        .admin-list-item {
+        .subject-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .delete-btn {
+            background: var(--rasib-color);
+            color: white;
+            padding: 4px 8px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* PDF Template (Hidden from View) */
+        #pdf-template-container {
+            position: absolute;
+            left: -9999px;
+            top: 0;
+        }
+        .pdf-wrapper {
+            width: 800px;
+            padding: 40px;
+            background: white;
+            color: black;
+            font-family: 'Hind Siliguri', sans-serif;
+            border: 2px solid var(--primary);
+        }
+        .pdf-header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 10px;
+        }
+        .pdf-header img {
+            width: 80px;
+        }
+        .pdf-header h1 {
+            color: var(--primary);
+            font-size: 24px;
+            margin: 10px 0;
+        }
+        .pdf-details {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            background: var(--bg-light);
-            margin-bottom: 5px;
-            border-radius: 5px;
-            border: 1px solid #eee;
+            margin-bottom: 20px;
+            font-size: 16px;
         }
-
-        .del-btn {
-            background: var(--danger);
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 3px;
-            cursor: pointer;
-        }
-
-        /* Adsterra Advertisement Style */
-        .ad-container {
+        .pdf-table {
             width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin: 1.5rem auto;
-            text-align: center;
-            overflow: hidden;
-            padding: 10px 0;
+            border-collapse: collapse;
+            margin-bottom: 20px;
         }
-
-        .ad-label {
-            display: block;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        .pdf-table th, .pdf-table td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: center;
+        }
+        .pdf-summary {
+            text-align: right;
+            font-size: 16px;
+            font-weight: bold;
         }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .nav-menu {
+            .nav-links {
+                display: none;
+                flex-direction: column;
                 position: absolute;
                 top: 80px;
-                left: -100%;
-                flex-direction: column;
-                background: var(--white);
-                width: 100%;
-                text-align: center;
-                padding: 20px 0;
-                box-shadow: var(--shadow-md);
-                transition: var(--transition);
-            }
-
-            .nav-menu.active {
                 left: 0;
+                width: 100%;
+                background: var(--surface);
+                padding: 20px;
+                box-shadow: var(--shadow-md);
             }
-
+            .nav-links.active {
+                display: flex;
+            }
             .hamburger {
                 display: block;
             }
-
-            .hero-content h1 {
+            .hero h1 {
                 font-size: 2rem;
+            }
+            .search-box {
+                flex-direction: column;
             }
         }
     </style>
@@ -670,118 +633,146 @@
 
     <!-- Header -->
     <header>
-        <div class="container nav-container">
-            <div class="logo-area" id="madrasaLogoBtn">
+        <div class="container navbar">
+            <div class="brand" id="brand-logo">
                 <img src="https://i.ibb.co.com/qFRmPqgK/20260310-005555.png" alt="Logo">
-                <div class="logo-text">
-                    <h1 id="navMadrasaName">Jamia Arabia Ashraful Ulum Kushtia</h1>
-                </div>
+                <h1>জামিয়া আরাবিয়া<br>আশরাফুল উলূম কুষ্টিয়া</h1>
             </div>
-            <div class="hamburger" onclick="toggleMenu()">
+            <div class="hamburger" id="hamburger">
                 <i class="fas fa-bars"></i>
             </div>
-            <ul class="nav-menu" id="navMenu">
-                <li><a href="#hero" onclick="closeMenu()">Home</a></li>
-                <li><a href="#about" onclick="closeMenu()">About Madrasa</a></li>
-                <li><a href="#teachers" onclick="closeMenu()">Teachers</a></li>
-                <li><a href="#results" onclick="closeMenu()">Results</a></li>
-                <li><a href="#gallery" onclick="closeMenu()">Gallery</a></li>
-                <li><a href="#footer" onclick="closeMenu()">Contact</a></li>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#home">হোম</a></li>
+                <li><a href="#about">মাদরাসা সম্পর্কে</a></li>
+                <li><a href="#teachers">শিক্ষকবৃন্দ</a></li>
+                <li><a href="#results">ফলাফল</a></li>
+                <li><a href="#gallery">গ্যালারি</a></li>
+                <li><a href="#contact">যোগাযোগ</a></li>
             </ul>
         </div>
     </header>
 
     <!-- Hero Section -->
-    <section id="hero">
-        <div class="container hero-content">
-            <h1 id="heroMadrasaName">Jamia Arabia Ashraful Ulum Kushtia</h1>
-            <p id="heroIntro">কুষ্টিয়া জেলার একটি আধুনিক এবং ঐতিহ্যবাহী দ্বীনি প্রতিষ্ঠান.</p>
-            <div class="hero-btns">
-                <button class="btn btn-primary" onclick="location.href='#about'">মাদ্রাসা সম্পর্কে তথ্য</button>
-                <button class="btn btn-outline" onclick="location.href='#results'">পরীক্ষার ফলাফল দেখুন</button>
+    <section id="home" class="hero">
+        <div class="container">
+            <h1>Arabic University</h1>
+            <p>কুষ্টিয়া জেলার সুপরিচিত ও ঐতিহ্যবাহী একটি দ্বীনি শিক্ষা প্রতিষ্ঠান</p>
+            
+            <!-- নতুন স্টাইলের বাটন সেকশন -->
+            <div class="hero-buttons">
+                <button class="btn btn-primary" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">
+                    <i class="fas fa-info-circle"></i> মাদরাসা সম্পর্কে
+                </button>
+                <button class="btn btn-outline" onclick="document.getElementById('results').scrollIntoView({behavior:'smooth'})">
+                    <i class="fas fa-graduation-cap"></i> ফলাফল দেখুন
+                </button>
             </div>
+
         </div>
     </section>
 
-    <!-- Adsterra Slot 3 (Between Gallery & Footer) -->
+    <!-- Adsterra Ad 1 -->
     <div class="ad-container">
-        <span class="ad-label">- Advertisement -</span>
-        <script type="text/javascript">
-            atOptions = {
-                'key' : 'aa67b74916611d0d8cffbfa6539409c8',
-                'format' : 'iframe',
-                'height' : 50,
-                'width' : 320,
-                'params' : {}
-            };
+        <script>
+        atOptions = {
+         'key' : 'aa67b74916611d0d8cffbfa6539409c8',
+         'format' : 'iframe',
+         'height' : 50,
+         'width' : 320,
+         'params' : {}
+        };
         </script>
-        <script type="text/javascript" src="https://www.highperformanceformat.com/aa67b74916611d0d8cffbfa6539409c8/invoke.js"></script>
+        <script src="https://www.highperformanceformat.com/aa67b74916611d0d8cffbfa6539409c8/invoke.js"></script>
     </div>
 
-    <!-- About Section -->
-    <section id="about" style="padding-top: 2rem;">
+    <!-- Intro Section -->
+    <section id="about">
         <div class="container">
-            <h2 class="section-title">About Madrasa</h2>
-            <div class="about-grid" id="aboutGrid">
-                <!-- Injected via JS -->
+            <h2 class="section-title">মাদরাসা সম্পর্কে</h2>
+            <div class="intro-grid">
+                <div class="intro-card">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h3>অবস্থান</h3>
+                    <p id="info-location">কুষ্টিয়া সদর, কুষ্টিয়া</p>
+                </div>
+                <div class="intro-card">
+                    <i class="fas fa-calendar-alt"></i>
+                    <h3>প্রতিষ্ঠা সাল</h3>
+                    <p id="info-year">স্থাপিত: ...</p>
+                </div>
+                <div class="intro-card">
+                    <i class="fas fa-book-open"></i>
+                    <h3>বিভাগসমূহ</h3>
+                    <p id="info-depts">নূরানী, হিফজ, কিতাব, দাওরায়ে হাদীস</p>
+                </div>
+                <div class="intro-card">
+                    <i class="fas fa-bullseye"></i>
+                    <h3>লক্ষ্য ও উদ্দেশ্য</h3>
+                    <p id="info-goals">আদর্শ ইসলামী সমাজ গঠন ও দক্ষ আলিম তৈরি করা।</p>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Teachers Section -->
-    <section id="teachers">
+    <section id="teachers" style="background-color: white;">
         <div class="container">
-            <h2 class="section-title">Our Teachers (Asatizah)</h2>
-            <div class="teachers-grid" id="teachersGrid">
-                <!-- Injected via JS -->
+            <h2 class="section-title">আমাদের শিক্ষকবৃন্দ</h2>
+            <div class="teachers-grid" id="teachers-container">
+                <!-- Data loaded from Firebase -->
+                <p style="text-align: center; width: 100%;">লোড হচ্ছে...</p>
             </div>
         </div>
     </section>
 
-    <!-- Adsterra Slot 2 (Between Teachers & Results) -->
-    <div class="ad-container">
-        <span class="ad-label">- Advertisement -</span>
-        <script type="text/javascript">
-            atOptions = {
-                'key' : 'aa67b74916611d0d8cffbfa6539409c8',
-                'format' : 'iframe',
-                'height' : 50,
-                'width' : 320,
-                'params' : {}
-            };
-        </script>
-        <script type="text/javascript" src="https://www.highperformanceformat.com/aa67b74916611d0d8cffbfa6539409c8/invoke.js"></script>
-    </div>
-
     <!-- Exam Results Section -->
-    <section id="results" style="padding-top: 2rem;">
-        <div class="container">
-            <h2 class="section-title">Exam Results System</h2>
+    <section id="results">
+        <div class="container result-container">
+            <h2 class="section-title">পরীক্ষার ফলাফল</h2>
             
-            <div class="results-controls">
+            <div class="result-controls">
                 <div class="search-box">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="searchInput" placeholder="Search by Student Name or Serial/Roll..." onkeyup="filterResults()">
+                    <input type="text" id="search-result" placeholder="শিক্ষার্থীর নাম বা রোল নম্বর দিয়ে খুঁজুন...">
                 </div>
-                <div class="class-filters" id="classFilters">
-                    <!-- Injected via JS -->
+                <div class="class-tabs" id="class-tabs">
+                    <div class="class-tab active" data-class="all">সকল</div>
+                    <div class="class-tab" data-class="নূরানী">নূরানী</div>
+                    <div class="class-tab" data-class="হিফজ">হিফজ</div>
+                    <div class="class-tab" data-class="কিতাব বিভাগ">কিতাব বিভাগ</div>
+                    <div class="class-tab" data-class="দাওরায়ে হাদীস">দাওরায়ে হাদীস</div>
                 </div>
             </div>
 
+            <!-- Adsterra Ad 2 -->
+            <div class="ad-container">
+                <script>
+                atOptions = {
+                 'key' : 'aa67b74916611d0d8cffbfa6539409c8',
+                 'format' : 'iframe',
+                 'height' : 50,
+                 'width' : 320,
+                 'params' : {}
+                };
+                </script>
+                <script src="https://www.highperformanceformat.com/aa67b74916611d0d8cffbfa6539409c8/invoke.js"></script>
+            </div>
+
             <div class="table-responsive">
-                <table>
+                <table id="result-table">
                     <thead>
                         <tr>
-                            <th>Serial / Roll</th>
-                            <th>Student Name</th>
-                            <th>Class</th>
-                            <th>Total Marks</th>
-                            <th>Average</th>
-                            <th>Grade</th>
+                            <th>রোল / ক্রমিক</th>
+                            <th>শিক্ষার্থীর নাম</th>
+                            <th>বিভাগ (Class)</th>
+                            <th>বিস্তারিত নম্বর</th>
+                            <th>মোট নম্বর</th>
+                            <th>গড়</th>
+                            <th>বিভাগ (Grade)</th>
+                            <th>ডাউনলোড</th>
                         </tr>
                     </thead>
-                    <tbody id="resultTableBody">
-                        <!-- Injected via JS -->
+                    <tbody id="result-tbody">
+                        <!-- Loaded from Firebase -->
                     </tbody>
                 </table>
             </div>
@@ -789,188 +780,245 @@
     </section>
 
     <!-- Gallery Section -->
-    <section id="gallery">
+    <section id="gallery" style="background-color: white;">
         <div class="container">
-            <h2 class="section-title">Photo Gallery</h2>
-            <div class="gallery-grid" id="galleryGrid">
-                <!-- Injected via JS -->
+            <h2 class="section-title">ফটো গ্যালারি</h2>
+            <div class="gallery-grid" id="gallery-container">
+                <!-- Loaded from Firebase -->
             </div>
         </div>
     </section>
 
-    <!-- Adsterra Slot 3 (Between Gallery & Footer) -->
+    <!-- Adsterra Ad 3 -->
     <div class="ad-container">
-        <span class="ad-label">- Advertisement -</span>
-         type="text/javascript">
-            atOptions = {
-                'key' : 'aa67b74916611d0d8cffbfa6539409c8',
-                'format' : 'iframe',
-                'height' : 50,
-                'width' : 320,
-                'params' : {}
-            };
+        <script>
+        atOptions = {
+         'key' : 'aa67b74916611d0d8cffbfa6539409c8',
+         'format' : 'iframe',
+         'height' : 50,
+         'width' : 320,
+         'params' : {}
+        };
         </script>
-        <script type="text/javascript" src="https://www.highperformanceformat.com/aa67b74916611d0d8cffbfa6539409c8/invoke.js"></script>
-    </div>
-
-    <!-- Lightbox -->
-    <div class="lightbox" id="lightbox">
-        <i class="fas fa-times lightbox-close" onclick="closeLightbox()"></i>
-        <img id="lightboxImg" src="" alt="Gallery Image">
+        <script src="https://www.highperformanceformat.com/aa67b74916611d0d8cffbfa6539409c8/invoke.js"></script>
     </div>
 
     <!-- Footer -->
-    <footer id="footer">
+    <footer id="contact">
         <div class="container">
-            <div class="footer-grid">
-                <div class="footer-info">
-                    <h3 id="footerName">Jamia Arabia Ashraful Ulum Kushtia</h3>
-                    <p><i class="fas fa-map-marker-alt"></i> <span id="footerAddress">Kushtia, Bangladesh</span></p>
-                    <p><i class="fas fa-phone"></i> <span id="footerPhone">+880 1234-567890</span></p>
-                    <p><i class="fas fa-envelope"></i> <span id="footerEmail">info@jaauk.edu.bd</span></p>
+            <div class="footer-content">
+                <div>
+                    <h2 style="color: var(--primary-light); margin-bottom: 1rem;">জামিয়া আরাবিয়া আশরাফুল উলূম কুষ্টিয়া</h2>
+                    <p><i class="fas fa-map-marker-alt"></i> ঠিকানা: কুষ্টিয়া সদর, কুষ্টিয়া, বাংলাদেশ</p>
+                    <p><i class="fas fa-phone"></i> মোবাইল: +880 1XXX-XXXXXX</p>
+                    <p><i class="fas fa-envelope"></i> ইমেইল: info@ashraful-uloom.com</p>
                 </div>
-                <div class="map-container">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3648.740523456789!2d89.1234567!3d23.9012345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjPCsDU0JzA0LjQiTiA4OcKwMDcnMjQuNCJF!5e0!3m2!1sen!2sbd!4v1620000000000!5m2!1sen!2sbd" allowfullscreen="" loading="lazy"></iframe>
+                <div>
+                    <h3 style="margin-bottom: 1rem;">গুরুত্বপূর্ণ লিংক</h3>
+                    <ul style="line-height: 2;">
+                        <li><a href="#home">হোম</a></li>
+                        <li><a href="#about">মাদরাসা সম্পর্কে</a></li>
+                        <li><a href="#results">ফলাফল</a></li>
+                        <li><a href="#gallery">গ্যালারি</a></li>
+                    </ul>
                 </div>
             </div>
-            <div class="copyright">
-                <p>&copy; <span id="currentYear"></span> <span id="copyName">Jamia Arabia Ashraful Ulum Kushtia</span>. All Rights Reserved.</p>
+            <div class="footer-bottom">
+                <p>&copy; 1999 Jamia Arabia Ashraful Uloom Kushtia. All Rights Reserved[Nazmul Vai].</p>
             </div>
         </div>
     </footer>
 
-    <!-- Admin Login Modal -->
-    <div class="modal" id="loginModal">
+    <!-- Modals -->
+
+    <!-- Subject Marks Modal -->
+    <div class="modal" id="subject-modal">
         <div class="modal-content">
-            <span class="close-modal" onclick="closeAdminLogin()">&times;</span>
-            <h2 style="margin-bottom: 20px; color: var(--primary); text-align: center;">Admin Panel Login</h2>
-            <form id="loginForm">
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" id="adminPassword" class="form-control" placeholder="Enter password">
-                </div>
-                <button type="submit" class="admin-btn">Login</button>
-            </form>
+            <span class="close-modal" onclick="closeModal('subject-modal')">&times;</span>
+            <h3 style="margin-bottom: 15px; color: var(--primary); text-align: center;">বিষয়ভিত্তিক নম্বর</h3>
+            <div id="subject-details-content"></div>
+        </div>
+    </div>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+        <img src="" id="lightbox-img" alt="Gallery Image">
+    </div>
+
+    <!-- Admin Login Modal -->
+    <div class="modal" id="admin-login-modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <span class="close-modal" onclick="closeModal('admin-login-modal')">&times;</span>
+            <h3 style="margin-bottom: 15px; text-align: center;">এডমিন লগইন</h3>
+            <div class="form-group">
+                <label>পাসওয়ার্ড দিন</label>
+                <input type="password" id="admin-password" class="form-control">
+            </div>
+            <button class="btn btn-success" style="width: 100%;" onclick="verifyAdmin()">লগইন</button>
         </div>
     </div>
 
     <!-- Admin Dashboard Modal -->
-    <div class="modal" id="dashboardModal">
+    <div class="modal" id="admin-dashboard-modal">
         <div class="modal-content large">
-            <span class="close-modal" onclick="closeDashboard()">&times;</span>
-            <h2 style="margin-bottom: 20px; color: var(--primary);">Admin Dashboard</h2>
+            <span class="close-modal" onclick="closeModal('admin-dashboard-modal')">&times;</span>
+            <h2 style="margin-bottom: 20px; color: var(--primary);">এডমিন ড্যাশবোর্ড</h2>
             
-            <div class="admin-tabs">
-                <button class="tab-btn active" onclick="switchTab('tabInfo')">Information</button>
-                <button class="tab-btn" onclick="switchTab('tabTeachers')">Teachers</button>
-                <button class="tab-btn" onclick="switchTab('tabResults')">Results</button>
-                <button class="tab-btn" onclick="switchTab('tabGallery')">Gallery</button>
+            <div class="admin-nav">
+                <button class="active" onclick="switchAdminTab('admin-info')">মাদরাসা তথ্য</button>
+                <button onclick="switchAdminTab('admin-teachers')">শিক্ষক যোগ</button>
+                <button onclick="switchAdminTab('admin-results')">ফলাফল যোগ</button>
+                <button onclick="switchAdminTab('admin-gallery')">গ্যালারি যোগ</button>
             </div>
 
             <!-- Tab: Info -->
-            <div id="tabInfo" class="tab-content active">
-                <form id="infoForm">
-                    <div class="form-group"><label>Madrasa Name</label><input type="text" id="iName" class="form-control"></div>
-                    <div class="form-group"><label>Location</label><input type="text" id="iLoc" class="form-control"></div>
-                    <div class="form-group"><label>Established Year</label><input type="text" id="iEst" class="form-control"></div>
-                    <div class="form-group"><label>Founder / Director</label><input type="text" id="iDir" class="form-control"></div>
-                    <div class="form-group"><label>Phone</label><input type="text" id="iPhone" class="form-control"></div>
-                    <button type="submit" class="admin-btn">Save Information</button>
-                </form>
+            <div id="admin-info" class="admin-section active">
+                <h3>তথ্য আপডেট করুন</h3>
+                <div class="form-group mt-2">
+                    <label>অবস্থান</label>
+                    <input type="text" id="edit-location" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>প্রতিষ্ঠা সাল</label>
+                    <input type="text" id="edit-year" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>বিভাগসমূহ</label>
+                    <input type="text" id="edit-depts" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>লক্ষ্য ও উদ্দেশ্য</label>
+                    <textarea id="edit-goals" class="form-control" rows="3"></textarea>
+                </div>
+                <button class="btn btn-success" onclick="saveInfo()">সেভ করুন</button>
             </div>
 
             <!-- Tab: Teachers -->
-            <div id="tabTeachers" class="tab-content">
-                <form id="teacherForm" style="margin-bottom: 20px; background: #f9f9f9; padding: 15px; border-radius: 5px;">
-                    <h4>Add Teacher</h4>
-                    <div class="form-group"><input type="text" id="tName" class="form-control" placeholder="Name" required></div>
-                    <div class="form-group"><input type="text" id="tDesig" class="form-control" placeholder="Designation" required></div>
-                    <div class="form-group"><input type="text" id="tPhone" class="form-control" placeholder="Phone" required></div>
-                    <div class="form-group"><input type="url" id="tPhoto" class="form-control" placeholder="Photo URL (Optional)"></div>
-                    <button type="submit" class="admin-btn">Add Teacher</button>
-                </form>
-                <h4>Teacher List</h4>
-                <div id="adminTeacherList"></div>
+            <div id="admin-teachers" class="admin-section">
+                <h3>নতুন শিক্ষক যোগ করুন</h3>
+                <div class="form-group mt-2">
+                    <label>নাম</label>
+                    <input type="text" id="t-name" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>পদবী</label>
+                    <input type="text" id="t-desig" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>মোবাইল নম্বর</label>
+                    <input type="text" id="t-phone" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>ছবির URL (ঐচ্ছিক)</label>
+                    <input type="text" id="t-photo" class="form-control" placeholder="https://...">
+                </div>
+                <button class="btn btn-success" onclick="addTeacher()">শিক্ষক যোগ করুন</button>
+                
+                <hr style="margin: 20px 0;">
+                <h4>শিক্ষক তালিকা (ডিলিট করতে)</h4>
+                <div id="admin-teacher-list"></div>
             </div>
 
             <!-- Tab: Results -->
-            <div id="tabResults" class="tab-content">
-                <form id="resultForm" style="margin-bottom: 20px; background: #f9f9f9; padding: 15px; border-radius: 5px;">
-                    <h4>Add Result</h4>
-                    <div class="form-group">
-                        <select id="rClass" class="form-control" required>
-                            <option value="Noorani">Noorani</option>
-                            <option value="Hifz">Hifz</option>
-                            <option value="Kitab Department">Kitab Department</option>
-                            <option value="Dawra-e-Hadith">Dawra-e-Hadith</option>
-                        </select>
+            <div id="admin-results" class="admin-section">
+                <h3>নতুন ফলাফল যোগ করুন</h3>
+                <div class="form-group mt-2">
+                    <label>বিভাগ (Class)</label>
+                    <select id="r-class" class="form-control">
+                        <option value="নূরানী">নূরানী</option>
+                        <option value="হিফজ">হিফজ</option>
+                        <option value="কিতাব বিভাগ">কিতাব বিভাগ</option>
+                        <option value="দাওরায়ে হাদীস">দাওরায়ে হাদীস</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>শিক্ষার্থীর নাম</label>
+                    <input type="text" id="r-name" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>রোল / ক্রমিক নম্বর</label>
+                    <input type="text" id="r-roll" class="form-control">
+                </div>
+                
+                <h4>বিষয় ভিত্তিক নম্বর</h4>
+                <div id="r-subjects-container">
+                    <div class="subject-row">
+                        <input type="text" class="form-control r-sub-name" placeholder="বিষয়ের নাম">
+                        <input type="number" class="form-control r-sub-mark" placeholder="প্রাপ্ত নম্বর">
                     </div>
-                    <div class="form-group"><input type="text" id="rSerial" class="form-control" placeholder="Serial / Roll Number" required></div>
-                    <div class="form-group"><input type="text" id="rName" class="form-control" placeholder="Student Name" required></div>
-                    <div class="form-group"><input type="text" id="rMarks" class="form-control" placeholder="Subject Marks (Comma separated e.g., 85,90,75)" required></div>
-                    <button type="submit" class="admin-btn">Add Result</button>
-                </form>
-                <h4>Result List</h4>
-                <div id="adminResultList"></div>
+                </div>
+                <button class="btn btn-outline" style="color:var(--primary); border-color:var(--primary);" onclick="addSubjectRow()">+ আরও বিষয় যোগ করুন</button>
+                <br><br>
+                <button class="btn btn-success" onclick="saveResult()">ফলাফল সেভ করুন</button>
+
+                <hr style="margin: 20px 0;">
+                <h4>ফলাফল মুছুন</h4>
+                <div class="table-responsive">
+                    <table style="width:100%">
+                        <thead><tr><th>রোল</th><th>নাম</th><th>বিভাগ</th><th>অ্যাকশন</th></tr></thead>
+                        <tbody id="admin-result-list"></tbody>
+                    </table>
+                </div>
             </div>
 
             <!-- Tab: Gallery -->
-            <div id="tabGallery" class="tab-content">
-                <form id="galleryForm" style="margin-bottom: 20px; background: #f9f9f9; padding: 15px; border-radius: 5px;">
-                    <h4>Add Image</h4>
-                    <div class="form-group"><input type="url" id="gUrl" class="form-control" placeholder="Direct Image URL" required></div>
-                    <button type="submit" class="admin-btn">Add Image</button>
-                </form>
-                <h4>Gallery Images</h4>
-                <div id="adminGalleryList"></div>
+            <div id="admin-gallery" class="admin-section">
+                <h3>গ্যালারি ছবি যোগ করুন</h3>
+                <div class="form-group mt-2">
+                    <label>ছবির URL (Direct Link)</label>
+                    <input type="text" id="g-url" class="form-control" placeholder="https://...">
+                </div>
+                <button class="btn btn-success" onclick="addGalleryImage()">ছবি যোগ করুন</button>
+                
+                <hr style="margin: 20px 0;">
+                <h4>গ্যালারি তালিকা</h4>
+                <div id="admin-gallery-list" style="display: flex; gap:10px; flex-wrap:wrap;"></div>
             </div>
-
         </div>
     </div>
 
-   <!-- Scripts -->
-    <!-- ১. ফায়ারবেস লাইব্রেরি (যা আপনি মিস করেছিলেন) -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <!-- Hidden PDF Template -->
+    <div id="pdf-template-container">
+        <div class="pdf-wrapper" id="pdf-content">
+            <div class="pdf-header">
+                <img src="https://i.ibb.co.com/qFRmPqgK/20260310-005555.png" alt="Logo">
+                <h1>জামিয়া আরাবিয়া আশরাফুল উলূম কুষ্টিয়া</h1>
+                <h3>বার্ষিক পরীক্ষার ফলাফল</h3>
+            </div>
+            <div class="pdf-details">
+                <div>
+                    <p><strong>শিক্ষার্থীর নাম:</strong> <span id="pdf-s-name"></span></p>
+                    <p><strong>রোল নম্বর:</strong> <span id="pdf-s-roll"></span></p>
+                </div>
+                <div>
+                    <p><strong>বিভাগ:</strong> <span id="pdf-s-class"></span></p>
+                </div>
+            </div>
+            <table class="pdf-table">
+                <thead>
+                    <tr>
+                        <th>ক্রমিক</th>
+                        <th>বিষয়ের নাম</th>
+                        <th>প্রাপ্ত নম্বর</th>
+                    </tr>
+                </thead>
+                <tbody id="pdf-s-subjects"></tbody>
+            </table>
+            <div class="pdf-summary">
+                <p>মোট নম্বর: <span id="pdf-s-total"></span></p>
+                <p>গড় নম্বর: <span id="pdf-s-avg"></span></p>
+                <p>ফলাফল (Grade): <span id="pdf-s-grade"></span></p>
+            </div>
+        </div>
+    </div>
 
-    <script>
-        // Default Data Initialization
-        const defaultData = {
-            info: {
-                name: "Jamia Arabia Ashraful Ulum Kushtia",
-                location: "Kushtia, Bangladesh",
-                est: "1990",
-                director: "Mufti Abdur Rahman",
-                phone: "+880 1234-567890",
-                intro: "কুষ্টিয়া জেলার একটি আধুনিক এবং ঐতিহ্যবাহী দ্বীনি শিক্ষা প্রতিষ্ঠান "
-            },
-            features: [
-                { icon: 'fa-mosque', title: 'Location', key: 'location' },
-                { icon: 'fa-calendar-alt', title: 'Establishment', key: 'est' },
-                { icon: 'fa-user-tie', title: 'Founder / Director', key: 'director' },
-                { icon: 'fa-building', title: 'Infrastructure', val: 'Modern Campus with Masjid' },
-                { icon: 'fa-book-open', title: 'Departments', val: 'Noorani, Hifz, Kitab, Ifta' },
-                { icon: 'fa-bullseye', title: 'Goals', val: 'Spreading Quranic Knowledge' }
-            ],
-            teachers: [
-                { id: 1, name: "Maulana Abdullah", designation: "Mudir (Principal)", phone: "01700000000", photo: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" },
-                { id: 2, name: "Mufti Ibrahim", designation: "Shaikhul Hadith", phone: "01700000001", photo: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" }
-            ],
-            results: [
-                { id: 1, serial: "101", name: "Ahmad Hasan", class: "Dawra-e-Hadith", marks: [85, 90, 88, 75, 82] },
-                { id: 2, serial: "102", name: "Mahmudul Islam", class: "Hifz", marks: [60, 65, 70] },
-                { id: 3, serial: "103", name: "Abdur Rahim", class: "Kitab Department", marks: [40, 45, 38] },
-                { id: 4, serial: "104", name: "Hasan Ali", class: "Noorani", marks: [20, 30, 25] }
-            ],
-            gallery: [
-                "https://images.unsplash.com/photo-1564767609342-620cb19b2357?auto=format&fit=crop&q=80&w=800",
-                "https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?auto=format&fit=crop&q=80&w=800",
-                "https://images.unsplash.com/photo-1604014237800-1c9102c219da?auto=format&fit=crop&q=80&w=800"
-            ],
-            classes: ["Noorani", "Hifz", "Kitab Department", "Dawra-e-Hadith"]
-        };
 
-        // ২. ফায়ারবেস কনফিগারেশন (databaseURL যুক্ত করা হয়েছে)
+    <!-- Firebase & Main Script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getDatabase, ref, set, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+
         const firebaseConfig = {
             apiKey: "AIzaSyBXBgFGqDyPiE6ZVER249FA0a91ukICO_U",
             authDomain: "ashraful-uloom-madrasa.firebaseapp.com",
@@ -981,320 +1029,392 @@
             appId: "1:180777617285:web:f4ab13a6a2aa0d6cda66ec"
         };
 
-        // ৩. ফায়ারবেস ইনিশিয়ালাইজ করা (এটি মিসিং ছিল, এ কারণেই db error দিচ্ছিল)
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
 
-        let appData = {};
+        // Global State Variables
+        window.allResults = [];
+        window.currentFilterClass = "all";
+        window.searchTerm = "";
 
-        // ফায়ারবেসে ডাটা সেভ করার ফাংশন
-        function saveData(data) {
-            db.ref('madrasaData').set(data);
-        }
+        // UI Interactions
+        document.getElementById('hamburger').addEventListener('click', () => {
+            document.getElementById('nav-links').classList.toggle('active');
+        });
 
-        // ফায়ারবেস থেকে লাইভ ডাটা লোড করার ফাংশন
-        db.ref('madrasaData').on('value', (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-                appData = data;
-                renderAll(); 
-            } else {
-                appData = defaultData;
-                saveData(appData); 
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('nav-links').classList.remove('active');
+            });
+        });
+
+        // Admin Hidden Entry (5 clicks)
+        let clickCount = 0;
+        let clickTimer = null;
+        document.getElementById('brand-logo').addEventListener('click', (e) => {
+            e.preventDefault();
+            clickCount++;
+            if(clickCount === 1) {
+                clickTimer = setTimeout(() => { clickCount = 0; }, 2000);
+            }
+            if(clickCount >= 5) {
+                clearTimeout(clickTimer);
+                clickCount = 0;
+                openModal('admin-login-modal');
             }
         });
-        let currentFilterClass = 'All';
 
-        // Set Current Year
-        document.getElementById('currentYear').innerText = new Date().getFullYear();
+        // Modal Controls
+        window.openModal = (id) => document.getElementById(id).style.display = 'flex';
+        window.closeModal = (id) => document.getElementById(id).style.display = 'none';
+        
+        // Lightbox
+        window.openLightbox = (src) => {
+            document.getElementById('lightbox-img').src = src;
+            document.getElementById('lightbox').style.display = 'flex';
+        }
+        window.closeLightbox = () => document.getElementById('lightbox').style.display = 'none';
 
-        // Navbar Mobile Toggle
-        const navMenu = document.getElementById('navMenu');
-        function toggleMenu() { navMenu.classList.toggle('active'); }
-        function closeMenu() { navMenu.classList.remove('active'); }
+        // Admin Authentication
+        window.verifyAdmin = () => {
+            const pass = document.getElementById('admin-password').value;
+            if(pass === 'N-1234') {
+                closeModal('admin-login-modal');
+                openModal('admin-dashboard-modal');
+                document.getElementById('admin-password').value = '';
+            } else {
+                alert('ভুল পাসওয়ার্ড!');
+            }
+        };
 
-        // Core Render Functions
-        function renderAll() {
-            renderInfo();
-            renderTeachers();
-            renderResultFilters();
+        // Admin Tabs
+        window.switchAdminTab = (tabId) => {
+            document.querySelectorAll('.admin-section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.admin-nav button').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+        };
+
+        // ====== FIREBASE REALTIME LISTENERS ====== //
+
+        // 1. Info Load
+        onValue(ref(db, 'info'), (snapshot) => {
+            const data = snapshot.val();
+            if(data) {
+                document.getElementById('info-location').innerText = data.location || '';
+                document.getElementById('info-year').innerText = data.year || '';
+                document.getElementById('info-depts').innerText = data.depts || '';
+                document.getElementById('info-goals').innerText = data.goals || '';
+
+                // fill admin
+                document.getElementById('edit-location').value = data.location || '';
+                document.getElementById('edit-year').value = data.year || '';
+                document.getElementById('edit-depts').value = data.depts || '';
+                document.getElementById('edit-goals').value = data.goals || '';
+            }
+        });
+
+        // 2. Teachers Load
+        onValue(ref(db, 'teachers'), (snapshot) => {
+            const container = document.getElementById('teachers-container');
+            const adminList = document.getElementById('admin-teacher-list');
+            container.innerHTML = '';
+            adminList.innerHTML = '';
+            const data = snapshot.val();
+            if(data) {
+                Object.keys(data).forEach(key => {
+                    const t = data[key];
+                    const photo = t.photo || 'https://via.placeholder.com/100?text=Photo';
+                    container.innerHTML += `
+                        <div class="teacher-card">
+                            <img src="${photo}" alt="${t.name}" class="teacher-photo">
+                            <div class="teacher-name">${t.name}</div>
+                            <div style="color:var(--text-light); margin-bottom:5px;">${t.designation}</div>
+                            <div><i class="fas fa-phone"></i> ${t.phone}</div>
+                        </div>
+                    `;
+                    adminList.innerHTML += `
+                        <div style="display:flex; justify-content:space-between; padding:5px; border-bottom:1px solid #ccc;">
+                            <span>${t.name} (${t.designation})</span>
+                            <button class="delete-btn" onclick="deleteRecord('teachers/${key}')">Delete</button>
+                        </div>
+                    `;
+                });
+            } else {
+                container.innerHTML = '<p style="text-align:center;width:100%;">কোনো শিক্ষক যোগ করা হয়নি।</p>';
+            }
+        });
+
+        // 3. Gallery Load
+        onValue(ref(db, 'gallery'), (snapshot) => {
+            const container = document.getElementById('gallery-container');
+            const adminList = document.getElementById('admin-gallery-list');
+            container.innerHTML = '';
+            adminList.innerHTML = '';
+            const data = snapshot.val();
+            if(data) {
+                Object.keys(data).forEach(key => {
+                    const url = data[key].url;
+                    container.innerHTML += `
+                        <div class="gallery-item" onclick="openLightbox('${url}')">
+                            <img src="${url}" loading="lazy">
+                        </div>
+                    `;
+                    adminList.innerHTML += `
+                        <div style="width:100px; position:relative;">
+                            <img src="${url}" style="width:100%; height:70px; object-fit:cover;">
+                            <button class="delete-btn" style="position:absolute;top:0;right:0;padding:2px 5px;" onclick="deleteRecord('gallery/${key}')">X</button>
+                        </div>
+                    `;
+                });
+            } else {
+                container.innerHTML = '<p style="text-align:center;width:100%;">গ্যালারিতে কোনো ছবি নেই।</p>';
+            }
+        });
+
+        // 4. Results Load
+        onValue(ref(db, 'results'), (snapshot) => {
+            const data = snapshot.val();
+            window.allResults = [];
+            const adminList = document.getElementById('admin-result-list');
+            adminList.innerHTML = '';
+
+            if(data) {
+                Object.keys(data).forEach(key => {
+                    const r = data[key];
+                    r.id = key;
+                    window.allResults.push(r);
+                    
+                    adminList.innerHTML += `
+                        <tr>
+                            <td>${r.roll}</td>
+                            <td>${r.name}</td>
+                            <td>${r.className}</td>
+                            <td><button class="delete-btn" onclick="deleteRecord('results/${key}')">Delete</button></td>
+                        </tr>
+                    `;
+                });
+            }
             renderResults();
-            renderGallery();
-        }
+        });
 
-        function renderInfo() {
-            const info = appData.info;
-            document.title = info.name;
-            document.getElementById('navMadrasaName').innerText = info.name;
-            document.getElementById('heroMadrasaName').innerText = info.name;
-            document.getElementById('heroIntro').innerText = info.intro;
-            document.getElementById('footerName').innerText = info.name;
-            document.getElementById('copyName').innerText = info.name;
-            document.getElementById('footerAddress').innerText = info.location;
-            document.getElementById('footerPhone').innerText = info.phone;
 
-            const aboutGrid = document.getElementById('aboutGrid');
-            aboutGrid.innerHTML = appData.features.map(f => `
-                <div class="about-card">
-                    <i class="fas ${f.icon}"></i>
-                    <h3>${f.title}</h3>
-                    <p>${f.key ? info[f.key] : f.val}</p>
-                </div>
-            `).join('');
-        }
+        // ====== ADMIN FUNCTIONS ====== //
+        
+        window.saveInfo = () => {
+            set(ref(db, 'info'), {
+                location: document.getElementById('edit-location').value,
+                year: document.getElementById('edit-year').value,
+                depts: document.getElementById('edit-depts').value,
+                goals: document.getElementById('edit-goals').value
+            }).then(() => alert('তথ্য সেভ হয়েছে!'));
+        };
 
-        function renderTeachers() {
-            const grid = document.getElementById('teachersGrid');
-            grid.innerHTML = appData.teachers.map(t => `
-                <div class="teacher-card">
-                    <img src="${t.photo || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'}" alt="${t.name}" class="teacher-img">
-                    <div class="teacher-info">
-                        <h3>${t.name}</h3>
-                        <p><strong>${t.designation}</strong></p>
-                        <p><i class="fas fa-phone-alt" style="font-size:0.8rem;color:var(--primary);"></i> ${t.phone}</p>
-                    </div>
-                </div>
-            `).join('');
-        }
+        window.addTeacher = () => {
+            const name = document.getElementById('t-name').value;
+            const desig = document.getElementById('t-desig').value;
+            const phone = document.getElementById('t-phone').value;
+            const photo = document.getElementById('t-photo').value;
+            if(!name) return alert('নাম লিখুন');
+            push(ref(db, 'teachers'), { name, designation: desig, phone, photo })
+            .then(() => {
+                alert('শিক্ষক যোগ করা হয়েছে!');
+                document.getElementById('t-name').value='';
+                document.getElementById('t-desig').value='';
+                document.getElementById('t-phone').value='';
+                document.getElementById('t-photo').value='';
+            });
+        };
 
-        // Result Logic
+        window.addGalleryImage = () => {
+            const url = document.getElementById('g-url').value;
+            if(!url) return alert('URL দিন');
+            push(ref(db, 'gallery'), { url })
+            .then(() => {
+                alert('ছবি যোগ হয়েছে!');
+                document.getElementById('g-url').value='';
+            });
+        };
+
+        window.addSubjectRow = () => {
+            const container = document.getElementById('r-subjects-container');
+            const div = document.createElement('div');
+            div.className = 'subject-row';
+            div.innerHTML = `
+                <input type="text" class="form-control r-sub-name" placeholder="বিষয়ের নাম">
+                <input type="number" class="form-control r-sub-mark" placeholder="প্রাপ্ত নম্বর">
+                <button class="delete-btn" onclick="this.parentElement.remove()">X</button>
+            `;
+            container.appendChild(div);
+        };
+
         function calculateGrade(avg) {
-            if(avg >= 80) return { text: 'মুমতাজ (Mumtaz)', class: 'grade-pass' };
-            if(avg >= 65) return { text: 'জায়্যিদ জিদ্দান (Jayyid Jiddan)', class: 'grade-pass' };
-            if(avg >= 50) return { text: 'জায়্যিদ (Jayyid)', class: 'grade-pass' };
-            if(avg >= 33) return { text: 'মাকবুল (Maqbul)', class: 'grade-pass' };
-            return { text: 'রাসিব (Rasib)', class: 'grade-rasib' };
+            if(avg >= 80) return { text: "মুমতাজ", class: "" };
+            if(avg >= 65) return { text: "জায়্যিদ জিদ্দান", class: "" };
+            if(avg >= 50) return { text: "জায়্যিদ", class: "" };
+            if(avg >= 33) return { text: "মাকবুল", class: "" };
+            return { text: "রাসিব", class: "grade-rasib" };
         }
 
-        function renderResultFilters() {
-            const container = document.getElementById('classFilters');
-            let html = `<button class="filter-btn active" onclick="setFilterClass('All', this)">All Classes</button>`;
-            html += appData.classes.map(c => `<button class="filter-btn" onclick="setFilterClass('${c}', this)">${c}</button>`).join('');
-            container.innerHTML = html;
-        }
+        window.saveResult = () => {
+            const className = document.getElementById('r-class').value;
+            const name = document.getElementById('r-name').value;
+            const roll = document.getElementById('r-roll').value;
+            if(!name || !roll) return alert('নাম ও রোল দিন');
 
-        function setFilterClass(cls, btn) {
-            currentFilterClass = cls;
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            if(btn) btn.classList.add('active');
-            filterResults();
-        }
-
-        function filterResults() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const tbody = document.getElementById('resultTableBody');
+            const subNames = document.querySelectorAll('.r-sub-name');
+            const subMarks = document.querySelectorAll('.r-sub-mark');
             
-            let filtered = appData.results.filter(r => {
-                const matchClass = currentFilterClass === 'All' || r.class === currentFilterClass;
-                const matchSearch = r.name.toLowerCase().includes(query) || r.serial.toLowerCase().includes(query);
+            let subjects = [];
+            let total = 0;
+            
+            for(let i=0; i<subNames.length; i++){
+                const n = subNames[i].value;
+                const m = parseFloat(subMarks[i].value) || 0;
+                if(n) {
+                    subjects.push({ name: n, marks: m });
+                    total += m;
+                }
+            }
+
+            if(subjects.length === 0) return alert('অন্তত একটি বিষয় যোগ করুন');
+
+            const avg = (total / subjects.length).toFixed(2);
+            const gradeInfo = calculateGrade(avg);
+
+            const resultData = {
+                className, name, roll, subjects, total, average: avg, grade: gradeInfo.text, gradeClass: gradeInfo.class
+            };
+
+            push(ref(db, 'results'), resultData).then(() => {
+                alert('ফলাফল সেভ হয়েছে!');
+                document.getElementById('r-name').value = '';
+                document.getElementById('r-roll').value = '';
+                document.getElementById('r-subjects-container').innerHTML = `
+                    <div class="subject-row">
+                        <input type="text" class="form-control r-sub-name" placeholder="বিষয়ের নাম">
+                        <input type="number" class="form-control r-sub-mark" placeholder="প্রাপ্ত নম্বর">
+                    </div>
+                `;
+            });
+        };
+
+        window.deleteRecord = (path) => {
+            if(confirm('আপনি কি নিশ্চিত এটি মুছতে চান?')) {
+                remove(ref(db, path));
+            }
+        };
+
+
+        // ====== RESULT SYSTEM LOGIC ====== //
+
+        document.getElementById('search-result').addEventListener('input', (e) => {
+            window.searchTerm = e.target.value.toLowerCase();
+            renderResults();
+        });
+
+        document.querySelectorAll('.class-tab').forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                document.querySelectorAll('.class-tab').forEach(t => t.classList.remove('active'));
+                e.target.classList.add('active');
+                window.currentFilterClass = e.target.getAttribute('data-class');
+                renderResults();
+            });
+        });
+
+        function renderResults() {
+            const tbody = document.getElementById('result-tbody');
+            tbody.innerHTML = '';
+
+            let filtered = window.allResults.filter(r => {
+                const matchClass = window.currentFilterClass === 'all' || r.className === window.currentFilterClass;
+                const matchSearch = r.name.toLowerCase().includes(window.searchTerm) || r.roll.toLowerCase().includes(window.searchTerm);
                 return matchClass && matchSearch;
             });
 
-            tbody.innerHTML = filtered.map(r => {
-                const total = r.marks.reduce((a,b)=>a+b, 0);
-                const avg = Math.round(total / r.marks.length);
-                const grade = calculateGrade(avg);
-                return `
-                    <tr>
-                        <td>${r.serial}</td>
-                        <td><strong>${r.name}</strong></td>
-                        <td>${r.class}</td>
-                        <td>${total}</td>
-                        <td>${avg}</td>
-                        <td class="${grade.class}">${grade.text}</td>
-                    </tr>
+            if(filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8">কোনো ফলাফল পাওয়া যায়নি।</td></tr>';
+                return;
+            }
+
+            // sort by roll
+            filtered.sort((a,b) => parseInt(a.roll) - parseInt(b.roll));
+
+            filtered.forEach(r => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${r.roll}</td>
+                    <td>${r.name}</td>
+                    <td>${r.className}</td>
+                    <td><button class="btn-view-marks" onclick="viewSubjects('${r.id}')">নম্বর দেখুন</button></td>
+                    <td>${r.total}</td>
+                    <td>${r.average}</td>
+                    <td class="${r.gradeClass}">${r.grade}</td>
+                    <td><button class="btn-download" onclick="downloadPDF('${r.id}')"><i class="fas fa-file-pdf"></i> PDF</button></td>
                 `;
-            }).join('');
-        }
-
-        function renderResults() {
-            filterResults();
-        }
-
-        function renderGallery() {
-            const grid = document.getElementById('galleryGrid');
-            grid.innerHTML = appData.gallery.map(url => `
-                <div class="gallery-item" onclick="openLightbox('${url}')">
-                    <img src="${url}" alt="Gallery Image">
-                    <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-                </div>
-            `).join('');
-        }
-
-        // Lightbox
-        const lightbox = document.getElementById('lightbox');
-        const lightboxImg = document.getElementById('lightboxImg');
-        function openLightbox(url) {
-            lightboxImg.src = url;
-            lightbox.style.display = 'flex';
-        }
-        function closeLightbox() {
-            lightbox.style.display = 'none';
-        }
-
-        // --- Admin Panel Logic ---
-        let clickCount = 0;
-        let clickTimer;
-        
-        document.getElementById('madrasaLogoBtn').addEventListener('click', (e) => {
-            clickCount++;
-            clearTimeout(clickTimer);
-            clickTimer = setTimeout(() => clickCount = 0, 2000);
-            if(clickCount >= 5) {
-                document.getElementById('loginModal').style.display = 'flex';
-                clickCount = 0;
-            }
-        });
-
-        function closeAdminLogin() { document.getElementById('loginModal').style.display = 'none'; }
-        function closeDashboard() { document.getElementById('dashboardModal').style.display = 'none'; }
-
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const pass = document.getElementById('adminPassword').value;
-            if(pass === 'N-1234') {
-                document.getElementById('adminPassword').value = '';
-                closeAdminLogin();
-                openDashboard();
-            } else {
-                alert('Incorrect Password!');
-            }
-        });
-
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            event.target.classList.add('active');
-        }
-
-        function openDashboard() {
-            document.getElementById('dashboardModal').style.display = 'flex';
-            populateAdminForms();
-            renderAdminLists();
-        }
-
-        function populateAdminForms() {
-            document.getElementById('iName').value = appData.info.name;
-            document.getElementById('iLoc').value = appData.info.location;
-            document.getElementById('iEst').value = appData.info.est;
-            document.getElementById('iDir').value = appData.info.director;
-            document.getElementById('iPhone').value = appData.info.phone;
-        }
-
-        function renderAdminLists() {
-            // Teachers
-            document.getElementById('adminTeacherList').innerHTML = appData.teachers.map(t => `
-                <div class="admin-list-item">
-                    <span>${t.name} (${t.designation})</span>
-                    <button class="del-btn" onclick="deleteItem('teachers', ${t.id})">Delete</button>
-                </div>
-            `).join('');
-
-            // Results
-            document.getElementById('adminResultList').innerHTML = appData.results.map(r => `
-                <div class="admin-list-item">
-                    <span>[${r.class}] ${r.name} - Roll: ${r.serial}</span>
-                    <button class="del-btn" onclick="deleteItem('results', ${r.id})">Delete</button>
-                </div>
-            `).join('');
-
-            // Gallery
-            document.getElementById('adminGalleryList').innerHTML = appData.gallery.map((g, i) => `
-                <div class="admin-list-item">
-                    <img src="${g}" style="height:30px; width:40px; object-fit:cover;">
-                    <button class="del-btn" onclick="deleteGallery(${i})">Delete</button>
-                </div>
-            `).join('');
-        }
-
-        // Admin Forms Submission
-        document.getElementById('infoForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            appData.info.name = document.getElementById('iName').value;
-            appData.info.location = document.getElementById('iLoc').value;
-            appData.info.est = document.getElementById('iEst').value;
-            appData.info.director = document.getElementById('iDir').value;
-            appData.info.phone = document.getElementById('iPhone').value;
-            saveData(appData);
-            renderAll();
-            alert('Information Updated!');
-        });
-
-        document.getElementById('teacherForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const newT = {
-                id: Date.now(),
-                name: document.getElementById('tName').value,
-                designation: document.getElementById('tDesig').value,
-                phone: document.getElementById('tPhone').value,
-                photo: document.getElementById('tPhoto').value
-            };
-            appData.teachers.push(newT);
-            saveData(appData);
-            this.reset();
-            renderAdminLists();
-            renderAll();
-        });
-
-        document.getElementById('resultForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const marksStr = document.getElementById('rMarks').value;
-            const marksArr = marksStr.split(',').map(m => Number(m.trim())).filter(m => !isNaN(m));
-            
-            if(marksArr.length === 0) return alert('Invalid Marks!');
-
-            const newR = {
-                id: Date.now(),
-                class: document.getElementById('rClass').value,
-                serial: document.getElementById('rSerial').value,
-                name: document.getElementById('rName').value,
-                marks: marksArr
-            };
-            appData.results.push(newR);
-            saveData(appData);
-            this.reset();
-            renderAdminLists();
-            renderAll();
-        });
-
-        document.getElementById('galleryForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            appData.gallery.push(document.getElementById('gUrl').value);
-            saveData(appData);
-            this.reset();
-            renderAdminLists();
-            renderAll();
-        });
-
-        function deleteItem(type, id) {
-            if(confirm('Are you sure?')) {
-                appData[type] = appData[type].filter(item => item.id !== id);
-                saveData(appData);
-                renderAdminLists();
-                renderAll();
-            }
-        }
-
-        function deleteGallery(index) {
-            if(confirm('Are you sure?')) {
-                appData.gallery.splice(index, 1);
-                saveData(appData);
-                renderAdminLists();
-                renderAll();
-            }
-        }
-
-
-        // Smooth Scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
+                tbody.appendChild(tr);
             });
-        });
+        }
+
+        window.viewSubjects = (id) => {
+            const r = window.allResults.find(x => x.id === id);
+            if(!r) return;
+            
+            let html = `
+                <table style="width:100%; text-align:left; border-collapse:collapse; margin-bottom:15px;">
+                    <tr><th style="padding:5px; border-bottom:1px solid #ccc;">বিষয়</th><th style="padding:5px; border-bottom:1px solid #ccc;">প্রাপ্ত নম্বর</th></tr>
+            `;
+            r.subjects.forEach(s => {
+                html += `<tr><td style="padding:5px; border-bottom:1px solid #eee;">${s.name}</td><td style="padding:5px; border-bottom:1px solid #eee;">${s.marks}</td></tr>`;
+            });
+            html += `</table>
+                     <p><strong>মোট নম্বর:</strong> ${r.total}</p>
+                     <p><strong>গড় নম্বর:</strong> ${r.average}</p>
+                     <p><strong>বিভাগ:</strong> <span class="${r.gradeClass}">${r.grade}</span></p>`;
+            
+            document.getElementById('subject-details-content').innerHTML = html;
+            openModal('subject-modal');
+        };
+
+        // ====== PDF GENERATION SYSTEM ====== //
+        window.downloadPDF = (id) => {
+            const r = window.allResults.find(x => x.id === id);
+            if(!r) return;
+
+            // Populate hidden template
+            document.getElementById('pdf-s-name').innerText = r.name;
+            document.getElementById('pdf-s-roll').innerText = r.roll;
+            document.getElementById('pdf-s-class').innerText = r.className;
+            
+            const tbody = document.getElementById('pdf-s-subjects');
+            tbody.innerHTML = '';
+            r.subjects.forEach((s, idx) => {
+                tbody.innerHTML += `<tr><td>${idx+1}</td><td>${s.name}</td><td>${s.marks}</td></tr>`;
+            });
+
+            document.getElementById('pdf-s-total').innerText = r.total;
+            document.getElementById('pdf-s-avg').innerText = r.average;
+            
+            const gradeEl = document.getElementById('pdf-s-grade');
+            gradeEl.innerText = r.grade;
+            gradeEl.style.color = (r.grade === 'রাসিব') ? 'red' : 'black';
+
+            // Generate PDF
+            const element = document.getElementById('pdf-content');
+            
+            const opt = {
+                margin:       10,
+                filename:     `Result_${r.roll}_${r.name}.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            // Needs slight delay to render fonts
+            setTimeout(() => {
+                html2pdf().set(opt).from(element).save();
+            }, 100);
+        };
 
     </script>
 </body>
