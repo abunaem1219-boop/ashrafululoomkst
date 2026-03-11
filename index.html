@@ -105,7 +105,7 @@
             cursor: pointer;
         }
 
-        .brand img {
+        .brand  {
             height: 50px;
             width: auto;
         }
@@ -162,12 +162,11 @@
             margin: 0 auto 2rem;
         }
 
-        /* Hero Buttons Container */
         .hero-buttons {
             display: flex;
             gap: 15px;
             justify-content: center;
-            flex-wrap: wrap; /* মোবাইলে জায়গা না পেলে নিচে নিচে সুন্দরভাবে বসবে */
+            flex-wrap: wrap; 
             margin-top: 30px;
         }
 
@@ -175,15 +174,15 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px; /* আইকন এবং লেখার মাঝের ফাঁকা জায়গা */
+            gap: 8px; 
             padding: 14px 30px;
-            border-radius: 50px; /* সুন্দর গোলাকার আকৃতি (Pill shape) */
+            border-radius: 50px; 
             font-weight: 600;
             font-size: 1.1rem;
             cursor: pointer;
             transition: all 0.3s ease;
             border: none;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15); /* সফট শ্যাডো */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15); 
         }
 
         .btn-primary {
@@ -193,12 +192,12 @@
 
         .btn-primary:hover {
             background: #f8fafc;
-            transform: translateY(-4px); /* মাউস নিলে একটু উপরে উঠবে */
-            box-shadow: 0 8px 25px rgba(255,255,255,0.3); /* সুন্দর গ্লো ইফেক্ট */
+            transform: translateY(-4px); 
+            box-shadow: 0 8px 25px rgba(255,255,255,0.3); 
         }
 
         .btn-outline {
-            background: rgba(255, 255, 255, 0.1); /* গ্লাস ইফেক্ট */
+            background: rgba(255, 255, 255, 0.1); 
             backdrop-filter: blur(5px);
             color: #ffffff;
             border: 2px solid #ffffff;
@@ -214,12 +213,12 @@
         .btn-success {
             background: var(--primary);
             color: white;
+            border-radius: 4px;
         }
         .btn-success:hover {
             background: var(--primary-dark);
         }
 
-        /* Adsterra Wrapper */
         .ad-container {
             display: flex;
             justify-content: center;
@@ -310,7 +309,7 @@
             width: 100%;
         }
 
-        .search-box input {
+        .search-box input, .search-box select {
             flex: 1;
             padding: 10px 15px;
             border: 1px solid var(--border);
@@ -401,14 +400,14 @@
             aspect-ratio: 4/3;
         }
 
-        .gallery-item img {
+        .gallery-item  {
             width: 100%;
             height: 100%;
             object-fit: cover;
             transition: transform 0.5s ease;
         }
 
-        .gallery-item:hover img {
+        .gallery-item:hover  {
             transform: scale(1.1);
         }
 
@@ -422,7 +421,7 @@
             align-items: center;
             z-index: 2000;
         }
-        .lightbox img {
+        .lightbox  {
             max-width: 90%;
             max-height: 90vh;
             border-radius: 4px;
@@ -454,7 +453,7 @@
             font-size: 0.9rem;
         }
 
-        /* Modals (Subject Marks, Admin Login, Admin Dashboard) */
+        /* Modals */
         .modal {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -540,6 +539,7 @@
             display: flex;
             gap: 10px;
             margin-bottom: 10px;
+            align-items: center;
         }
 
         .delete-btn {
@@ -551,14 +551,18 @@
             cursor: pointer;
         }
 
-        /* PDF Template (Hidden from View) */
+        /* PDF Template Layout (Fixed Blank Page Issue) */
         #pdf-template-container {
-            position: absolute;
-            left: -9999px;
+            position: fixed;
             top: 0;
+            left: 0;
+            width: 800px;
+            z-index: -9999;
+            opacity: 0.001; /* Invisible to user, but perfectly readable for html2pdf */
+            pointer-events: none;
         }
         .pdf-wrapper {
-            width: 800px;
+            width: 100%;
             padding: 40px;
             background: white;
             color: black;
@@ -571,7 +575,7 @@
             border-bottom: 2px solid var(--primary);
             padding-bottom: 10px;
         }
-        .pdf-header img {
+        .pdf-header  {
             width: 80px;
         }
         .pdf-header h1 {
@@ -593,7 +597,7 @@
         .pdf-table th, .pdf-table td {
             border: 1px solid #000;
             padding: 8px;
-            text-align: center;
+            text-align: left;
         }
         .pdf-summary {
             text-align: right;
@@ -635,7 +639,7 @@
     <header>
         <div class="container navbar">
             <div class="brand" id="brand-logo">
-                <img src="https://i.ibb.co.com/qFRmPqgK/20260310-005555.png" alt="Logo">
+                < src="https://i.ibb.co.com/qFRmPqgK/20260310-005555.png" crossorigin="anonymous" alt="Logo">
                 <h1>জামিয়া আরাবিয়া<br>আশরাফুল উলূম কুষ্টিয়া</h1>
             </div>
             <div class="hamburger" id="hamburger">
@@ -658,7 +662,6 @@
             <h1>Arabic University</h1>
             <p>কুষ্টিয়া জেলার সুপরিচিত ও ঐতিহ্যবাহী একটি দ্বীনি শিক্ষা প্রতিষ্ঠান</p>
             
-            <!-- নতুন স্টাইলের বাটন সেকশন -->
             <div class="hero-buttons">
                 <button class="btn btn-primary" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">
                     <i class="fas fa-info-circle"></i> মাদরাসা সম্পর্কে
@@ -667,7 +670,6 @@
                     <i class="fas fa-graduation-cap"></i> ফলাফল দেখুন
                 </button>
             </div>
-
         </div>
     </section>
 
@@ -719,7 +721,6 @@
         <div class="container">
             <h2 class="section-title">আমাদের শিক্ষকবৃন্দ</h2>
             <div class="teachers-grid" id="teachers-container">
-                <!-- Data loaded from Firebase -->
                 <p style="text-align: center; width: 100%;">লোড হচ্ছে...</p>
             </div>
         </div>
@@ -733,6 +734,18 @@
             <div class="result-controls">
                 <div class="search-box">
                     <input type="text" id="search-result" placeholder="শিক্ষার্থীর নাম বা রোল নম্বর দিয়ে খুঁজুন...">
+                    <!-- Kitab Year Filter Dropdown -->
+                    <select id="filter-year" style="display:none;">
+                        <option value="all">সকল বর্ষ</option>
+                        <option value="প্রথম বর্ষ">প্রথম বর্ষ</option>
+                        <option value="দ্বিতীয় বর্ষ">দ্বিতীয় বর্ষ</option>
+                        <option value="তৃতীয় বর্ষ">তৃতীয় বর্ষ</option>
+                        <option value="চতুর্থ বর্ষ">চতুর্থ বর্ষ</option>
+                        <option value="পঞ্চম বর্ষ">পঞ্চম বর্ষ</option>
+                        <option value="ষষ্ঠ বর্ষ">ষষ্ঠ বর্ষ</option>
+                        <option value="সপ্তম বর্ষ">সপ্তম বর্ষ</option>
+                        <option value="অষ্টম বর্ষ">অষ্টম বর্ষ</option>
+                    </select>
                 </div>
                 <div class="class-tabs" id="class-tabs">
                     <div class="class-tab active" data-class="all">সকল</div>
@@ -810,7 +823,7 @@
                 <div>
                     <h2 style="color: var(--primary-light); margin-bottom: 1rem;">জামিয়া আরাবিয়া আশরাফুল উলূম কুষ্টিয়া</h2>
                     <p><i class="fas fa-map-marker-alt"></i> ঠিকানা: কুষ্টিয়া সদর, কুষ্টিয়া, বাংলাদেশ</p>
-                    <p><i class="fas fa-phone"></i> মোবাইল: +880 1XXX-XXXXXX</p>
+                    <p><i class="fas fa-phone"></i> মোবাইল: +880 1775-431464</p>
                     <p><i class="fas fa-envelope"></i> ইমেইল: info@ashraful-uloom.com</p>
                 </div>
                 <div>
@@ -835,7 +848,7 @@
     <div class="modal" id="subject-modal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal('subject-modal')">&times;</span>
-            <h3 style="margin-bottom: 15px; color: var(--primary); text-align: center;">বিষয়ভিত্তিক নম্বর</h3>
+            <h3 style="margin-bottom: 15px; color: var(--primary); text-align: center;">বিস্তারিত ফলাফল</h3>
             <div id="subject-details-content"></div>
         </div>
     </div>
@@ -843,7 +856,7 @@
     <!-- Lightbox -->
     <div class="lightbox" id="lightbox">
         <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
-        <img src="" id="lightbox-img" alt="Gallery Image">
+        < src="" id="lightbox-" alt="Gallery Image">
     </div>
 
     <!-- Admin Login Modal -->
@@ -855,7 +868,7 @@
                 <label>পাসওয়ার্ড দিন</label>
                 <input type="password" id="admin-password" class="form-control">
             </div>
-            <button class="btn btn-success" style="width: 100%;" onclick="verifyAdmin()">লগইন</button>
+            <button class="btn btn-success" style="width: 100%; padding:10px;" onclick="verifyAdmin()">লগইন</button>
         </div>
     </div>
 
@@ -867,8 +880,8 @@
             
             <div class="admin-nav">
                 <button class="active" onclick="switchAdminTab('admin-info')">মাদরাসা তথ্য</button>
-                <button onclick="switchAdminTab('admin-teachers')">শিক্ষক যোগ</button>
-                <button onclick="switchAdminTab('admin-results')">ফলাফল যোগ</button>
+                <button onclick="switchAdminTab('admin-teachers')">শিক্ষক যোগ/এডিট</button>
+                <button onclick="switchAdminTab('admin-results')">ফলাফল যোগ/এডিট</button>
                 <button onclick="switchAdminTab('admin-gallery')">গ্যালারি যোগ</button>
             </div>
 
@@ -891,12 +904,12 @@
                     <label>লক্ষ্য ও উদ্দেশ্য</label>
                     <textarea id="edit-goals" class="form-control" rows="3"></textarea>
                 </div>
-                <button class="btn btn-success" onclick="saveInfo()">সেভ করুন</button>
+                <button class="btn btn-success" style="padding:10px 20px;" onclick="saveInfo()">সেভ করুন</button>
             </div>
 
             <!-- Tab: Teachers -->
             <div id="admin-teachers" class="admin-section">
-                <h3>নতুন শিক্ষক যোগ করুন</h3>
+                <h3>শিক্ষক যোগ বা আপডেট করুন</h3>
                 <div class="form-group mt-2">
                     <label>নাম</label>
                     <input type="text" id="t-name" class="form-control">
@@ -910,19 +923,20 @@
                     <input type="text" id="t-phone" class="form-control">
                 </div>
                 <div class="form-group">
-                    <label>ছবির URL (ঐচ্ছিক)</label>
-                    <input type="text" id="t-photo" class="form-control" placeholder="https://...">
+                    <label>ছবি আপলোড (ঐচ্ছিক)</label>
+                    <input type="file" id="t-photo-file" class="form-control" accept="image/*">
+                    <small style="color: gray;">ছবি না দিলে ডিফল্ট ছবি যুক্ত হবে।</small>
                 </div>
-                <button class="btn btn-success" onclick="addTeacher()">শিক্ষক যোগ করুন</button>
+                <button class="btn btn-success" id="btn-save-teacher" style="padding:10px 20px;" onclick="saveTeacher()">শিক্ষক যোগ করুন</button>
                 
                 <hr style="margin: 20px 0;">
-                <h4>শিক্ষক তালিকা (ডিলিট করতে)</h4>
+                <h4>শিক্ষক তালিকা</h4>
                 <div id="admin-teacher-list"></div>
             </div>
 
             <!-- Tab: Results -->
             <div id="admin-results" class="admin-section">
-                <h3>নতুন ফলাফল যোগ করুন</h3>
+                <h3>ফলাফল যোগ বা আপডেট করুন</h3>
                 <div class="form-group mt-2">
                     <label>বিভাগ (Class)</label>
                     <select id="r-class" class="form-control">
@@ -932,6 +946,21 @@
                         <option value="দাওরায়ে হাদীস">দাওরায়ে হাদীস</option>
                     </select>
                 </div>
+                <!-- Year dropdown for Kitab -->
+                <div class="form-group" id="r-year-group" style="display:none;">
+                    <label>বর্ষ (শুধুমাত্র কিতাব বিভাগের জন্য)</label>
+                    <select id="r-year" class="form-control">
+                        <option value="প্রথম বর্ষ">প্রথম বর্ষ</option>
+                        <option value="দ্বিতীয় বর্ষ">দ্বিতীয় বর্ষ</option>
+                        <option value="তৃতীয় বর্ষ">তৃতীয় বর্ষ</option>
+                        <option value="চতুর্থ বর্ষ">চতুর্থ বর্ষ</option>
+                        <option value="পঞ্চম বর্ষ">পঞ্চম বর্ষ</option>
+                        <option value="ষষ্ঠ বর্ষ">ষষ্ঠ বর্ষ</option>
+                        <option value="সপ্তম বর্ষ">সপ্তম বর্ষ</option>
+                        <option value="অষ্টম বর্ষ">অষ্টম বর্ষ</option>
+                    </select>
+                </div>
+
                 <div class="form-group">
                     <label>শিক্ষার্থীর নাম</label>
                     <input type="text" id="r-name" class="form-control">
@@ -944,16 +973,21 @@
                 <h4>বিষয় ভিত্তিক নম্বর</h4>
                 <div id="r-subjects-container">
                     <div class="subject-row">
-                        <input type="text" class="form-control r-sub-name" placeholder="বিষয়ের নাম">
+                        <input type="text" class="form-control r-sub-name" value="আদব" readonly>
                         <input type="number" class="form-control r-sub-mark" placeholder="প্রাপ্ত নম্বর">
                     </div>
+                    <div class="subject-row">
+                        <input type="text" class="form-control r-sub-name" placeholder="বিষয়ের নাম">
+                        <input type="number" class="form-control r-sub-mark" placeholder="প্রাপ্ত নম্বর">
+                        <button class="delete-btn" onclick="this.parentElement.remove()">X</button>
+                    </div>
                 </div>
-                <button class="btn btn-outline" style="color:var(--primary); border-color:var(--primary);" onclick="addSubjectRow()">+ আরও বিষয় যোগ করুন</button>
+                <button class="btn btn-outline" style="color:var(--primary); border-color:var(--primary); padding:5px 10px;" onclick="addSubjectRow()">+ আরও বিষয় যোগ করুন</button>
                 <br><br>
-                <button class="btn btn-success" onclick="saveResult()">ফলাফল সেভ করুন</button>
+                <button class="btn btn-success" id="btn-save-result" style="padding:10px 20px;" onclick="saveResult()">ফলাফল সেভ করুন</button>
 
                 <hr style="margin: 20px 0;">
-                <h4>ফলাফল মুছুন</h4>
+                <h4>ফলাফল তালিকা</h4>
                 <div class="table-responsive">
                     <table style="width:100%">
                         <thead><tr><th>রোল</th><th>নাম</th><th>বিভাগ</th><th>অ্যাকশন</th></tr></thead>
@@ -964,12 +998,12 @@
 
             <!-- Tab: Gallery -->
             <div id="admin-gallery" class="admin-section">
-                <h3>গ্যালারি ছবি যোগ করুন</h3>
+                <h3>গ্যালারি ছবি আপলোড করুন</h3>
                 <div class="form-group mt-2">
-                    <label>ছবির URL (Direct Link)</label>
-                    <input type="text" id="g-url" class="form-control" placeholder="https://...">
+                    <label>ছবি নির্বাচন করুন</label>
+                    <input type="file" id="g-url-file" class="form-control" accept="image/*">
                 </div>
-                <button class="btn btn-success" onclick="addGalleryImage()">ছবি যোগ করুন</button>
+                <button class="btn btn-success" id="btn-save-gallery" style="padding:10px 20px;" onclick="saveGalleryImage()">ছবি আপলোড করুন</button>
                 
                 <hr style="margin: 20px 0;">
                 <h4>গ্যালারি তালিকা</h4>
@@ -982,7 +1016,7 @@
     <div id="pdf-template-container">
         <div class="pdf-wrapper" id="pdf-content">
             <div class="pdf-header">
-                <img src="https://i.ibb.co.com/qFRmPqgK/20260310-005555.png" alt="Logo">
+                < src="https://i.ibb.co.com/qFRmPqgK/20260310-005555.png" crossorigin="anonymous" alt="Logo">
                 <h1>জামিয়া আরাবিয়া আশরাফুল উলূম কুষ্টিয়া</h1>
                 <h3>বার্ষিক পরীক্ষার ফলাফল</h3>
             </div>
@@ -993,14 +1027,15 @@
                 </div>
                 <div>
                     <p><strong>বিভাগ:</strong> <span id="pdf-s-class"></span></p>
+                    <p id="pdf-year-container" style="display:none;"><strong>বর্ষ:</strong> <span id="pdf-s-year"></span></p>
                 </div>
             </div>
             <table class="pdf-table">
                 <thead>
                     <tr>
-                        <th>ক্রমিক</th>
-                        <th>বিষয়ের নাম</th>
-                        <th>প্রাপ্ত নম্বর</th>
+                        <th style="width: 20%;">ক্রমিক</th>
+                        <th style="width: 50%;">বিষয়ের নাম</th>
+                        <th style="width: 30%;">প্রাপ্ত নম্বর</th>
                     </tr>
                 </thead>
                 <tbody id="pdf-s-subjects"></tbody>
@@ -1009,6 +1044,9 @@
                 <p>মোট নম্বর: <span id="pdf-s-total"></span></p>
                 <p>গড় নম্বর: <span id="pdf-s-avg"></span></p>
                 <p>ফলাফল (Grade): <span id="pdf-s-grade"></span></p>
+            </div>
+            <div style="margin-top: 30px; font-size:12px; color:#555; text-align:center;">
+                <p>* আদব (Adab) এর নম্বর মোট নম্বর এবং গড় নম্বরে যুক্ত করা হয়নি।</p>
             </div>
         </div>
     </div>
@@ -1032,10 +1070,21 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
+        // API Key for ImgBB
+        const IMGBB_API_KEY = "da4148f76289d909eb01bee3cc2268d4";
+        const DEFAULT_AVATAR = "https://i.ibb.co.com/ycd9T2PK/IMG-20260311-233709.png";
+
         // Global State Variables
         window.allResults = [];
         window.currentFilterClass = "all";
+        window.currentFilterYear = "all";
         window.searchTerm = "";
+
+        // Admin Edit State
+        window.editingTeacherId = null;
+        window.editingResultId = null;
+        window.existingTeacherPhoto = null;
+        let teachersDataStore = {};
 
         // UI Interactions
         document.getElementById('hamburger').addEventListener('click', () => {
@@ -1046,6 +1095,11 @@
             link.addEventListener('click', () => {
                 document.getElementById('nav-links').classList.remove('active');
             });
+        });
+
+        // Kitab Admin Logic
+        document.getElementById('r-class').addEventListener('change', (e) => {
+            document.getElementById('r-year-group').style.display = (e.target.value === 'কিতাব বিভাগ') ? 'block' : 'none';
         });
 
         // Admin Hidden Entry (5 clicks)
@@ -1066,11 +1120,17 @@
 
         // Modal Controls
         window.openModal = (id) => document.getElementById(id).style.display = 'flex';
-        window.closeModal = (id) => document.getElementById(id).style.display = 'none';
+        window.closeModal = (id) => {
+            document.getElementById(id).style.display = 'none';
+            if(id === 'admin-dashboard-modal') {
+                resetTeacherForm();
+                resetResultForm();
+            }
+        };
         
         // Lightbox
         window.openLightbox = (src) => {
-            document.getElementById('lightbox-img').src = src;
+            document.getElementById('lightbox-').src = src;
             document.getElementById('lightbox').style.display = 'flex';
         }
         window.closeLightbox = () => document.getElementById('lightbox').style.display = 'none';
@@ -1095,6 +1155,19 @@
             event.target.classList.add('active');
         };
 
+        // ImgBB Upload Function
+        async function uploadImageToImgBB(file) {
+            const formData = new FormData();
+            formData.append('image', file);
+            const res = await fetch(`https://api.bb.com/1/upload?key=${IMGBB_API_KEY}`, {
+                method: 'POST',
+                body: formData
+            });
+            const data = await res.json();
+            if(data.success) return data.data.url;
+            throw new Error('Upload failed');
+        }
+
         // ====== FIREBASE REALTIME LISTENERS ====== //
 
         // 1. Info Load
@@ -1106,7 +1179,6 @@
                 document.getElementById('info-depts').innerText = data.depts || '';
                 document.getElementById('info-goals').innerText = data.goals || '';
 
-                // fill admin
                 document.getElementById('edit-location').value = data.location || '';
                 document.getElementById('edit-year').value = data.year || '';
                 document.getElementById('edit-depts').value = data.depts || '';
@@ -1120,23 +1192,27 @@
             const adminList = document.getElementById('admin-teacher-list');
             container.innerHTML = '';
             adminList.innerHTML = '';
-            const data = snapshot.val();
-            if(data) {
-                Object.keys(data).forEach(key => {
-                    const t = data[key];
-                    const photo = t.photo || 'https://via.placeholder.com/100?text=Photo';
+            teachersDataStore = snapshot.val() || {};
+            
+            if(Object.keys(teachersDataStore).length > 0) {
+                Object.keys(teachersDataStore).forEach(key => {
+                    const t = teachersDataStore[key];
+                    const photo = t.photo || DEFAULT_AVATAR;
                     container.innerHTML += `
                         <div class="teacher-card">
-                            <img src="${photo}" alt="${t.name}" class="teacher-photo">
+                            < src="${photo}" alt="${t.name}" class="teacher-photo" crossorigin="anonymous">
                             <div class="teacher-name">${t.name}</div>
                             <div style="color:var(--text-light); margin-bottom:5px;">${t.designation}</div>
                             <div><i class="fas fa-phone"></i> ${t.phone}</div>
                         </div>
                     `;
                     adminList.innerHTML += `
-                        <div style="display:flex; justify-content:space-between; padding:5px; border-bottom:1px solid #ccc;">
-                            <span>${t.name} (${t.designation})</span>
-                            <button class="delete-btn" onclick="deleteRecord('teachers/${key}')">Delete</button>
+                        <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; border-bottom:1px solid #e2e8f0;">
+                            <span><strong>${t.name}</strong> <small>(${t.designation})</small></span>
+                            <div>
+                                <button class="btn-view-marks" style="padding:4px 10px; margin-right:5px;" onclick="editTeacher('${key}')">Edit</button>
+                                <button class="delete-btn" onclick="deleteRecord('teachers/${key}')">Delete</button>
+                            </div>
                         </div>
                     `;
                 });
@@ -1157,12 +1233,12 @@
                     const url = data[key].url;
                     container.innerHTML += `
                         <div class="gallery-item" onclick="openLightbox('${url}')">
-                            <img src="${url}" loading="lazy">
+                            < src="${url}" crossorigin="anonymous" loading="lazy">
                         </div>
                     `;
                     adminList.innerHTML += `
                         <div style="width:100px; position:relative;">
-                            <img src="${url}" style="width:100%; height:70px; object-fit:cover;">
+                            < src="${url}" crossorigin="anonymous" style="width:100%; height:70px; object-fit:cover; border-radius:4px;">
                             <button class="delete-btn" style="position:absolute;top:0;right:0;padding:2px 5px;" onclick="deleteRecord('gallery/${key}')">X</button>
                         </div>
                     `;
@@ -1185,12 +1261,17 @@
                     r.id = key;
                     window.allResults.push(r);
                     
+                    const yearTxt = r.className === 'কিতাব বিভাগ' && r.year ? `<br><small>(${r.year})</small>` : '';
+
                     adminList.innerHTML += `
                         <tr>
                             <td>${r.roll}</td>
                             <td>${r.name}</td>
-                            <td>${r.className}</td>
-                            <td><button class="delete-btn" onclick="deleteRecord('results/${key}')">Delete</button></td>
+                            <td>${r.className} ${yearTxt}</td>
+                            <td>
+                                <button class="btn-view-marks" style="padding:4px 8px; margin-right:5px;" onclick="editResult('${key}')">Edit</button>
+                                <button class="delete-btn" onclick="deleteRecord('results/${key}')">Delete</button>
+                            </td>
                         </tr>
                     `;
                 });
@@ -1210,32 +1291,107 @@
             }).then(() => alert('তথ্য সেভ হয়েছে!'));
         };
 
-        window.addTeacher = () => {
+        // Form Resets
+        window.resetTeacherForm = () => {
+            window.editingTeacherId = null;
+            window.existingTeacherPhoto = null;
+            document.getElementById('t-name').value = '';
+            document.getElementById('t-desig').value = '';
+            document.getElementById('t-phone').value = '';
+            document.getElementById('t-photo-file').value = '';
+            document.getElementById('btn-save-teacher').innerText = 'শিক্ষক যোগ করুন';
+        }
+
+        window.resetResultForm = () => {
+            window.editingResultId = null;
+            document.getElementById('btn-save-result').innerText = 'ফলাফল সেভ করুন';
+            document.getElementById('r-name').value = '';
+            document.getElementById('r-roll').value = '';
+            document.getElementById('r-subjects-container').innerHTML = `
+                <div class="subject-row">
+                    <input type="text" class="form-control r-sub-name" value="আদব" readonly>
+                    <input type="number" class="form-control r-sub-mark" placeholder="প্রাপ্ত নম্বর">
+                </div>
+                <div class="subject-row">
+                    <input type="text" class="form-control r-sub-name" placeholder="বিষয়ের নাম">
+                    <input type="number" class="form-control r-sub-mark" placeholder="প্রাপ্ত নম্বর">
+                    <button class="delete-btn" onclick="this.parentElement.remove()">X</button>
+                </div>
+            `;
+        }
+
+        // Teacher Actions
+        window.editTeacher = (id) => {
+            const t = teachersDataStore[id];
+            if(!t) return;
+            window.editingTeacherId = id;
+            document.getElementById('t-name').value = t.name;
+            document.getElementById('t-desig').value = t.designation;
+            document.getElementById('t-phone').value = t.phone;
+            document.getElementById('t-photo-file').value = '';
+            window.existingTeacherPhoto = t.photo;
+            document.getElementById('btn-save-teacher').innerText = 'আপডেট করুন';
+            
+            // Scroll to top of modal
+            document.getElementById('admin-dashboard-modal').querySelector('.modal-content').scrollTop = 0;
+        };
+
+        window.saveTeacher = async () => {
             const name = document.getElementById('t-name').value;
             const desig = document.getElementById('t-desig').value;
             const phone = document.getElementById('t-phone').value;
-            const photo = document.getElementById('t-photo').value;
+            const fileInput = document.getElementById('t-photo-file');
+            
             if(!name) return alert('নাম লিখুন');
-            push(ref(db, 'teachers'), { name, designation: desig, phone, photo })
-            .then(() => {
-                alert('শিক্ষক যোগ করা হয়েছে!');
-                document.getElementById('t-name').value='';
-                document.getElementById('t-desig').value='';
-                document.getElementById('t-phone').value='';
-                document.getElementById('t-photo').value='';
-            });
+            
+            let photoUrl = window.existingTeacherPhoto || DEFAULT_AVATAR;
+            
+            if(fileInput.files.length > 0) {
+                document.getElementById('btn-save-teacher').innerText = 'আপলোড হচ্ছে...';
+                try {
+                    photoUrl = await uploadImageToImgBB(fileInput.files[0]);
+                } catch(e) {
+                    alert('ছবি আপলোডে সমস্যা হয়েছে!');
+                    document.getElementById('btn-save-teacher').innerText = window.editingTeacherId ? 'আপডেট করুন' : 'শিক্ষক যোগ করুন';
+                    return;
+                }
+            }
+
+            const payload = { name, designation: desig, phone, photo: photoUrl };
+
+            if(window.editingTeacherId) {
+                update(ref(db, 'teachers/' + window.editingTeacherId), payload).then(() => {
+                    alert('শিক্ষক আপডেট হয়েছে!');
+                    resetTeacherForm();
+                });
+            } else {
+                push(ref(db, 'teachers'), payload).then(() => {
+                    alert('শিক্ষক যোগ করা হয়েছে!');
+                    resetTeacherForm();
+                });
+            }
         };
 
-        window.addGalleryImage = () => {
-            const url = document.getElementById('g-url').value;
-            if(!url) return alert('URL দিন');
-            push(ref(db, 'gallery'), { url })
-            .then(() => {
-                alert('ছবি যোগ হয়েছে!');
-                document.getElementById('g-url').value='';
-            });
+        // Gallery Action
+        window.saveGalleryImage = async () => {
+            const fileInput = document.getElementById('g-url-file');
+            if(fileInput.files.length === 0) return alert('ছবি নির্বাচন করুন');
+            
+            document.getElementById('btn-save-gallery').innerText = 'আপলোড হচ্ছে...';
+            try {
+                const url = await uploadImageToImgBB(fileInput.files[0]);
+                push(ref(db, 'gallery'), { url }).then(() => {
+                    alert('ছবি যোগ হয়েছে!');
+                    fileInput.value = '';
+                    document.getElementById('btn-save-gallery').innerText = 'ছবি আপলোড করুন';
+                });
+            } catch(e) {
+                alert('আপলোডে সমস্যা হয়েছে!');
+                document.getElementById('btn-save-gallery').innerText = 'ছবি আপলোড করুন';
+            }
         };
 
+        // Result Actions
         window.addSubjectRow = () => {
             const container = document.getElementById('r-subjects-container');
             const div = document.createElement('div');
@@ -1256,10 +1412,42 @@
             return { text: "রাসিব", class: "grade-rasib" };
         }
 
+        window.editResult = (id) => {
+            const r = window.allResults.find(x => x.id === id);
+            if(!r) return;
+            window.editingResultId = id;
+            
+            document.getElementById('r-class').value = r.className;
+            document.getElementById('r-class').dispatchEvent(new Event('change'));
+            if(r.className === 'কিতাব বিভাগ') document.getElementById('r-year').value = r.year || 'প্রথম বর্ষ';
+            
+            document.getElementById('r-name').value = r.name;
+            document.getElementById('r-roll').value = r.roll;
+
+            const container = document.getElementById('r-subjects-container');
+            container.innerHTML = '';
+            
+            r.subjects.forEach((s) => {
+                const isAdab = (s.name === 'আদব' || s.name.toLowerCase() === 'adab');
+                container.innerHTML += `
+                    <div class="subject-row">
+                        <input type="text" class="form-control r-sub-name" value="${s.name}" ${isAdab ? 'readonly' : 'placeholder="বিষয়ের নাম"'}>
+                        <input type="number" class="form-control r-sub-mark" value="${s.marks}" placeholder="প্রাপ্ত নম্বর">
+                        ${isAdab ? '' : '<button class="delete-btn" onclick="this.parentElement.remove()">X</button>'}
+                    </div>
+                `;
+            });
+            
+            document.getElementById('btn-save-result').innerText = 'ফলাফল আপডেট করুন';
+            document.getElementById('admin-dashboard-modal').querySelector('.modal-content').scrollTop = 0;
+        };
+
         window.saveResult = () => {
             const className = document.getElementById('r-class').value;
             const name = document.getElementById('r-name').value;
             const roll = document.getElementById('r-roll').value;
+            const yearVal = className === 'কিতাব বিভাগ' ? document.getElementById('r-year').value : '';
+            
             if(!name || !roll) return alert('নাম ও রোল দিন');
 
             const subNames = document.querySelectorAll('.r-sub-name');
@@ -1267,36 +1455,41 @@
             
             let subjects = [];
             let total = 0;
+            let countForAvg = 0;
             
             for(let i=0; i<subNames.length; i++){
                 const n = subNames[i].value;
                 const m = parseFloat(subMarks[i].value) || 0;
                 if(n) {
                     subjects.push({ name: n, marks: m });
-                    total += m;
+                    // Adab Logic: Exclude from total & avg
+                    if(n !== 'আদব' && n.toLowerCase() !== 'adab') {
+                        total += m;
+                        countForAvg++;
+                    }
                 }
             }
 
             if(subjects.length === 0) return alert('অন্তত একটি বিষয় যোগ করুন');
 
-            const avg = (total / subjects.length).toFixed(2);
+            const avg = countForAvg > 0 ? (total / countForAvg).toFixed(2) : 0;
             const gradeInfo = calculateGrade(avg);
 
             const resultData = {
-                className, name, roll, subjects, total, average: avg, grade: gradeInfo.text, gradeClass: gradeInfo.class
+                className, year: yearVal, name, roll, subjects, total, average: avg, grade: gradeInfo.text, gradeClass: gradeInfo.class
             };
 
-            push(ref(db, 'results'), resultData).then(() => {
-                alert('ফলাফল সেভ হয়েছে!');
-                document.getElementById('r-name').value = '';
-                document.getElementById('r-roll').value = '';
-                document.getElementById('r-subjects-container').innerHTML = `
-                    <div class="subject-row">
-                        <input type="text" class="form-control r-sub-name" placeholder="বিষয়ের নাম">
-                        <input type="number" class="form-control r-sub-mark" placeholder="প্রাপ্ত নম্বর">
-                    </div>
-                `;
-            });
+            if(window.editingResultId) {
+                update(ref(db, 'results/' + window.editingResultId), resultData).then(() => {
+                    alert('ফলাফল আপডেট হয়েছে!');
+                    resetResultForm();
+                });
+            } else {
+                push(ref(db, 'results'), resultData).then(() => {
+                    alert('ফলাফল সেভ হয়েছে!');
+                    resetResultForm();
+                });
+            }
         };
 
         window.deleteRecord = (path) => {
@@ -1313,11 +1506,23 @@
             renderResults();
         });
 
+        document.getElementById('filter-year').addEventListener('change', (e) => {
+            window.currentFilterYear = e.target.value;
+            renderResults();
+        });
+
         document.querySelectorAll('.class-tab').forEach(tab => {
             tab.addEventListener('click', (e) => {
                 document.querySelectorAll('.class-tab').forEach(t => t.classList.remove('active'));
                 e.target.classList.add('active');
+                
                 window.currentFilterClass = e.target.getAttribute('data-class');
+                window.currentFilterYear = 'all'; // reset year filter on tab switch
+                document.getElementById('filter-year').value = 'all';
+                
+                // Show Year Dropdown only if Kitab is selected
+                document.getElementById('filter-year').style.display = (window.currentFilterClass === 'কিতাব বিভাগ') ? 'block' : 'none';
+                
                 renderResults();
             });
         });
@@ -1328,8 +1533,12 @@
 
             let filtered = window.allResults.filter(r => {
                 const matchClass = window.currentFilterClass === 'all' || r.className === window.currentFilterClass;
+                let matchYear = true;
+                if(window.currentFilterClass === 'কিতাব বিভাগ' && window.currentFilterYear !== 'all') {
+                    matchYear = r.year === window.currentFilterYear;
+                }
                 const matchSearch = r.name.toLowerCase().includes(window.searchTerm) || r.roll.toLowerCase().includes(window.searchTerm);
-                return matchClass && matchSearch;
+                return matchClass && matchSearch && matchYear;
             });
 
             if(filtered.length === 0) {
@@ -1345,7 +1554,7 @@
                 tr.innerHTML = `
                     <td>${r.roll}</td>
                     <td>${r.name}</td>
-                    <td>${r.className}</td>
+                    <td>${r.className} ${r.className === 'কিতাব বিভাগ' && r.year ? '('+r.year+')' : ''}</td>
                     <td><button class="btn-view-marks" onclick="viewSubjects('${r.id}')">নম্বর দেখুন</button></td>
                     <td>${r.total}</td>
                     <td>${r.average}</td>
@@ -1361,16 +1570,25 @@
             if(!r) return;
             
             let html = `
+                <div style="margin-bottom: 20px; font-size:16px;">
+                    <p><strong>শিক্ষার্থীর নাম:</strong> ${r.name}</p>
+                    <p><strong>রোল নম্বর:</strong> ${r.roll}</p>
+                    <p><strong>বিভাগ:</strong> ${r.className}</p>
+                    ${r.className === 'কিতাব বিভাগ' && r.year ? `<p><strong>বর্ষ:</strong> ${r.year}</p>` : ''}
+                </div>
                 <table style="width:100%; text-align:left; border-collapse:collapse; margin-bottom:15px;">
-                    <tr><th style="padding:5px; border-bottom:1px solid #ccc;">বিষয়</th><th style="padding:5px; border-bottom:1px solid #ccc;">প্রাপ্ত নম্বর</th></tr>
+                    <tr><th style="padding:8px; border-bottom:2px solid #ccc;">বিষয়</th><th style="padding:8px; border-bottom:2px solid #ccc;">প্রাপ্ত নম্বর</th></tr>
             `;
             r.subjects.forEach(s => {
-                html += `<tr><td style="padding:5px; border-bottom:1px solid #eee;">${s.name}</td><td style="padding:5px; border-bottom:1px solid #eee;">${s.marks}</td></tr>`;
+                html += `<tr><td style="padding:8px; border-bottom:1px solid #eee;">${s.name}</td><td style="padding:8px; border-bottom:1px solid #eee;">${s.marks}</td></tr>`;
             });
             html += `</table>
-                     <p><strong>মোট নম্বর:</strong> ${r.total}</p>
-                     <p><strong>গড় নম্বর:</strong> ${r.average}</p>
-                     <p><strong>বিভাগ:</strong> <span class="${r.gradeClass}">${r.grade}</span></p>`;
+                     <div style="text-align:right; font-size: 16px;">
+                         <p><strong>মোট নম্বর:</strong> ${r.total}</p>
+                         <p><strong>গড় নম্বর:</strong> ${r.average}</p>
+                         <p><strong>ফলাফল:</strong> <span class="${r.gradeClass}">${r.grade}</span></p>
+                     </div>
+                     <div style="margin-top: 20px; font-size:12px; color:#666; text-align:center;">* আদব (Adab) এর নম্বর মোট নম্বর এবং গড় নম্বরে যুক্ত করা হয়নি।</div>`;
             
             document.getElementById('subject-details-content').innerHTML = html;
             openModal('subject-modal');
@@ -1381,10 +1599,17 @@
             const r = window.allResults.find(x => x.id === id);
             if(!r) return;
 
-            // Populate hidden template
+            // Populate hidden template to perfectly match details page
             document.getElementById('pdf-s-name').innerText = r.name;
             document.getElementById('pdf-s-roll').innerText = r.roll;
             document.getElementById('pdf-s-class').innerText = r.className;
+            
+            if(r.className === 'কিতাব বিভাগ' && r.year) {
+                document.getElementById('pdf-s-year').innerText = r.year;
+                document.getElementById('pdf-year-container').style.display = 'block';
+            } else {
+                document.getElementById('pdf-year-container').style.display = 'none';
+            }
             
             const tbody = document.getElementById('pdf-s-subjects');
             tbody.innerHTML = '';
@@ -1399,21 +1624,21 @@
             gradeEl.innerText = r.grade;
             gradeEl.style.color = (r.grade === 'রাসিব') ? 'red' : 'black';
 
-            // Generate PDF
+            // Generate PDF Using the template
             const element = document.getElementById('pdf-content');
             
             const opt = {
                 margin:       10,
                 filename:     `Result_${r.roll}_${r.name}.pdf`,
                 image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, useCORS: true },
+                html2canvas:  { scale: 2, useCORS: true, logging: false },
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
-            // Needs slight delay to render fonts
+            // Needs slight delay to ensure rendering engine is ready
             setTimeout(() => {
                 html2pdf().set(opt).from(element).save();
-            }, 100);
+            }, 200);
         };
 
     </script>
