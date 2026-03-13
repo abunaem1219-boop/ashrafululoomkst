@@ -746,10 +746,13 @@
         }
 
         /* PDF Template Layout */
-        #pdf-template-container {
-            position: fixed; top: 0; left: 0; width: 800px;
-            z-index: -9999; opacity: 0.001; pointer-events: none;
-        }
+#pdf-template-container {
+    position: absolute; 
+    top: -9999px; /* পেজটিকে স্ক্রিনের অনেক উপরে লুকিয়ে রাখবে */
+    left: -9999px; /* পেজটিকে স্ক্রিনের অনেক বামে লুকিয়ে রাখবে */
+    width: 800px;
+    background: #ffffff; /* সাদা ব্যাকগ্রাউন্ড নিশ্চিত করবে */
+}
         .pdf-wrapper {
             width: 100%; padding: 40px; background: white; color: black;
             font-family: 'Hind Siliguri', sans-serif; border: 2px solid var(--primary);
@@ -953,7 +956,7 @@
                     <table id="result-table">
                         <thead>
                             <tr>
-                                <th>রোল / ক্রমিক</th>
+                                <th>রোল</th>
                                 <th>শিক্ষার্থীর নাম</th>
                                 <th>বিভাগ (Class)</th>
                                 <th>বিস্তারিত নম্বর</th>
