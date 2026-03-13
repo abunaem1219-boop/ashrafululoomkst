@@ -17,6 +17,17 @@
     <!-- Confetti Library for Countdown Celebration -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
+    <!-- NEW LIBRARIES FOR UPDATES -->
+    <!-- SweetAlert2 (Update 4) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Chart.js (Update 2) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <!-- AOS CSS (Update 3) -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+    <!-- Browser Image Compression (Update 5) -->
+    <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
+
     <style>
         :root {
             --primary: #056C46; /* Islamic Green */
@@ -232,6 +243,59 @@
             padding: 20px 0;
             background: var(--bg-color);
             overflow: hidden;
+        }
+
+        /* --- FEATURE (NEW): Prayer & Hadith Section Styles --- */
+        .prayer-hadith-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 2rem;
+        }
+        
+        #prayer-times-card, #hadith-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            padding: 1.5rem;
+        }
+
+        #hadith-card {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: white;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #hadith-card::before {
+            content: '\f10d'; /* Quote left */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: -20px;
+            left: 10px;
+            font-size: 6rem;
+            color: rgba(255, 255, 255, 0.05);
+        }
+
+        .prayer-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 10px;
+            border-bottom: 1px solid var(--border);
+            border-left: 4px solid var(--primary);
+            margin-bottom: 8px;
+            background: #f8fafc;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .prayer-row:last-child {
+            margin-bottom: 0;
         }
 
         /* --- FEATURE 2: Notice Board Styles --- */
@@ -746,13 +810,13 @@
         }
 
         /* PDF Template Layout */
-#pdf-template-container {
-    position: absolute; 
-    top: -9999px; /* পেজটিকে স্ক্রিনের অনেক উপরে লুকিয়ে রাখবে */
-    left: -9999px; /* পেজটিকে স্ক্রিনের অনেক বামে লুকিয়ে রাখবে */
-    width: 800px;
-    background: #ffffff; /* সাদা ব্যাকগ্রাউন্ড নিশ্চিত করবে */
-}
+        #pdf-template-container {
+            position: absolute; 
+            top: -9999px; /* পেজটিকে স্ক্রিনের অনেক উপরে লুকিয়ে রাখবে */
+            left: -9999px; /* পেজটিকে স্ক্রিনের অনেক বামে লুকিয়ে রাখবে */
+            width: 800px;
+            background: #ffffff; /* সাদা ব্যাকগ্রাউন্ড নিশ্চিত করবে */
+        }
         .pdf-wrapper {
             width: 100%; padding: 40px; background: white; color: black;
             font-family: 'Hind Siliguri', sans-serif; border: 2px solid var(--primary);
@@ -825,6 +889,38 @@
         </div>
     </section>
 
+    <!-- UPDATE 1: PRAYER TIMES & DAILY HADITH SECTION -->
+    <section id="prayer-hadith-section" style="padding: 3rem 0; background-color: var(--bg-color);">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">আজকের তথ্য</h2>
+            <div class="prayer-hadith-grid">
+                
+                <!-- Left Card: Prayer Times -->
+                <div id="prayer-times-card" data-aos="fade-right">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem; font-size: 1.4rem; display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-mosque"></i> কুষ্টিয়ার আজকের নামাজের সময়সূচি
+                    </h3>
+                    <p id="today-bengali-date" style="color: var(--text-light); margin-bottom: 1.5rem; font-weight: 500;"></p>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <div class="prayer-row"><span><i class="far fa-clock"></i> ফজর</span> <span id="time-fajr"><i class="fas fa-spinner fa-spin"></i></span></div>
+                        <div class="prayer-row"><span><i class="far fa-clock"></i> যোহর</span> <span id="time-dhuhr"><i class="fas fa-spinner fa-spin"></i></span></div>
+                        <div class="prayer-row"><span><i class="far fa-clock"></i> আসর</span> <span id="time-asr"><i class="fas fa-spinner fa-spin"></i></span></div>
+                        <div class="prayer-row"><span><i class="far fa-clock"></i> মাগরিব</span> <span id="time-maghrib"><i class="fas fa-spinner fa-spin"></i></span></div>
+                        <div class="prayer-row"><span><i class="far fa-clock"></i> এশা</span> <span id="time-isha"><i class="fas fa-spinner fa-spin"></i></span></div>
+                    </div>
+                </div>
+
+                <!-- Right Card: Daily Hadith -->
+                <div id="hadith-card" data-aos="fade-left">
+                    <h3 style="font-size: 1.8rem; margin-bottom: 15px;"><i class="fas fa-book-open"></i> আজকের হাদিস</h3>
+                    <p id="hadith-text" style="font-size: 1.15rem; line-height: 1.8; margin-bottom: 20px; font-weight: 500;">আজকের হাদিস লোড হচ্ছে...</p>
+                    <small id="hadith-reference" style="font-size: 1rem; opacity: 0.9; border-top: 1px solid rgba(255,255,255,0.3); padding-top: 10px; display: inline-block;"></small>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
     <!-- Adsterra Ad 1 -->
     <div class="ad-container">
         <script>
@@ -842,7 +938,7 @@
     <!-- FEATURE 2: Notice Board Section -->
     <section id="notice-board">
         <div class="container">
-            <h2 class="section-title">নোটিশ বোর্ড</h2>
+            <h2 class="section-title" data-aos="fade-up">নোটিশ বোর্ড</h2>
             <div class="notice-grid" id="home-notice-container">
                 <p style="text-align: center; width: 100%; color: var(--text-light);">লোড হচ্ছে...</p>
             </div>
@@ -857,24 +953,24 @@
     <!-- Intro Section -->
     <section id="about" style="background-color: white;">
         <div class="container">
-            <h2 class="section-title">মাদরাসা সম্পর্কে</h2>
-            <div class="intro-grid">
-                <div class="intro-card">
+            <h2 class="section-title" data-aos="fade-up">মাদরাসা সম্পর্কে</h2>
+            <div class="intro-grid" data-aos="fade-up">
+                <div class="intro-card" data-aos="fade-up" data-aos-delay="100">
                     <i class="fas fa-map-marker-alt"></i>
                     <h3>অবস্থান</h3>
                     <p id="info-location">কুষ্টিয়া সদর, কুষ্টিয়া</p>
                 </div>
-                <div class="intro-card">
+                <div class="intro-card" data-aos="fade-up" data-aos-delay="100">
                     <i class="fas fa-calendar-alt"></i>
                     <h3>প্রতিষ্ঠা সাল</h3>
                     <p id="info-year">স্থাপিত: ...</p>
                 </div>
-                <div class="intro-card">
+                <div class="intro-card" data-aos="fade-up" data-aos-delay="100">
                     <i class="fas fa-book-open"></i>
                     <h3>বিভাগসমূহ</h3>
                     <p id="info-depts">নূরানী, হিফজ, কিতাব, দাওরায়ে হাদীস</p>
                 </div>
-                <div class="intro-card">
+                <div class="intro-card" data-aos="fade-up" data-aos-delay="100">
                     <i class="fas fa-bullseye"></i>
                     <h3>লক্ষ্য ও উদ্দেশ্য</h3>
                     <p id="info-goals">আদর্শ ইসলামী সমাজ গঠন ও দক্ষ আলিম তৈরি করা।</p>
@@ -886,7 +982,7 @@
     <!-- Teachers Section -->
     <section id="teachers" style="background-color: var(--bg-color);">
         <div class="container">
-            <h2 class="section-title">আমাদের শিক্ষকবৃন্দ</h2>
+            <h2 class="section-title" data-aos="fade-up">আমাদের শিক্ষকবৃন্দ</h2>
             <div class="teachers-grid" id="teachers-container">
                 <p style="text-align: center; width: 100%;">লোড হচ্ছে...</p>
             </div>
@@ -895,11 +991,11 @@
 
     <!-- Exam Results Section -->
     <section id="results" style="background-color: white;">
-        <div class="container result-container">
+        <div class="container result-container" data-aos="fade-up">
             <h2 class="section-title">পরীক্ষার ফলাফল</h2>
 
             <!-- FEATURE 1: Countdown Container -->
-            <div id="countdown-container">
+            <div id="countdown-container" data-aos="zoom-in">
                 <div class="countdown-header">
                     <h3>📢 ফলাফল প্রকাশিত হবে</h3>
                     <p id="cd-exam-name-display">অপেক্ষা করুন...</p>
@@ -978,7 +1074,7 @@
 
     <!-- Gallery Section -->
     <section id="gallery" style="background-color: var(--bg-color);">
-        <div class="container">
+        <div class="container" data-aos="fade-up">
             <h2 class="section-title">ফটো গ্যালারি</h2>
             <div class="gallery-grid" id="gallery-container">
                 <!-- Loaded from Firebase -->
@@ -987,7 +1083,7 @@
     </section>
 
     <!-- Footer -->
-    <footer id="contact">
+    <footer id="contact" data-aos="fade-up" data-aos-offset="50">
         <div class="container">
             <div class="footer-content">
                 <div>
@@ -1034,9 +1130,9 @@
         </div>
     </div>
 
-    <!-- Subject Marks Modal -->
+    <!-- Subject Marks Modal (Updated width for chart) -->
     <div class="modal" id="subject-modal">
-        <div class="modal-content">
+        <div class="modal-content" style="max-width: 650px;">
             <span class="close-modal" onclick="closeModal('subject-modal')">&times;</span>
             <h3 style="margin-bottom: 15px; color: var(--primary); text-align: center;">বিস্তারিত ফলাফল</h3>
             <div id="subject-details-content"></div>
@@ -1049,16 +1145,23 @@
         <img src="" id="lightbox-img" alt="Gallery Image">
     </div>
 
-    <!-- Admin Login Modal -->
+    <!-- Admin Login Modal (Updated with Email & Password for Firebase Auth) -->
     <div class="modal" id="admin-login-modal">
         <div class="modal-content" style="max-width: 400px;">
             <span class="close-modal" onclick="closeModal('admin-login-modal')">&times;</span>
             <h3 style="margin-bottom: 15px; text-align: center;">এডমিন লগইন</h3>
             <div class="form-group">
-                <label>পাসওয়ার্ড দিন</label>
-                <input type="password" id="admin-password" class="form-control">
+                <label>ইমেইল</label>
+                <input type="email" id="admin-email" class="form-control" placeholder="admin@example.com">
+            </div>
+            <div class="form-group">
+                <label>পাসওয়ার্ড</label>
+                <input type="password" id="admin-password" class="form-control" placeholder="••••••••">
             </div>
             <button class="btn btn-success" style="width: 100%; padding:10px;" onclick="verifyAdmin()">লগইন</button>
+            <p style="text-align: center; margin-top: 15px; font-size: 0.85rem; color: #64748b;">
+                <i class="fas fa-shield-alt"></i> এটি Firebase Authentication দ্বারা সুরক্ষিত।
+            </p>
         </div>
     </div>
 
@@ -1066,11 +1169,19 @@
     <div class="modal" id="admin-dashboard-modal">
         <div class="modal-content large">
             <span class="close-modal" onclick="closeModal('admin-dashboard-modal')">&times;</span>
+            
+            <!-- Admin Logout Button (New) -->
+            <button onclick="adminLogout()" style="position:absolute; top:15px; right:50px; background:#dc2626; color:white; border:none; padding:6px 14px; border-radius:4px; cursor:pointer; font-size:0.9rem;">
+                <i class='fas fa-sign-out-alt'></i> লগআউট
+            </button>
+
             <h2 style="margin-bottom: 20px; color: var(--primary);">এডমিন ড্যাশবোর্ড</h2>
 
             <div class="admin-nav">
                 <button class="active" onclick="switchAdminTab('admin-info')">মাদরাসা তথ্য</button>
                 <button onclick="switchAdminTab('admin-notice')">নোটিশ বোর্ড</button>
+                <!-- NEW HADITH TAB -->
+                <button onclick="switchAdminTab('admin-hadith')">আজকের হাদিস</button>
                 <button onclick="switchAdminTab('admin-teachers')">শিক্ষক যোগ/এডিট</button>
                 <button onclick="switchAdminTab('admin-results')">ফলাফল যোগ/এডিট</button>
                 <button onclick="switchAdminTab('admin-result-settings')">ফলাফল সেটিংস</button>
@@ -1138,6 +1249,20 @@
                 <div id="admin-notice-list" style="display:flex; flex-direction:column; gap:10px;"></div>
             </div>
 
+            <!-- Tab: Daily Hadith (NEW) -->
+            <div id="admin-hadith" class="admin-section">
+                <h3>আজকের হাদিস আপডেট করুন</h3>
+                <div class="form-group mt-2">
+                    <label>হাদিসের টেক্সট</label>
+                    <textarea id="h-text" class="form-control" rows="5" placeholder="এখানে হাদিস লিখুন..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>হাদিসের সূত্র (রেফারেন্স)</label>
+                    <input type="text" id="h-reference" class="form-control" placeholder="যেমন: সহীহ বুখারী">
+                </div>
+                <button class="btn btn-success" style="padding:10px 20px;" onclick="saveHadith()">হাদিস সেভ করুন</button>
+            </div>
+
             <!-- Tab: Teachers -->
             <div id="admin-teachers" class="admin-section">
                 <!-- Teacher Form (Kept exactly as it was) -->
@@ -1193,7 +1318,7 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>শিক্ষার্থীর নাম</label>
+                    <label>শিক্ষ শিক্ষার্থীর নাম</label>
                     <input type="text" id="r-name" class="form-control">
                 </div>
                 <div class="form-group">
@@ -1309,6 +1434,8 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getDatabase, ref, set, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+        // IMPORT FIREBASE AUTH (Update 6)
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBXBgFGqDyPiE6ZVER249FA0a91ukICO_U",
@@ -1322,6 +1449,7 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
+        const auth = getAuth(app); // INITIALIZE AUTH
 
         const IMGBB_API_KEY = "da4148f76289d909eb01bee3cc2268d4";
         const DEFAULT_AVATAR = "https://i.ibb.co.com/ycd9T2PK/IMG-20260311-233709.png";
@@ -1333,11 +1461,51 @@
         window.currentFilterYear = "all";
         window.searchTerm = "";
         window.countdownInterval = null;
+        window.resultChartInstance = null; // Chart.js instance tracking
 
         window.editingTeacherId = null;
         window.editingResultId = null;
         window.existingTeacherPhoto = null;
         let teachersDataStore = {};
+
+        // INITIALIZE PRAYER TIMES API FETCH
+        async function fetchPrayerTimes() {
+            // Set Today's Bengali Date
+            const dateStr = new Date().toLocaleDateString('bn-BD', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            document.getElementById('today-bengali-date').innerText = dateStr;
+
+            try {
+                const res = await fetch('https://api.aladhan.com/v1/timingsByCity?city=Kushtia&country=Bangladesh&method=1');
+                const data = await res.json();
+                const timings = data.data.timings;
+                document.getElementById('time-fajr').innerHTML = `<span>${timings.Fajr}</span>`;
+                document.getElementById('time-dhuhr').innerHTML = `<span>${timings.Dhuhr}</span>`;
+                document.getElementById('time-asr').innerHTML = `<span>${timings.Asr}</span>`;
+                document.getElementById('time-maghrib').innerHTML = `<span>${timings.Maghrib}</span>`;
+                document.getElementById('time-isha').innerHTML = `<span>${timings.Isha}</span>`;
+            } catch (e) {
+                const els = ['time-fajr', 'time-dhuhr', 'time-asr', 'time-maghrib', 'time-isha'];
+                els.forEach(id => document.getElementById(id).innerText = "সময় লোড হয়নি");
+            }
+        }
+        fetchPrayerTimes();
+
+        // SHARED COMPRESSION HELPER (Update 5)
+        async function compressImage(file) {
+            const options = {
+                maxSizeMB: 0.2,          
+                maxWidthOrHeight: 800,    
+                useWebWorker: true,
+                initialQuality: 0.8
+            };
+            try {
+                const compressed = await imageCompression(file, options);
+                return compressed;
+            } catch (err) {
+                console.warn('Compression failed, using original:', err);
+                return file; 
+            }
+        }
 
         // UI Interactions
         document.getElementById('hamburger').addEventListener('click', () => {
@@ -1377,6 +1545,10 @@
                 resetTeacherForm();
                 resetResultForm();
             }
+            if(id === 'subject-modal' && window.resultChartInstance) {
+                window.resultChartInstance.destroy();
+                window.resultChartInstance = null;
+            }
         };
 
         // Lightbox
@@ -1386,16 +1558,37 @@
         }
         window.closeLightbox = () => closeModal('lightbox');
 
-        // Admin Authentication
+        // Admin Authentication via Firebase Auth (Update 6)
         window.verifyAdmin = () => {
+            const email = document.getElementById('admin-email').value.trim();
             const pass = document.getElementById('admin-password').value;
-            if(pass === 'N-1234') {
-                closeModal('admin-login-modal');
-                openModal('admin-dashboard-modal');
-                document.getElementById('admin-password').value = '';
-            } else {
-                alert('ভুল পাসওয়ার্ড!');
+            if(!email || !pass) {
+                Swal.fire({ icon: 'warning', title: 'অসম্পূর্ণ!', text: 'ইমেইল এবং পাসওয়ার্ড উভয়ই দিন।', timer: 2000, showConfirmButton: false });
+                return;
             }
+            Swal.fire({ title: 'লগইন হচ্ছে...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
+            signInWithEmailAndPassword(auth, email, pass)
+                .then((userCredential) => {
+                    Swal.fire({ icon: 'success', title: 'স্বাগতম!', text: 'এডমিন প্যানেলে প্রবেশ করা হয়েছে।', timer: 1500, showConfirmButton: false })
+                    .then(() => {
+                        closeModal('admin-login-modal');
+                        document.getElementById('admin-email').value = '';
+                        document.getElementById('admin-password').value = '';
+                        openModal('admin-dashboard-modal');
+                    });
+                })
+                .catch((error) => {
+                    Swal.fire({ icon: 'error', title: 'লগইন ব্যর্থ!', text: 'ইমেইল বা পাসওয়ার্ড সঠিক নয়। আবার চেষ্টা করুন।', confirmButtonColor: '#056C46' });
+                });
+        };
+
+        window.adminLogout = () => {
+            Swal.fire({ title: 'লগআউট করবেন?', icon: 'question', showCancelButton: true, confirmButtonText: 'হ্যাঁ', cancelButtonText: 'না', confirmButtonColor: '#dc2626', cancelButtonColor: '#056C46' })
+            .then((result) => {
+                if(result.isConfirmed) { 
+                    signOut(auth).then(() => { closeModal('admin-dashboard-modal'); }); 
+                }
+            });
         };
 
         window.switchAdminTab = (tabId) => {
@@ -1429,6 +1622,22 @@
                 document.getElementById('edit-year').value = data.year || '';
                 document.getElementById('edit-depts').value = data.depts || '';
                 document.getElementById('edit-goals').value = data.goals || '';
+            }
+        });
+
+        // Daily Hadith (Update 1)
+        onValue(ref(db, 'dailyHadith'), (snapshot) => {
+            const data = snapshot.val();
+            if(data) {
+                document.getElementById('hadith-text').innerText = data.text || '';
+                document.getElementById('hadith-reference').innerText = data.reference || '';
+                document.getElementById('h-text').value = data.text || '';
+                document.getElementById('h-reference').value = data.reference || '';
+            } else {
+                document.getElementById('hadith-text').innerText = "আজকের হাদিস লোড হচ্ছে...";
+                document.getElementById('hadith-reference').innerText = "";
+                document.getElementById('h-text').value = '';
+                document.getElementById('h-reference').value = '';
             }
         });
 
@@ -1572,7 +1781,16 @@
                 year: document.getElementById('edit-year').value,
                 depts: document.getElementById('edit-depts').value,
                 goals: document.getElementById('edit-goals').value
-            }).then(() => alert('তথ্য সেভ হয়েছে!'));
+            }).then(() => Swal.fire({ icon: 'success', title: 'সফল!', text: 'তথ্য সেভ হয়েছে!', timer: 2000, showConfirmButton: false }));
+        };
+
+        window.saveHadith = () => {
+            const text = document.getElementById('h-text').value;
+            const refName = document.getElementById('h-reference').value;
+            set(ref(db, 'dailyHadith'), { text: text, reference: refName })
+                .then(() => {
+                    Swal.fire({ icon: 'success', title: 'সফল!', text: 'হাদিস সেভ হয়েছে!', timer: 2000, showConfirmButton: false });
+                });
         };
 
         window.saveResultSettings = () => {
@@ -1590,7 +1808,7 @@
                 examName: examName,
                 publishTimestamp: timestamp
             }).then(() => {
-                alert('ফলাফল সেটিংস আপডেট হয়েছে!');
+                Swal.fire({ icon: 'success', title: 'সফল!', text: 'ফলাফল সেটিংস আপডেট হয়েছে!', timer: 2000, showConfirmButton: false });
             });
         };
 
@@ -1607,7 +1825,7 @@
             const payload = { title, description: desc, type, date, important, attachment };
 
             push(ref(db, 'notices'), payload).then(() => {
-                alert('নোটিশ সফলভাবে পাবলিশ হয়েছে!');
+                Swal.fire({ icon: 'success', title: 'পাবলিশ হয়েছে!', text: 'নোটিশ সফলভাবে যোগ করা হয়েছে।', timer: 2000, showConfirmButton: false });
                 document.getElementById('n-title').value = '';
                 document.getElementById('n-desc').value = '';
                 document.getElementById('n-date').value = '';
@@ -1620,7 +1838,6 @@
             window.editingTeacherId = null; window.existingTeacherPhoto = null;
             document.getElementById('t-name').value = ''; document.getElementById('t-desig').value = '';
             document.getElementById('t-phone').value = ''; document.getElementById('t-photo-file').value = '';
-            document.getElementById('btn-save-teacher').innerText = 'শিক্ষক যোগ করুন';
         }
 
         window.resetResultForm = () => {
@@ -1638,7 +1855,6 @@
             document.getElementById('t-name').value = t.name; document.getElementById('t-desig').value = t.designation;
             document.getElementById('t-phone').value = t.phone; document.getElementById('t-photo-file').value = '';
             window.existingTeacherPhoto = t.photo;
-            document.getElementById('btn-save-teacher').innerText = 'আপডেট করুন';
             document.getElementById('admin-dashboard-modal').querySelector('.modal-content').scrollTop = 0;
         };
 
@@ -1649,23 +1865,30 @@
             let photoUrl = window.existingTeacherPhoto || DEFAULT_AVATAR;
 
             if(fileInput.files.length > 0) {
-                document.getElementById('btn-save-teacher').innerText = 'আপলোড হচ্ছে...';
-                try { photoUrl = await uploadImageToImgBB(fileInput.files[0]); } 
-                catch(e) { alert('ছবি আপলোডে সমস্যা হয়েছে!'); document.getElementById('btn-save-teacher').innerText = window.editingTeacherId ? 'আপডেট করুন' : 'শিক্ষক যোগ করুন'; return; }
+                Swal.fire({ title: 'আপলোড হচ্ছে...', text: 'অনুগ্রহ করে অপেক্ষা করুন।', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
+                try { 
+                    const fileToUpload = await compressImage(fileInput.files[0]);
+                    photoUrl = await uploadImageToImgBB(fileToUpload); 
+                } 
+                catch(e) { 
+                    Swal.fire({ icon: 'error', title: 'ত্রুটি!', text: 'আপলোড ব্যর্থ হয়েছে। আবার চেষ্টা করুন।' });
+                    return; 
+                }
             }
             const payload = { name, designation: desig, phone, photo: photoUrl };
-            if(window.editingTeacherId) update(ref(db, 'teachers/' + window.editingTeacherId), payload).then(() => { alert('শিক্ষক আপডেট হয়েছে!'); resetTeacherForm(); });
-            else push(ref(db, 'teachers'), payload).then(() => { alert('শিক্ষক যোগ করা হয়েছে!'); resetTeacherForm(); });
+            if(window.editingTeacherId) update(ref(db, 'teachers/' + window.editingTeacherId), payload).then(() => { Swal.fire({ icon: 'success', title: 'সফল!', text: 'শিক্ষকের তথ্য সেভ হয়েছে।', timer: 2000, showConfirmButton: false }); resetTeacherForm(); });
+            else push(ref(db, 'teachers'), payload).then(() => { Swal.fire({ icon: 'success', title: 'সফল!', text: 'শিক্ষকের তথ্য সেভ হয়েছে।', timer: 2000, showConfirmButton: false }); resetTeacherForm(); });
         };
 
         window.saveGalleryImage = async () => {
             const fileInput = document.getElementById('g-url-file');
             if(fileInput.files.length === 0) return alert('ছবি নির্বাচন করুন');
-            document.getElementById('btn-save-gallery').innerText = 'আপলোড হচ্ছে...';
+            Swal.fire({ title: 'আপলোড হচ্ছে...', text: 'অনুগ্রহ করে অপেক্ষা করুন।', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
             try {
-                const url = await uploadImageToImgBB(fileInput.files[0]);
-                push(ref(db, 'gallery'), { url }).then(() => { alert('ছবি যোগ হয়েছে!'); fileInput.value = ''; document.getElementById('btn-save-gallery').innerText = 'ছবি আপলোড করুন'; });
-            } catch(e) { alert('আপলোডে সমস্যা হয়েছে!'); document.getElementById('btn-save-gallery').innerText = 'ছবি আপলোড করুন'; }
+                const fileToUpload = await compressImage(fileInput.files[0]);
+                const url = await uploadImageToImgBB(fileToUpload);
+                push(ref(db, 'gallery'), { url }).then(() => { Swal.fire({ icon: 'success', title: 'সফল!', text: 'ছবি যোগ হয়েছে!', timer: 2000, showConfirmButton: false }); fileInput.value = ''; });
+            } catch(e) { Swal.fire({ icon: 'error', title: 'ত্রুটি!', text: 'আপলোড ব্যর্থ হয়েছে। আবার চেষ্টা করুন।' }); }
         };
 
         window.addSubjectRow = () => {
@@ -1726,11 +1949,28 @@
             const gradeInfo = calculateGrade(avg);
             const resultData = { className, year: yearVal, name, roll, subjects, total, average: avg, grade: gradeInfo.text, gradeClass: gradeInfo.class };
 
-            if(window.editingResultId) update(ref(db, 'results/' + window.editingResultId), resultData).then(() => { alert('ফলাফল আপডেট হয়েছে!'); resetResultForm(); });
-            else push(ref(db, 'results'), resultData).then(() => { alert('ফলাফল সেভ হয়েছে!'); resetResultForm(); });
+            if(window.editingResultId) update(ref(db, 'results/' + window.editingResultId), resultData).then(() => { Swal.fire({ icon: 'success', title: 'সফল!', text: 'ফলাফল সেভ হয়েছে।', timer: 2000, showConfirmButton: false }); resetResultForm(); });
+            else push(ref(db, 'results'), resultData).then(() => { Swal.fire({ icon: 'success', title: 'সফল!', text: 'ফলাফল সেভ হয়েছে।', timer: 2000, showConfirmButton: false }); resetResultForm(); });
         };
 
-        window.deleteRecord = (path) => { if(confirm('আপনি কি নিশ্চিত এটি মুছতে চান?')) remove(ref(db, path)); };
+        window.deleteRecord = (path) => {
+            Swal.fire({
+                title: 'আপনি কি নিশ্চিত?',
+                text: 'এটি মুছে ফেলা হবে এবং পুনরুদ্ধার করা যাবে না!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc2626',
+                cancelButtonColor: '#056C46',
+                confirmButtonText: 'হ্যাঁ, মুছুন!',
+                cancelButtonText: 'বাতিল'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    remove(ref(db, path)).then(() => {
+                        Swal.fire({ icon: 'success', title: 'মুছে ফেলা হয়েছে!', timer: 1500, showConfirmButton: false });
+                    });
+                }
+            });
+        };
 
 
         // ====== FEATURE LOGIC : Notice Board ====== //
@@ -1914,6 +2154,45 @@
             });
         }
 
+        // ====== CHART.JS INTEGRATION (Update 2) ====== //
+        window.renderResultChart = (r) => {
+            if(window.resultChartInstance) { 
+                window.resultChartInstance.destroy(); 
+            }
+            
+            const ctx = document.getElementById('result-chart').getContext('2d');
+            const chartSubjects = r.subjects.filter(s => s.name !== 'আদব' && s.name.toLowerCase() !== 'adab');
+            
+            const labels = chartSubjects.map(s => s.name);
+            const data = chartSubjects.map(s => parseFloat(s.marks));
+            
+            const bgColors = data.map(m => m >= 80 ? '#22c55e' : (m < 33 ? '#ef4444' : '#3b82f6'));
+
+            window.resultChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'প্রাপ্ত নম্বর',
+                        data: data,
+                        backgroundColor: bgColors,
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { display: false }, 
+                        title: { display: true, text: 'বিষয়ভিত্তিক নম্বরের গ্রাফ' } 
+                    },
+                    scales: { 
+                        y: { beginAtZero: true, suggestedMax: 100 } 
+                    }
+                }
+            });
+        };
+
         window.viewSubjects = (id) => {
             const r = window.allResults.find(x => x.id === id); if(!r) return;
             let html = `
@@ -1931,9 +2210,15 @@
                          <p><strong>মোট নম্বর:</strong> ${r.total}</p><p><strong>গড় নম্বর:</strong> ${r.average}</p>
                          <p><strong>ফলাফল:</strong> <span class="${r.gradeClass}">${r.grade}</span></p>
                      </div>
-                     <div style="margin-top: 20px; font-size:12px; color:#666; text-align:center;">* আদব (Adab) এর নম্বর মোট নম্বর এবং গড় নম্বরে যুক্ত করা হয়নি।ভর্তির জন্য সর্বনিম্ন গড় ৭০ হওয়া লাগবে।</div>`;
+                     <div style="margin-top:25px;"><canvas id="result-chart" height="200"></canvas></div>
+                     <div style="margin-top: 20px; font-size:12px; color:#666; text-align:center;">* আদব (Adab) এর নম্বর মোট নম্বর এবং গড় নম্বরে যুক্ত করা হয়নি।ভর্তির জন্য সর্বনিম্ন গড় ৭০ হওয়া লাগবে। 🟢 ৮০+ 🔵 ৩৩-৮০ 🔴 ৩৩ এর নিচে</div>`;
             document.getElementById('subject-details-content').innerHTML = html;
             openModal('subject-modal');
+            
+            // Render the chart after modal DOM has been displayed
+            setTimeout(() => {
+                window.renderResultChart(r);
+            }, 50);
         };
 
         // ====== PDF GENERATION SYSTEM ====== //
@@ -1962,6 +2247,11 @@
             setTimeout(() => { html2pdf().set(opt).from(element).save(); }, 200);
         };
     </script>
+
+<!-- AOS Initialization (Update 3) -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>AOS.init({ duration: 700, once: true, offset: 80 });</script>
+
 <script>
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", function () {
