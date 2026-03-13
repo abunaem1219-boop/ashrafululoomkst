@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Noto+Sans+Bengali:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <!-- PDF Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <!-- Confetti Library for Countdown Celebration -->
@@ -239,7 +239,7 @@
             background-color: var(--bg-color);
             padding-bottom: 2rem;
         }
-        
+
         .notice-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -429,7 +429,7 @@
             color: var(--primary);
             margin-bottom: 0.5rem;
         }
-        
+
         .countdown-header p {
             font-size: 1.1rem;
             color: var(--text-light);
@@ -813,7 +813,7 @@
         <div class="container">
             <h1>Arabic University</h1>
             <p>কুষ্টিয়া জেলার সুপরিচিত ও ঐতিহ্যবাহী একটি দ্বীনি শিক্ষা প্রতিষ্ঠান</p>
-            
+
             <div class="hero-buttons">
                 <button class="btn btn-primary" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">
                     <i class="fas fa-info-circle"></i> মাদরাসা সম্পর্কে
@@ -897,7 +897,7 @@
     <section id="results" style="background-color: white;">
         <div class="container result-container">
             <h2 class="section-title">পরীক্ষার ফলাফল</h2>
-            
+
             <!-- FEATURE 1: Countdown Container -->
             <div id="countdown-container">
                 <div class="countdown-header">
@@ -955,17 +955,18 @@
                 <div class="table-responsive">
                     <table id="result-table">
                         <thead>
-                            <tr>
-                                <th>রোল</th>
-                                <th>শিক্ষার্থীর নাম</th>
-                                <th>বিভাগ (Class)</th>
-                                <th>বিস্তারিত নম্বর</th>
-                                <th>মোট নম্বর</th>
-                                <th>গড়</th>
-                                <th>বিভাগ (Grade)</th>
-                                <th>ডাউনলোড</th>
-                            </tr>
-                        </thead>
+    <tr>
+        <th>মেধা স্থান</th>
+        <th>রোল</th>
+        <th>শিক্ষার্থীর নাম</th>
+        <th>বিভাগ (Class)</th>
+        <th>বিস্তারিত নম্বর</th>
+        <th>মোট নম্বর</th>
+        <th>গড়</th>
+        <th>বিভাগ (Grade)</th>
+        <th>ডাউনলোড</th>
+    </tr>
+</thead>
                         <tbody id="result-tbody">
                             <!-- Loaded from Firebase -->
                         </tbody>
@@ -1066,7 +1067,7 @@
         <div class="modal-content large">
             <span class="close-modal" onclick="closeModal('admin-dashboard-modal')">&times;</span>
             <h2 style="margin-bottom: 20px; color: var(--primary);">এডমিন ড্যাশবোর্ড</h2>
-            
+
             <div class="admin-nav">
                 <button class="active" onclick="switchAdminTab('admin-info')">মাদরাসা তথ্য</button>
                 <button onclick="switchAdminTab('admin-notice')">নোটিশ বোর্ড</button>
@@ -1131,7 +1132,7 @@
                     <input type="url" id="n-attachment" class="form-control" placeholder="https://...">
                 </div>
                 <button class="btn btn-success" id="btn-save-notice" style="padding:10px 20px;" onclick="saveNotice()">নোটিশ পাবলিশ করুন</button>
-                
+
                 <hr style="margin: 20px 0;">
                 <h4>বর্তমান নোটিশসমূহ</h4>
                 <div id="admin-notice-list" style="display:flex; flex-direction:column; gap:10px;"></div>
@@ -1159,7 +1160,7 @@
                     <small style="color: gray;">ছবি না দিলে ডিফল্ট ছবি যুক্ত হবে।</small>
                 </div>
                 <button class="btn btn-success" id="btn-save-teacher" style="padding:10px 20px;" onclick="saveTeacher()">শিক্ষক যোগ করুন</button>
-                
+
                 <hr style="margin: 20px 0;">
                 <h4>শিক্ষক তালিকা</h4>
                 <div id="admin-teacher-list"></div>
@@ -1377,7 +1378,7 @@
                 resetResultForm();
             }
         };
-        
+
         // Lightbox
         window.openLightbox = (src) => {
             document.getElementById('lightbox-img').src = src;
@@ -1423,7 +1424,7 @@
                 document.getElementById('info-year').innerText = data.year || '';
                 document.getElementById('info-depts').innerText = data.depts || '';
                 document.getElementById('info-goals').innerText = data.goals || '';
-                
+
                 document.getElementById('edit-location').value = data.location || '';
                 document.getElementById('edit-year').value = data.year || '';
                 document.getElementById('edit-depts').value = data.depts || '';
@@ -1519,7 +1520,7 @@
                     notice.id = key;
                     window.allNotices.push(notice);
                 });
-                
+
                 // Sort by date (newest first)
                 window.allNotices.sort((a,b) => new Date(b.date) - new Date(a.date));
 
@@ -1564,7 +1565,7 @@
 
 
         // ====== ADMIN FUNCTIONS ====== //
-        
+
         window.saveInfo = () => {
             set(ref(db, 'info'), {
                 location: document.getElementById('edit-location').value,
@@ -1578,7 +1579,7 @@
             const isEnabled = document.getElementById('rs-enabled').value === "true";
             const examName = document.getElementById('rs-exam-name').value;
             const datetimeVal = document.getElementById('rs-datetime').value;
-            
+
             let timestamp = 0;
             if(datetimeVal) {
                 timestamp = new Date(datetimeVal).getTime();
@@ -1604,7 +1605,7 @@
             if(!title || !date || !desc) return alert('শিরোনাম, বিস্তারিত এবং তারিখ অবশ্যই দিতে হবে!');
 
             const payload = { title, description: desc, type, date, important, attachment };
-            
+
             push(ref(db, 'notices'), payload).then(() => {
                 alert('নোটিশ সফলভাবে পাবলিশ হয়েছে!');
                 document.getElementById('n-title').value = '';
@@ -1646,7 +1647,7 @@
             const phone = document.getElementById('t-phone').value, fileInput = document.getElementById('t-photo-file');
             if(!name) return alert('নাম লিখুন');
             let photoUrl = window.existingTeacherPhoto || DEFAULT_AVATAR;
-            
+
             if(fileInput.files.length > 0) {
                 document.getElementById('btn-save-teacher').innerText = 'আপলোড হচ্ছে...';
                 try { photoUrl = await uploadImageToImgBB(fileInput.files[0]); } 
@@ -1711,7 +1712,7 @@
 
             const subNames = document.querySelectorAll('.r-sub-name'), subMarks = document.querySelectorAll('.r-sub-mark');
             let subjects = [], total = 0, countForAvg = 0;
-            
+
             for(let i=0; i<subNames.length; i++){
                 const n = subNames[i].value, m = parseFloat(subMarks[i].value) || 0;
                 if(n) {
@@ -1736,10 +1737,10 @@
         function createNoticeCard(notice) {
             let typeText = notice.type === 'exam' ? 'পরীক্ষা' : (notice.type === 'holiday' ? 'ছুটি' : 'ঘোষণা');
             let badgeClass = notice.type;
-            
+
             let importantBadgeHtml = '';
             let importantClass = '';
-            
+
             if(notice.important) {
                 importantBadgeHtml = `<div class="notice-badge important-badge"><i class="fas fa-exclamation-circle"></i> জরুরী</div>`;
                 importantClass = 'important';
@@ -1851,7 +1852,7 @@
                 document.getElementById('cd-hours').innerText = hours.toString().padStart(2, '0');
                 document.getElementById('cd-minutes').innerText = minutes.toString().padStart(2, '0');
                 document.getElementById('cd-seconds').innerText = seconds.toString().padStart(2, '0');
-                
+
                 // Show countdown UI
                 cdContainer.style.display = 'flex';
                 resultWrapper.style.display = 'none';
@@ -1892,13 +1893,21 @@
                 tbody.innerHTML = '<tr><td colspan="8">কোনো ফলাফল পাওয়া যায়নি।</td></tr>'; return;
             }
 
-            filtered.sort((a,b) => parseInt(a.roll) - parseInt(b.roll));
-            filtered.forEach(r => {
+            // মোট নম্বরের ভিত্তিতে বড় থেকে ছোট সাজানো (Highest to Lowest)
+            filtered.sort((a,b) => parseFloat(b.total) - parseFloat(a.total));
+            
+            // সিরিয়াল বা মেধা স্থান বসানো
+            filtered.forEach((r, index) => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td>${r.roll}</td><td>${r.name}</td><td>${r.className} ${r.className === 'কিতাব বিভাগ' && r.year ? '('+r.year+')' : ''}</td>
+                    <td style="font-weight:bold; color:var(--primary); font-size:1.1rem;">${index + 1}</td>
+                    <td>${r.roll}</td>
+                    <td>${r.name}</td>
+                    <td>${r.className} ${r.className === 'কিতাব বিভাগ' && r.year ? '('+r.year+')' : ''}</td>
                     <td><button class="btn-view-marks" onclick="viewSubjects('${r.id}')">নম্বর দেখুন</button></td>
-                    <td>${r.total}</td><td>${r.average}</td><td class="${r.gradeClass}">${r.grade}</td>
+                    <td>${r.total}</td>
+                    <td>${r.average}</td>
+                    <td class="${r.gradeClass}">${r.grade}</td>
                     <td><button class="btn-download" onclick="downloadPDF('${r.id}')"><i class="fas fa-file-pdf"></i> PDF</button></td>
                 `;
                 tbody.appendChild(tr);
@@ -1933,11 +1942,11 @@
             document.getElementById('pdf-s-name').innerText = r.name;
             document.getElementById('pdf-s-roll').innerText = r.roll;
             document.getElementById('pdf-s-class').innerText = r.className;
-            
+
             if(r.className === 'কিতাব বিভাগ' && r.year) {
                 document.getElementById('pdf-s-year').innerText = r.year; document.getElementById('pdf-year-container').style.display = 'block';
             } else document.getElementById('pdf-year-container').style.display = 'none';
-            
+
             const tbody = document.getElementById('pdf-s-subjects'); tbody.innerHTML = '';
             r.subjects.forEach((s, idx) => { tbody.innerHTML += `<tr><td>${idx+1}</td><td>${s.name}</td><td>${s.marks}</td></tr>`; });
 
