@@ -1082,7 +1082,7 @@
             </div>
             <button class="btn btn-success" style="width: 100%; padding:10px;" onclick="verifyAdmin()">লগইন</button>
             <p style="text-align: center; margin-top: 15px; font-size: 0.85rem; color: #64748b;">
-                <i class="fas fa-shield-alt"></i> এটি Firebase Authentication দ্বারা সুরক্ষিত।
+                <i class="fas fa-shield-alt"></i> এখানে প্রবেশের অনুমতি সবার নেই 🙂
             </p>
         </div>
     </div>
@@ -1981,83 +1981,7 @@
             }, 1000);
         }
 
-        // ====== RESULT SEARCH & FILTER SYSTEM ====== //
-        document.getElementById('search-result').addEventListener('input', (e) => {
-            window.searchTerm = e.target.value.toLowerCase(); renderResults();
-        });
-        document.getElementById('filter-year').addEventListener('change', (e) => {
-            window.currentFilterYear = e.target.value; renderResults();
-        });
-        document.querySelectorAll('.class-tab').forEach(tab => {
-            tab.addEventListener('click', (e) => {
-                document.querySelectorAll('.class-tab').forEach(t => t.classList.remove('active'));
-                e.target.classList.add('active');
-                window.currentFilterClass = e.target.getAttribute('data-class');
-                window.currentFilterYear = 'all'; 
-                document.getElementById('filter-year').value = 'all';
-                document.getElementById('filter-year').style.display = (window.currentFilterClass === 'কিতাব বিভাগ') ? 'block' : 'none';
-                renderResults();
-            });
-        });
-
-        
-            // মোট নম্বরের ভিত্তিতে বড় থেকে ছোট সাজানো (Highest to Lowest)
-            filtered.sort((a,b) => parseFloat(b.total) - parseFloat(a.total));
-
-            // সিরিয়াল বা মেধা স্থান বসানো
-            filtered.forEach((r, index) => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td style="font-weight:bold; color:var(--primary); font-size:1.1rem;">${index + 1}</td>
-                    <td>${r.roll}</td>
-                    <td>${r.name}</td>
-                    <td>${r.className} ${r.className === 'কিতাব বিভাগ' && r.year ? '('+r.year+')' : ''}</td>
-                    <td><button class="btn-view-marks" onclick="viewSubjects('${r.id}')">নম্বর দেখুন</button></td>
-                    <td>${r.total}</td>
-                    <td>${r.average}</td>
-                    <td class="${r.gradeClass}">${r.grade}</td>
-                    <td><button class="btn-download" onclick="downloadPDF('${r.id}')"><i class="fas fa-file-pdf"></i> PDF</button></td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        // ====== CHART.JS INTEGRATION (Update 2) ====== //
-        
-            const ctx = document.getElementById('result-chart').getContext('2d');
-            const chartSubjects = r.subjects.filter(s => s.name !== 'আদব' && s.name.toLowerCase() !== 'adab');
-
-            const labels = chartSubjects.map(s => s.name);
-            const data = chartSubjects.map(s => parseFloat(s.marks));
-
-            const bgColors = data.map(m => m >= 80 ? '#22c55e' : (m < 33 ? '#ef4444' : '#3b82f6'));
-
-            window.resultChartInstance = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'প্রাপ্ত নম্বর',
-                        data: data,
-                        backgroundColor: bgColors,
-                        borderRadius: 4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { 
-                        legend: { display: false }, 
-                        title: { display: true, text: 'বিষয়ভিত্তিক নম্বরের গ্রাফ' } 
-                    },
-                    scales: { 
-                        y: { beginAtZero: true, suggestedMax: 100 } 
-                    }
-                }
-            });
-        };
-
-    </script>
+   </script>
 
 <!-- AOS Initialization (Update 3) -->
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
