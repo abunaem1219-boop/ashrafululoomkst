@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#056C46">
+    <title>পরীক্ষার ফলাফল - জামিয়া আরাবিয়া আশরাফুল উলূম</title>
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <!-- হুবহু আপনার index.html এর স্টাইল কপি করা হয়েছে -->
+    <style>
+        :root {
+            --primary: #056C46; --primary-light: #0f8f5e; --primary-dark: #03482e;
+            --bg-color: #f8fafc; --surface: #ffffff; --text-main: #1e293b; --text-light: #64748b;
+            --border: #e2e8f0; --shadow-sm: 0 1px 3px rgba(0,0,0,0.1); --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1); --radius: 8px; --rasib-color: #dc2626; --transition: all 0.3s ease;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Hind Siliguri', sans-serif; }
+        html, body { background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; overflow-x: hidden !important; width: 100%; max-width: 100vw; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        /* Header */
+        header { background: var(--surface); box-shadow: var(--shadow-md); position: sticky; top: 0; z-index: 1000; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; height: 80px; }
+        .brand { display: flex; align-items: center; gap: 15px; }
+        .brand img { height: 50px; width: auto; }
+        .brand h1 { font-size: 1.2rem; color: var(--primary); font-weight: 700; line-height: 1.2; }
+        .nav-links { display: flex; gap: 20px; }
+        .nav-links a { font-weight: 600; color: var(--text-main); transition: var(--transition); }
+        .nav-links a:hover, .nav-links a.active { color: var(--primary); }
+        .hamburger { display: none; font-size: 1.5rem; color: var(--primary); cursor: pointer; }
+        
+        /* Result Specific Styles */
+        .page-header { background: linear-gradient(rgba(5, 108, 70, 0.9), rgba(5, 108, 70, 0.9)), url('https://i.ibb.co.com/ycd9T2PK/IMG-20260311-233709.png') center/cover; padding: 4rem 0; text-align: center; color: white; margin-bottom: 3rem; }
+        .page-header h2 { font-size: 2.5rem; margin-bottom: 10px; }
+        .result-container { background: var(--surface); padding: 2rem; border-radius: var(--radius); box-shadow: var(--shadow-md); margin-bottom: 5rem; }
+        
+        /* Controls & Table */
+        .result-controls { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem; }
+        .search-box { display: flex; gap: 10px; width: 100%; }
+        .search-box input, .search-box select { flex: 1; padding: 10px 15px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 1rem; }
+        .class-tabs { display: flex; gap: 10px; flex-wrap: wrap; }
+        .class-tab { padding: 8px 16px; background: var(--bg-color); border: 1px solid var(--border); border-radius: 20px; cursor: pointer; transition: var(--transition); }
+        .class-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+        
+        .table-responsive { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+        th, td { padding: 12px 15px; text-align: center; border-bottom: 1px solid var(--border); white-space: nowrap; }
+        th { background: var(--primary); color: white; font-weight: 600; }
+        tr:hover { background-color: #f1f5f9; }
+        .grade-rasib { color: var(--rasib-color); font-weight: bold; }
+        
+        .btn-view-marks, .btn-download { padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9rem; color: white; transition: var(--transition); }
+        .btn-view-marks { background: #3b82f6; } .btn-view-marks:hover { background: #2563eb; }
+        .btn-download { background: var(--primary); } .btn-download:hover { background: var(--primary-dark); }
+        
+        /* Modal */
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(3px); display: none; justify-content: center; align-items: center; z-index: 3000; padding: 20px; animation: fadeIn 0.2s; }
+        .modal-content { background: var(--surface); padding: 2rem; border-radius: var(--radius); width: 95%; max-width: 650px; max-height: 90vh; overflow-y: auto; position: relative; margin: auto; }
+        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; cursor: pointer; color: var(--text-light); }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Countdown */
+        #countdown-container { display: none; flex-direction: column; align-items: center; justify-content: center; padding: 4rem 2rem; background: linear-gradient(135deg, rgba(5, 108, 70, 0.05), rgba(5, 108, 70, 0.15)); border-radius: var(--radius); text-align: center; }
+        .countdown-header h3 { font-size: 2rem; color: var(--primary); }
+        .cd-timer { display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center; margin-top: 20px; }
+        .cd-box { background: var(--surface); min-width: 100px; padding: 1.5rem; border-radius: 15px; box-shadow: 0 10px 25px rgba(5, 108, 70, 0.1); border-top: 5px solid var(--primary); }
+        .cd-box span { font-size: 3rem; font-weight: 700; display: block; }
+        
+        /* PDF Layout */
+        #pdf-template-container { position: absolute; top: -9999px; left: -9999px; width: 800px; background: #ffffff; z-index: -999; visibility: hidden; height: 0; overflow: hidden; }
+        .pdf-wrapper { width: 100%; padding: 40px; background: white; color: black; font-family: 'Hind Siliguri', sans-serif; border: 2px solid var(--primary); }
+        .pdf-header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid var(--primary); padding-bottom: 10px; }
+        .pdf-header img { width: 80px; } .pdf-header h1 { color: var(--primary); font-size: 24px; margin: 10px 0; }
+        .pdf-details { display: flex; justify-content: space-between; margin-bottom: 20px; }
+        .pdf-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        .pdf-table th, .pdf-table td { border: 1px solid #000; padding: 8px; text-align: left; }
+        .pdf-summary { text-align: right; font-weight: bold; }
+
+        footer { background: var(--text-main); color: white; padding: 2rem 0; text-align: center; }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; flex-direction: column; position: absolute; top: 80px; left: 0; width: 100%; background: var(--surface); padding: 20px; box-shadow: var(--shadow-md); }
+            .nav-links.active { display: flex; } .hamburger { display: block; }
+            .search-box { flex-direction: column; } .cd-box { min-width: 80px; padding: 1rem; } .cd-box span { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header (Links point back to index.html) -->
+    <header>
+        <div class="container navbar">
+            <div class="brand" onclick="window.location.href='index.html'">
+                <img src="https://i.ibb.co.com/qFRmPqgK/20260310-005555.png" crossorigin="anonymous" alt="Logo">
+                <h1>জামিয়া আরাবিয়া<br>আশরাফুল উলূম</h1>
+            </div>
+            <div class="hamburger" id="hamburger"><i class="fas fa-bars"></i></div>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html">হোম</a></li>
+                <li><a href="index.html#notice-board">নোটিশ</a></li>
+                <li><a href="index.html#about">মাদরাসা সম্পর্কে</a></li>
+                <li><a href="results.html" class="active">ফলাফল</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="page-header">
+        <div class="container">
+            <h2>কেন্দ্রীয় পরীক্ষা নিয়ন্ত্রক বোর্ড</h2>
+            <p>শিক্ষার্থীদের মেধা ও অর্জনের বিস্তারিত প্রতিবেদন</p>
+        </div>
+    </div>
+
+    <section style="padding: 0 0 5rem 0;">
+        <div class="container result-container">
+            
+            <!-- Countdown Container -->
+            <div id="countdown-container">
+                <div class="countdown-header">
+                    <h3>📢 ফলাফল প্রকাশিত হবে</h3>
+                    <p id="cd-exam-name-display">অপেক্ষা করুন...</p>
+                </div>
+                <div class="cd-timer">
+                    <div class="cd-box"><span id="cd-days">00</span><small>Days</small></div>
+                    <div class="cd-box"><span id="cd-hours">00</span><small>Hours</small></div>
+                    <div class="cd-box"><span id="cd-minutes">00</span><small>Min</small></div>
+                    <div class="cd-box"><span id="cd-seconds">00</span><small>Sec</small></div>
+                </div>
+            </div>
+
+            <!-- Result Wrapper -->
+            <div id="result-content-wrapper">
+                <div class="result-controls">
+                    <div class="search-box">
+                        <input type="text" id="search-result" placeholder="শিক্ষার্থীর নাম বা রোল নম্বর দিয়ে খুঁজুন...">
+                        <select id="filter-year" style="display:none;">
+                            <option value="all">সকল বর্ষ</option>
+                            <option value="প্রথম বর্ষ">প্রথম বর্ষ</option>
+                            <option value="দ্বিতীয় বর্ষ">দ্বিতীয় বর্ষ</option>
+                            <option value="তৃতীয় বর্ষ">তৃতীয় বর্ষ</option>
+                            <option value="চতুর্থ বর্ষ">চতুর্থ বর্ষ</option>
+                            <option value="পঞ্চম বর্ষ">পঞ্চম বর্ষ</option>
+                            <option value="ষষ্ঠ বর্ষ">ষষ্ঠ বর্ষ</option>
+                            <option value="সপ্তম বর্ষ">সপ্তম বর্ষ</option>
+                            <option value="অষ্টম বর্ষ">অষ্টম বর্ষ</option>
+                        </select>
+                    </div>
+                    <div class="class-tabs" id="class-tabs">
+                        <div class="class-tab active" data-class="all">সকল</div>
+                        <div class="class-tab" data-class="নূরানী">নূরানী</div>
+                        <div class="class-tab" data-class="হিফজ">হিফজ</div>
+                        <div class="class-tab" data-class="কিতাব বিভাগ">কিতাব বিভাগ</div>
+                        <div class="class-tab" data-class="দাওরায়ে হাদীস">দাওরায়ে হাদীস</div>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table id="result-table">
+                        <thead>
+                            <tr>
+                                <th>মেধা স্থান</th><th>রোল</th><th>শিক্ষার্থীর নাম</th><th>বিভাগ (Class)</th>
+                                <th>বিস্তারিত নম্বর</th><th>মোট নম্বর</th><th>গড়</th><th>বিভাগ (Grade)</th><th>ডাউনলোড</th>
+                            </tr>
+                        </thead>
+                        <tbody id="result-tbody">
+                            <tr><td colspan="9">ডেটা লোড হচ্ছে...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Subject Marks Modal -->
+    <div class="modal" id="subject-modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="document.getElementById('subject-modal').style.display='none'">&times;</span>
+            <h3 style="margin-bottom: 15px; color: var(--primary); text-align: center;">বিস্তারিত ফলাফল</h3>
+            <div id="subject-details-content"></div>
+        </div>
+    </div>
+
+    <!-- Hidden PDF Template -->
+    <div id="pdf-template-container">
+        <div class="pdf-wrapper" id="pdf-content">
+            <div class="pdf-header">
+                <img src="https://i.ibb.co.com/qFRmPqgK/20260310-005555.png" crossorigin="anonymous" alt="Logo">
+                <h1>জামিয়া আরাবিয়া আশরাফুল উলূম কুষ্টিয়া</h1>
+                <h3>বার্ষিক পরীক্ষার ফলাফল</h3>
+            </div>
+            <div class="pdf-details">
+                <div><p><strong>নাম:</strong> <span id="pdf-s-name"></span></p><p><strong>রোল:</strong> <span id="pdf-s-roll"></span></p></div>
+                <div><p><strong>বিভাগ:</strong> <span id="pdf-s-class"></span></p><p id="pdf-year-container" style="display:none;"><strong>বর্ষ:</strong> <span id="pdf-s-year"></span></p></div>
+            </div>
+            <table class="pdf-table">
+                <thead><tr><th style="width: 20%;">ক্রমিক</th><th style="width: 50%;">বিষয়ের নাম</th><th style="width: 30%;">প্রাপ্ত নম্বর</th></tr></thead>
+                <tbody id="pdf-s-subjects"></tbody>
+            </table>
+            <div class="pdf-summary">
+                <p>মোট: <span id="pdf-s-total"></span></p><p>গড়: <span id="pdf-s-avg"></span></p><p>ফলাফল: <span id="pdf-s-grade"></span></p>
+            </div>
+            <div style="margin-top: 20px; font-size:12px; text-align:center;">* আদব এর নম্বর মোট নম্বর এবং গড় নম্বরে যুক্ত করা হয়নি।</div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 1999 Jamia Arabia Ashraful Uloom Kushtia. All Rights Reserved [Nazmul Vai].</p>
+        </div>
+    </footer>
+
+    <!-- Firebase & Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBXBgFGqDyPiE6ZVER249FA0a91ukICO_U",
+            authDomain: "ashraful-uloom-madrasa.firebaseapp.com",
+            databaseURL: "https://ashraful-uloom-madrasa-default-rtdb.firebaseio.com",
+            projectId: "ashraful-uloom-madrasa"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        window.allResults = [];
+        window.currentFilterClass = "all";
+        window.currentFilterYear = "all";
+        window.searchTerm = "";
+        window.countdownInterval = null;
+        window.resultChartInstance = null;
+
+        // Mobile Menu
+        document.getElementById('hamburger').addEventListener('click', () => {
+            document.getElementById('nav-links').classList.toggle('active');
+        });
+
+        // Firebase Settings Fetch (Countdown)
+        onValue(ref(db, 'siteSettings/resultPublish'), (snapshot) => {
+            const data = snapshot.val();
+            if(data) { handleCountdownLogic(data); } 
+            else { document.getElementById('countdown-container').style.display = 'none'; document.getElementById('result-content-wrapper').style.display = 'block'; }
+        });
+
+        // Firebase Results Fetch
+        onValue(ref(db, 'results'), (snapshot) => {
+            const data = snapshot.val();
+            window.allResults = [];
+            if(data) {
+                Object.keys(data).forEach(key => {
+                    const r = data[key]; r.id = key;
+                    window.allResults.push(r);
+                });
+            }
+            renderResults();
+        });
+
+        // Search & Filter Listeners
+        document.getElementById('search-result').addEventListener('input', (e) => { window.searchTerm = e.target.value.toLowerCase(); renderResults(); });
+        document.getElementById('filter-year').addEventListener('change', (e) => { window.currentFilterYear = e.target.value; renderResults(); });
+        
+        document.querySelectorAll('.class-tab').forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                document.querySelectorAll('.class-tab').forEach(t => t.classList.remove('active'));
+                e.target.classList.add('active');
+                window.currentFilterClass = e.target.getAttribute('data-class');
+                window.currentFilterYear = 'all'; 
+                document.getElementById('filter-year').value = 'all';
+                document.getElementById('filter-year').style.display = (window.currentFilterClass === 'কিতাব বিভাগ') ? 'block' : 'none';
+                renderResults();
+            });
+        });
+
+        // Countdown Logic
+        function handleCountdownLogic(data) {
+            const cdContainer = document.getElementById('countdown-container');
+            const resultWrapper = document.getElementById('result-content-wrapper');
+            if(window.countdownInterval) clearInterval(window.countdownInterval);
+
+            if(!data.enabled) { cdContainer.style.display = 'none'; resultWrapper.style.display = 'block'; return; }
+
+            const publishTime = data.publishTimestamp;
+            document.getElementById('cd-exam-name-display').innerText = data.examName || "ফলাফল";
+
+            window.countdownInterval = setInterval(() => {
+                const distance = publishTime - new Date().getTime();
+                if (distance <= 0) {
+                    clearInterval(window.countdownInterval);
+                    cdContainer.style.opacity = '0';
+                    setTimeout(() => { cdContainer.style.display = 'none'; resultWrapper.style.display = 'block'; try { confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, zIndex: 9999 }); } catch(e){} }, 500);
+                    return;
+                }
+                document.getElementById('cd-days').innerText = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+                document.getElementById('cd-hours').innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+                document.getElementById('cd-minutes').innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+                document.getElementById('cd-seconds').innerText = Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0');
+                cdContainer.style.display = 'flex'; resultWrapper.style.display = 'none';
+            }, 1000);
+        }
+
+        // Render Table
+        function renderResults() {
+            const tbody = document.getElementById('result-tbody'); tbody.innerHTML = '';
+            let filtered = window.allResults.filter(r => {
+                const matchClass = window.currentFilterClass === 'all' || r.className === window.currentFilterClass;
+                let matchYear = true;
+                if(window.currentFilterClass === 'কিতাব বিভাগ' && window.currentFilterYear !== 'all') matchYear = r.year === window.currentFilterYear;
+                const matchSearch = r.name.toLowerCase().includes(window.searchTerm) || r.roll.toLowerCase().includes(window.searchTerm);
+                return matchClass && matchSearch && matchYear;
+            });
+
+            if(filtered.length === 0) { tbody.innerHTML = '<tr><td colspan="9">কোনো ফলাফল পাওয়া যায়নি।</td></tr>'; return; }
+
+            filtered.sort((a,b) => parseFloat(b.total) - parseFloat(a.total));
+
+            filtered.forEach((r, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="font-weight:bold; color:var(--primary); font-size:1.1rem;">${index + 1}</td>
+                    <td>${r.roll}</td><td>${r.name}</td>
+                    <td>${r.className} ${r.className === 'কিতাব বিভাগ' && r.year ? '('+r.year+')' : ''}</td>
+                    <td><button class="btn-view-marks" onclick="viewSubjects('${r.id}')">নম্বর দেখুন</button></td>
+                    <td>${r.total}</td><td>${r.average}</td><td class="${r.gradeClass}">${r.grade}</td>
+                    <td><button class="btn-download" onclick="downloadPDF('${r.id}')"><i class="fas fa-file-pdf"></i> PDF</button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // View Subjects & Chart
+        window.viewSubjects = (id) => {
+            const r = window.allResults.find(x => x.id === id); if(!r) return;
+            let html = `
+                <div style="margin-bottom: 20px; font-size:16px;">
+                    <p><strong>নাম:</strong> ${r.name}</p><p><strong>রোল:</strong> ${r.roll}</p><p><strong>বিভাগ:</strong> ${r.className}</p>
+                    ${r.className === 'কিতাব বিভাগ' && r.year ? `<p><strong>বর্ষ:</strong> ${r.year}</p>` : ''}
+                </div>
+                <table style="width:100%; text-align:left; border-collapse:collapse; margin-bottom:15px;">
+                    <tr><th style="padding:8px; border-bottom:2px solid #ccc;">বিষয়</th><th style="padding:8px; border-bottom:2px solid #ccc;">প্রাপ্ত নম্বর</th></tr>`;
+            r.subjects.forEach(s => { html += `<tr><td style="padding:8px; border-bottom:1px solid #eee;">${s.name}</td><td style="padding:8px; border-bottom:1px solid #eee;">${s.marks}</td></tr>`; });
+            html += `</table>
+                     <div style="text-align:right; font-size: 16px;">
+                         <p><strong>মোট নম্বর:</strong> ${r.total}</p><p><strong>গড় নম্বর:</strong> ${r.average}</p>
+                         <p><strong>ফলাফল:</strong> <span class="${r.gradeClass}">${r.grade}</span></p>
+                     </div>
+                     <div style="margin-top:25px;"><canvas id="result-chart" height="200"></canvas></div>`;
+            
+            document.getElementById('subject-details-content').innerHTML = html;
+            document.getElementById('subject-modal').style.display = 'flex';
+            
+            setTimeout(() => {
+                if(window.resultChartInstance) window.resultChartInstance.destroy();
+                const ctx = document.getElementById('result-chart').getContext('2d');
+                const chartSubjects = r.subjects.filter(s => s.name !== 'আদব' && s.name.toLowerCase() !== 'adab');
+                window.resultChartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: { labels: chartSubjects.map(s => s.name), datasets: [{ label: 'প্রাপ্ত নম্বর', data: chartSubjects.map(s => parseFloat(s.marks)), backgroundColor: chartSubjects.map(s => parseFloat(s.marks) >= 80 ? '#22c55e' : (parseFloat(s.marks) < 33 ? '#ef4444' : '#3b82f6')), borderRadius: 4 }] },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, suggestedMax: 100 } } }
+                });
+            }, 50);
+        };
+
+        // PDF Generation
+        window.downloadPDF = (id) => {
+            const r = window.allResults.find(x => x.id === id); if(!r) return;
+            document.getElementById('pdf-s-name').innerText = r.name; document.getElementById('pdf-s-roll').innerText = r.roll; document.getElementById('pdf-s-class').innerText = r.className;
+            if(r.className === 'কিতাব বিভাগ' && r.year) { document.getElementById('pdf-s-year').innerText = r.year; document.getElementById('pdf-year-container').style.display = 'block'; } else document.getElementById('pdf-year-container').style.display = 'none';
+            const tbody = document.getElementById('pdf-s-subjects'); tbody.innerHTML = '';
+            r.subjects.forEach((s, idx) => { tbody.innerHTML += `<tr><td>${idx+1}</td><td>${s.name}</td><td>${s.marks}</td></tr>`; });
+            document.getElementById('pdf-s-total').innerText = r.total; document.getElementById('pdf-s-avg').innerText = r.average;
+            const gradeEl = document.getElementById('pdf-s-grade'); gradeEl.innerText = r.grade; gradeEl.style.color = (r.grade === 'রাসিব') ? 'red' : 'black';
+            
+            const element = document.getElementById('pdf-content');
+            setTimeout(() => { html2pdf().set({ margin: 10, filename: `Result_${r.roll}_${r.name}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2, useCORS: true }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } }).from(element).save(); }, 200);
+        };
+    </script>
+</body>
+</html>
