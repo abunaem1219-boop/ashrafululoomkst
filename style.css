@@ -727,16 +727,22 @@ body {
     left: 0;
     right: 0;
     height: calc(58px + env(safe-area-inset-bottom));
-    background-color: rgba(255, 255, 255, 0.96); /* সেমি-ট্রান্সপারেন্ট ব্যাকগ্রাউন্ড */
-    backdrop-filter: blur(12px); /* আধুনিক আবছা ব্লার ইফেক্ট */
+    background-color: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     display: flex;
     justify-content: space-around;
     align-items: center;
-    box-shadow: 0 -3px 14px rgba(0, 0, 0, 0.05); /* ওপরের দিকে হালকা শ্যাডো */
+    box-shadow: 0 -3px 14px rgba(0, 0, 0, 0.05);
     border-top: 1px solid rgba(0, 0, 0, 0.06);
     z-index: 9999;
-    padding-bottom: env(safe-area-inset-bottom); /* মোবাইলের নিচের নেভিগেশন সেফ এরিয়া */
+    padding-bottom: env(safe-area-inset-bottom);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* স্মুথ সাইড-ডাউন অ্যানিমেশনের জন্য */
+}
+
+/* স্ক্রল ডাউনের সময় মেনু হাইড করার প্রফেশনাল ক্লাস */
+.bottom-nav-hidden {
+    transform: translateY(100%) !important;
 }
 
 .bottom-nav-item {
