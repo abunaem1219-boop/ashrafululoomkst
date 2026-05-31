@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#056C46">
+    <title>মাদরাসা সম্পর্কে — জামিয়া আরাবিয়া আশরাফুল উলূম কুষ্টিয়া</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Noto+Sans+Bengali:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .about-hero-img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 2rem;
+        }
+        .about-section-box {
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-left: 5px solid var(--primary);
+        }
+        .about-section-box h3 {
+            color: var(--primary);
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .about-section-box p {
+            color: var(--text-main);
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+        .dept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 15px;
+            margin-top: 1rem;
+        }
+        .dept-card {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: white;
+            border-radius: var(--radius);
+            padding: 1.2rem;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        .dept-card i {
+            display: block;
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            opacity: 0.9;
+        }
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 15px;
+            margin: 2rem 0;
+        }
+        .stat-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            border-top: 4px solid var(--primary);
+        }
+        .stat-card .stat-num {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1;
+        }
+        .stat-card .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Page Transition Overlay -->
+<div id="page-transition-overlay">
+    <div class="glass-loader-card">
+        <div class="glass-spinner-wrap">
+            <div class="glass-spinner-ring"></div>
+            <img class="glass-spinner-logo" src="https://i.ibb.co.com/qFRmPqgK/20260310-005555.png" alt="Logo" crossorigin="anonymous">
+        </div>
+    </div>
+</div>
+<div id="main-wrapper">
+
+<!-- Header -->
+    <header>
+        <div class="container navbar">
+            <div class="brand" id="brand-logo" onclick="navigateTo('index.html')">
+                <img src="https://i.ibb.co.com/qFRmPqgK/20260310-005555.png" crossorigin="anonymous" alt="Logo">
+                <h1>জামিয়া আরাবিয়া<br>আশরাফুল উলূম কুষ্টিয়া</h1>
+            </div>
+            <div class="hamburger" id="hamburger"><i class="fas fa-bars"></i></div>
+            
+            <div class="nav-links" id="nav-links">
+                <!-- ড্রয়ার হেডার -->
+                <div class="drawer-header">
+                    <img src="https://i.ibb.co.com/qFRmPqgK/20260310-005555.png" alt="Logo" crossorigin="anonymous">
+                    <div class="drawer-header-info">
+                        <h3>জামিয়া আরাবিয়া আশরাফুল উলূম</h3>
+                        <p>কুষ্টিয়া, বাংলাদেশ</p>
+                    </div>
+                </div>
+
+                <!-- ড্রয়ারের অপশন তালিকা -->
+                <ul class="drawer-menu">
+                    <li class="only-mobile"><a href="#" onclick="Swal.fire({title: 'ইউজার প্রোফাইল', text: 'লগইন এবং প্রোফাইল সেকশনটি পরবর্তী আপডেটে যুক্ত করা হবে!', icon: 'info', confirmButtonColor: '#056C46'})"><i class="fas fa-user-circle"></i> প্রোফাইল</a></li>
+                    <li><a href="index.html#contact"><i class="fas fa-address-book"></i> যোগাযোগ করুন</a></li>
+                    <li class="only-mobile"><a href="#" onclick="Swal.fire({title: 'প্রাইভেসি পলিসি', text: 'মাদরাসার সকল ডেটা ও ব্যবহারকারীর তথ্য এনক্রিপ্ট পদ্ধতিতে সুরক্ষিত থাকে।', icon: 'success', confirmButtonColor: '#056C46'})"><i class="fas fa-shield-alt"></i> প্রাইভেসি পলিসি</a></li>
+                    <li class="only-mobile"><a href="#" onclick="navigator.share ? navigator.share({title: 'জামিয়া আরাবিয়া', url: window.location.href}) : Swal.fire({title: 'লিংক কপি করুন', text: window.location.href, icon: 'success'})"><i class="fas fa-share-alt"></i> শেয়ার করুন</a></li>
+                    <li><a href="about.html"><i class="fas fa-info-circle"></i> মাদরাসা সম্পর্কে</a></li>
+                </ul>
+
+                <!-- ড্রয়ার ফুটার (ভার্সন কোড) -->
+                <div class="drawer-footer">
+                    <p>ভার্সন ১.০.০ (Build 2026)</p>
+                </div>
+            </div> <!-- nav-links এর শেষ ট্যাগ -->
+        </div> <!-- container navbar এর শেষ ট্যাগ -->
+    </header>
+
+<!-- Page Hero -->
+<div class="page-hero">
+    <div class="container">
+        <button class="back-btn" onclick="navigateTo('index.html')">
+            <i class="fas fa-arrow-left"></i> হোমে ফিরুন
+        </button>
+        <h2><i class="fas fa-university" style="margin-right:10px;"></i>মাদরাসা সম্পর্কে</h2>
+        <p>জামিয়া আরাবিয়া আশরাফুল উলূম কুষ্টিয়ার বিস্তারিত পরিচিতি</p>
+    </div>
+</div>
+
+<!-- Content -->
+<section style="padding-top:3rem;">
+    <div class="container">
+
+        <!-- Hero Image -->
+        <img src="https://i.ibb.co.com/ycd9T2PK/IMG-20260311-233709.png"
+             alt="জামিয়া আরাবিয়া" class="about-hero-img"
+             crossorigin="anonymous" data-aos="fade-up">
+
+        <!-- Quick Stats -->
+        <div class="stats-row" data-aos="fade-up">
+            <div class="stat-card">
+                <div class="stat-num">১৯৯৯</div>
+                <div class="stat-label">প্রতিষ্ঠা সাল</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num" id="stats-depts">৪+</div>
+                <div class="stat-label">বিভাগ</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num">২৫+</div>
+                <div class="stat-label">বছরের অভিজ্ঞতা</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num">১০০%</div>
+                <div class="stat-label">ইসলামী শিক্ষা</div>
+            </div>
+        </div>
+
+        <!-- Location -->
+        <div class="about-section-box" data-aos="fade-up">
+            <h3><i class="fas fa-map-marker-alt"></i> অবস্থান</h3>
+            <p id="info-location">কুষ্টিয়া সদর, কুষ্টিয়া, বাংলাদেশ</p>
+        </div>
+
+        <!-- Founding Year -->
+        <div class="about-section-box" data-aos="fade-up">
+            <h3><i class="fas fa-calendar-check"></i> প্রতিষ্ঠা সাল</h3>
+            <p id="info-year">১৯৯৯ সালে প্রতিষ্ঠিত</p>
+        </div>
+
+        <!-- Departments -->
+        <div class="about-section-box" data-aos="fade-up">
+            <h3><i class="fas fa-book-open"></i> বিভাগসমূহ</h3>
+            <p id="info-depts-text" style="margin-bottom:1rem;">নূরানী, হিফজ, কিতাব বিভাগ ও দাওরায়ে হাদীস</p>
+            <div class="dept-grid">
+                <div class="dept-card"><i class="fas fa-star-and-crescent"></i>নূরানী বিভাগ</div>
+                <div class="dept-card"><i class="fas fa-quran"></i>হিফজুল কুরআন</div>
+                <div class="dept-card"><i class="fas fa-graduation-cap"></i>কিতাব বিভাগ</div>
+                <div class="dept-card"><i class="fas fa-certificate"></i>দাওরায়ে হাদীস</div>
+            </div>
+        </div>
+
+        <!-- Goals -->
+        <div class="about-section-box" data-aos="fade-up">
+            <h3><i class="fas fa-bullseye"></i> লক্ষ্য ও উদ্দেশ্য</h3>
+            <p id="info-goals">আদর্শ ইসলামী সমাজ গঠন ও দক্ষ আলিম তৈরি করা।</p>
+        </div>
+
+        <!-- Contact -->
+        <div class="about-section-box" data-aos="fade-up" style="border-left-color:#3b82f6;">
+            <h3 style="color:#3b82f6;"><i class="fas fa-phone-alt"></i> যোগাযোগ করুন</h3>
+            <p><i class="fas fa-map-marker-alt" style="color:var(--primary);margin-right:8px;"></i> ঠিকানা: কুষ্টিয়া সদর, কুষ্টিয়া, বাংলাদেশ</p>
+            <p style="margin-top:8px;"><i class="fas fa-phone" style="color:var(--primary);margin-right:8px;"></i> মোবাইল: +880 1775-431464</p>
+            <p style="margin-top:8px;"><i class="fas fa-envelope" style="color:var(--primary);margin-right:8px;"></i> ইমেইল: info@ashraful-uloom.com</p>
+        </div>
+
+        <!-- More Links -->
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:3rem;" data-aos="fade-up">
+            <button class="btn btn-primary-small" onclick="navigateTo('teachers.html')">
+                <i class="fas fa-users"></i> শিক্ষকবৃন্দ দেখুন
+            </button>
+            <button class="btn btn-primary-small" onclick="navigateTo('gallery.html')">
+                <i class="fas fa-images"></i> গ্যালারি দেখুন
+            </button>
+        </div>
+
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="footer-content">
+            <div>
+                <h2 style="color:var(--primary-light);margin-bottom:1rem;">জামিয়া আরাবিয়া আশরাফুল উলূম কুষ্টিয়া</h2>
+                <p><i class="fas fa-map-marker-alt"></i> ঠিকানা: কুষ্টিয়া সদর, কুষ্টিয়া</p>
+                <p><i class="fas fa-phone"></i> মোবাইল: +880 1775-431464</p>
+            </div>
+            <div>
+                <h3 style="margin-bottom:1rem;">লিংক</h3>
+                <ul style="line-height:2;">
+                    <li><a href="index.html">হোম</a></li>
+                    <li><a href="notice.html">নোটিশ</a></li>
+                    <li><a href="results.html">ফলাফল</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 1999 Jamia Arabia Ashraful Uloom Kushtia. All Rights Reserved.</p>
+        </div>
+    </div>
+</footer>
+
+</div><!-- /main-wrapper -->
+
+<!-- Bottom Navigation -->
+<nav class="bottom-nav" id="bottom-nav" role="navigation">
+    <button class="bottom-nav-item" onclick="handleNavClick('index.html', this)" aria-label="হোম">
+        <span class="nav-icon"><i class="fas fa-home"></i></span>
+        <span class="nav-label">হোম</span>
+    </button>
+    <button class="bottom-nav-item" onclick="handleNavClick('notice.html', this)" aria-label="নোটিশ">
+        <span class="nav-icon"><i class="fas fa-bell"></i></span>
+        <span class="nav-label">নোটিশ</span>
+    </button>
+    <button class="bottom-nav-item" onclick="handleNavClick('results.html', this)" aria-label="ফলাফল">
+        <span class="nav-icon"><i class="fas fa-graduation-cap"></i></span>
+        <span class="nav-label">ফলাফল</span>
+    </button>
+    <button class="bottom-nav-item" onclick="handleNavClick('gallery.html', this)" aria-label="গ্যালারি">
+        <span class="nav-icon"><i class="fas fa-images"></i></span>
+        <span class="nav-label">গ্যালারি</span>
+    </button>
+    <button class="bottom-nav-item" onclick="handleNavClick('teachers.html', this)" aria-label="শিক্ষকবৃন্দ">
+        <span class="nav-icon"><i class="fas fa-users"></i></span>
+        <span class="nav-label">শিক্ষকবৃন্দ</span>
+    </button>
+</nav>
+
+<!-- Firebase -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+    const app = initializeApp({
+        apiKey:"AIzaSyBXBgFGqDyPiE6ZVER249FA0a91ukICO_U",
+        authDomain:"ashraful-uloom-madrasa.firebaseapp.com",
+        databaseURL:"https://ashraful-uloom-madrasa-default-rtdb.firebaseio.com",
+        projectId:"ashraful-uloom-madrasa",
+        storageBucket:"ashraful-uloom-madrasa.firebasestorage.app",
+        messagingSenderId:"180777617285",
+        appId:"1:180777617285:web:f4ab13a6a2aa0d6cda66ec"
+    });
+    const db = getDatabase(app);
+    onValue(ref(db, 'info'), (snap) => {
+        const d = snap.val();
+        if(d) {
+            const set = (id, v) => { const el = document.getElementById(id); if(el) el.innerText = v||''; };
+            set('info-location', d.location);
+            set('info-year', d.year);
+            set('info-depts', d.depts);
+            set('info-depts-text', d.depts);
+            set('info-goals', d.goals);
+        }
+    });
+</script>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>document.addEventListener('DOMContentLoaded', () => AOS.init({ duration:700, once:true, offset:80 }));</script>
+<script>
+function navigateTo(url) {
+    if(window.location.href.includes(url.split('#')[0])) return;
+    const ov = document.getElementById('page-transition-overlay');
+    if(ov) { 
+        ov.classList.remove('loaded'); /* স্পিনার আবার চালু করুন */
+        setTimeout(() => { window.location.href = url; }, 250); 
+    } else { 
+        window.location.href = url; 
+    }
+}
+
+// পেজ লোড সম্পন্ন হলে স্পিনারটি আড়াল করার ট্রিগার
+document.addEventListener('DOMContentLoaded', () => {
+    const ov = document.getElementById('page-transition-overlay');
+    if(ov) {
+        // সামান্য ডিলে দিয়ে হাইড করলে ট্রানজিশনটি চোখের পলকে অত্যন্ত প্রিমিয়াম লাগে
+        setTimeout(() => {
+            ov.classList.add('loaded');
+        }, 120);
+    }
+});
+function handleNavClick(url, el) {
+    const rip = document.createElement('span'); rip.className = 'ripple-circle';
+    el.appendChild(rip); setTimeout(() => { if(rip.parentNode) rip.parentNode.removeChild(rip); }, 550);
+    navigateTo(url);
+}
+document.addEventListener('DOMContentLoaded', function() {
+    const ham = document.getElementById('hamburger');
+    const nav = document.getElementById('nav-links');
+    if(ham && nav) {
+        ham.addEventListener('click', (e) => {
+            e.stopPropagation();
+            nav.classList.toggle('active');
+            document.body.classList.toggle('drawer-open');
+        });
+
+        // ড্রয়ারের বাইরে ক্লিক করলে ড্রয়ার বন্ধ হওয়ার নেটিভ ফিচার
+        document.addEventListener('click', (e) => {
+            if(!nav.contains(e.target) && !ham.contains(e.target)) {
+                nav.classList.remove('active');
+                document.body.classList.remove('drawer-open');
+            }
+        });
+    }
+});
+// ===== BOTTOM NAV AUTO-HIDE ON SCROLL (Native Android Feel) =====
+let lastScrollY = window.scrollY;
+window.addEventListener('scroll', () => {
+    const bottomNav = document.getElementById('bottom-nav');
+    if (!bottomNav) return;
+    
+    const currentScrollY = window.scrollY;
+    
+    // পেজের একদম নিচে পৌঁছালে স্বয়ংক্রিয়ভাবে মেনুবার ভেসে উঠবে (Pro UX Feature)
+    const isAtBottom = (window.innerHeight + window.scrollY) >= (document.documentElement.scrollHeight - 30);
+    
+    if (isAtBottom) {
+        bottomNav.classList.remove('bottom-nav-hidden');
+    } else if (currentScrollY > lastScrollY && currentScrollY > 80) {
+        // নিচে স্ক্রল করলে হাইড হবে
+        bottomNav.classList.add('bottom-nav-hidden');
+    } else {
+        // ওপরে স্ক্রল করলে ভেসে উঠবে
+        bottomNav.classList.remove('bottom-nav-hidden');
+    }
+    
+    lastScrollY = currentScrollY;
+}, { passive: true });
+</script>
+
+</body>
+</html>

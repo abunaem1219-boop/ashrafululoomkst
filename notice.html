@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#056C46">
+    <title>নোটিশ বোর্ড — জামিয়া আরাবিয়া আশরাফুল উলূম কুষ্টিয়া</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Noto+Sans+Bengali:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+
+    <!-- Shared CSS -->
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .notice-filter-bar {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            justify-content: center;
+        }
+        .filter-btn {
+            padding: 8px 20px;
+            border-radius: 50px;
+            border: 2px solid var(--primary);
+            background: transparent;
+            color: var(--primary);
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            font-family: 'Hind Siliguri', sans-serif;
+        }
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+        .notice-count-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px; height: 22px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-left: 6px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Page Transition Overlay -->
+<div id="page-transition-overlay">
+    <div class="glass-loader-card">
+        <div class="glass-spinner-wrap">
+            <div class="glass-spinner-ring"></div>
+            <img class="glass-spinner-logo" src="https://i.ibb.co.com/qFRmPqgK/20260310-005555.png" alt="Logo" crossorigin="anonymous">
+        </div>
+    </div>
+</div>
+
+<div id="main-wrapper">
+
+<!-- Header -->
+    <header>
+        <div class="container navbar">
+            <div class="brand" id="brand-logo" onclick="navigateTo('index.html')">
+                <img src="https://i.ibb.co.com/qFRmPqgK/20260310-005555.png" crossorigin="anonymous" alt="Logo">
+                <h1>জামিয়া আরাবিয়া<br>আশরাফুল উলূম কুষ্টিয়া</h1>
+            </div>
+            <div class="hamburger" id="hamburger"><i class="fas fa-bars"></i></div>
+            
+            <div class="nav-links" id="nav-links">
+                <!-- ড্রয়ার হেডার -->
+                <div class="drawer-header">
+                    <img src="https://i.ibb.co.com/qFRmPqgK/20260310-005555.png" alt="Logo" crossorigin="anonymous">
+                    <div class="drawer-header-info">
+                        <h3>জামিয়া আরাবিয়া আশরাফুল উলূম</h3>
+                        <p>কুষ্টিয়া, বাংলাদেশ</p>
+                    </div>
+                </div>
+
+                <!-- ড্রয়ারের অপশন তালিকা -->
+                <ul class="drawer-menu">
+                    <li class="only-mobile"><a href="#" onclick="Swal.fire({title: 'ইউজার প্রোফাইল', text: 'লগইন এবং প্রোফাইল সেকশনটি পরবর্তী আপডেটে যুক্ত করা হবে!', icon: 'info', confirmButtonColor: '#056C46'})"><i class="fas fa-user-circle"></i> প্রোফাইল</a></li>
+                    <li><a href="index.html#contact"><i class="fas fa-address-book"></i> যোগাযোগ করুন</a></li>
+                    <li class="only-mobile"><a href="#" onclick="Swal.fire({title: 'প্রাইভেসি পলিসি', text: 'মাদরাসার সকল ডেটা ও ব্যবহারকারীর তথ্য এনক্রিপ্ট পদ্ধতিতে সুরক্ষিত থাকে।', icon: 'success', confirmButtonColor: '#056C46'})"><i class="fas fa-shield-alt"></i> প্রাইভেসি পলিসি</a></li>
+                    <li class="only-mobile"><a href="#" onclick="navigator.share ? navigator.share({title: 'জামিয়া আরাবিয়া', url: window.location.href}) : Swal.fire({title: 'লিংক কপি করুন', text: window.location.href, icon: 'success'})"><i class="fas fa-share-alt"></i> শেয়ার করুন</a></li>
+                    <li><a href="about.html"><i class="fas fa-info-circle"></i> মাদরাসা সম্পর্কে</a></li>
+                </ul>
+
+                <!-- ড্রয়ার ফুটার (ভার্সন কোড) -->
+                <div class="drawer-footer">
+                    <p>ভার্সন ১.০.০ (Build 2026)</p>
+                </div>
+            </div> <!-- nav-links এর শেষ ট্যাগ -->
+        </div> <!-- container navbar এর শেষ ট্যাগ -->
+    </header>
+
+<!-- Page Hero -->
+<div class="page-hero">
+    <div class="container">
+        <button class="back-btn" onclick="navigateTo('index.html')">
+            <i class="fas fa-arrow-left"></i> হোমে ফিরুন
+        </button>
+        <h2><i class="fas fa-bell" style="margin-right:10px;"></i>নোটিশ বোর্ড</h2>
+        <p>সর্বশেষ বিজ্ঞপ্তি, পরীক্ষার সূচি ও ছুটির তালিকা</p>
+    </div>
+</div>
+
+<!-- Notice Board Section -->
+<section id="notice-board" style="padding-top:3rem;">
+    <div class="container">
+
+        <!-- Filter Buttons -->
+        <div class="notice-filter-bar" data-aos="fade-up">
+            <button class="filter-btn active" onclick="filterNotices('all', this)">
+                <i class="fas fa-list"></i> সকল
+                <span class="notice-count-badge" id="count-all">0</span>
+            </button>
+            <button class="filter-btn" onclick="filterNotices('important', this)">
+                <i class="fas fa-exclamation-circle"></i> জরুরী
+                <span class="notice-count-badge" id="count-important">0</span>
+            </button>
+            <button class="filter-btn" onclick="filterNotices('announcement', this)">
+                <i class="fas fa-bullhorn"></i> ঘোষণা
+                <span class="notice-count-badge" id="count-announcement">0</span>
+            </button>
+            <button class="filter-btn" onclick="filterNotices('exam', this)">
+                <i class="fas fa-pen-nib"></i> পরীক্ষা
+                <span class="notice-count-badge" id="count-exam">0</span>
+            </button>
+            <button class="filter-btn" onclick="filterNotices('holiday', this)">
+                <i class="fas fa-calendar-times"></i> ছুটি
+                <span class="notice-count-badge" id="count-holiday">0</span>
+            </button>
+        </div>
+
+        <!-- Notices Grid -->
+        <div class="notice-grid" id="all-notices-container" data-aos="fade-up">
+            <div style="text-align:center;width:100%;padding:3rem;color:var(--text-light);">
+                <i class="fas fa-spinner fa-spin" style="font-size:2rem;"></i>
+                <p style="margin-top:1rem;">লোড হচ্ছে...</p>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- Notice Detail Modal -->
+<div class="modal" id="notice-modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModal('notice-modal')">&times;</span>
+        <div id="notice-details-content"></div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer data-aos="fade-up" data-aos-offset="50">
+    <div class="container">
+        <div class="footer-content">
+            <div>
+                <h2 style="color:var(--primary-light);margin-bottom:1rem;">জামিয়া আরাবিয়া আশরাফুল উলূম কুষ্টিয়া</h2>
+                <p><i class="fas fa-map-marker-alt"></i> ঠিকানা: কুষ্টিয়া সদর, কুষ্টিয়া</p>
+                <p><i class="fas fa-phone"></i> মোবাইল: +880 1775-431464</p>
+            </div>
+            <div>
+                <h3 style="margin-bottom:1rem;">গুরুত্বপূর্ণ লিংক</h3>
+                <ul style="line-height:2;">
+                    <li><a href="index.html">হোম</a></li>
+                    <li><a href="notice.html">নোটিশ বোর্ড</a></li>
+                    <li><a href="results.html">ফলাফল</a></li>
+                    <li><a href="gallery.html">গ্যালারি</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 1999 Jamia Arabia Ashraful Uloom Kushtia. All Rights Reserved.</p>
+        </div>
+    </div>
+</footer>
+
+</div><!-- /main-wrapper -->
+
+<!-- Bottom Navigation -->
+<nav class="bottom-nav" id="bottom-nav" role="navigation" aria-label="মূল নেভিগেশন">
+    <button class="bottom-nav-item" id="bnav-home" onclick="handleNavClick('index.html', this)" aria-label="হোম">
+        <span class="nav-icon"><i class="fas fa-home"></i></span>
+        <span class="nav-label">হোম</span>
+    </button>
+    <button class="bottom-nav-item active" id="bnav-notice" onclick="handleNavClick('notice.html', this)" aria-label="নোটিশ">
+        <span class="nav-icon"><i class="fas fa-bell"></i></span>
+        <span class="nav-label">নোটিশ</span>
+    </button>
+    <button class="bottom-nav-item" id="bnav-results" onclick="handleNavClick('results.html', this)" aria-label="ফলাফল">
+        <span class="nav-icon"><i class="fas fa-graduation-cap"></i></span>
+        <span class="nav-label">ফলাফল</span>
+    </button>
+    <button class="bottom-nav-item" id="bnav-gallery" onclick="handleNavClick('gallery.html', this)" aria-label="গ্যালারি">
+        <span class="nav-icon"><i class="fas fa-images"></i></span>
+        <span class="nav-label">গ্যালারি</span>
+    </button>
+    <button class="bottom-nav-item" id="bnav-info" onclick="handleNavClick('teachers.html', this)" aria-label="শিক্ষকবৃন্দ">
+        <span class="nav-icon"><i class="fas fa-users"></i></span>
+        <span class="nav-label">শিক্ষকবৃন্দ</span>
+    </button>
+</nav>
+
+<!-- Firebase -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyBXBgFGqDyPiE6ZVER249FA0a91ukICO_U",
+        authDomain: "ashraful-uloom-madrasa.firebaseapp.com",
+        databaseURL: "https://ashraful-uloom-madrasa-default-rtdb.firebaseio.com",
+        projectId: "ashraful-uloom-madrasa",
+        storageBucket: "ashraful-uloom-madrasa.firebasestorage.app",
+        messagingSenderId: "180777617285",
+        appId: "1:180777617285:web:f4ab13a6a2aa0d6cda66ec"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    window.allNotices = [];
+    window.currentFilter = 'all';
+
+    onValue(ref(db, 'notices'), (snap) => {
+        const data = snap.val();
+        window.allNotices = [];
+        if(data) {
+            Object.keys(data).forEach(key => {
+                const n = data[key]; n.id = key;
+                window.allNotices.push(n);
+            });
+            window.allNotices.sort((a,b) => new Date(b.date) - new Date(a.date));
+        }
+        updateCounts();
+        renderNotices(window.currentFilter);
+    });
+
+    function updateCounts() {
+        const all = window.allNotices;
+        const setCount = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
+        setCount('count-all', all.length);
+        setCount('count-important', all.filter(n => n.important).length);
+        setCount('count-announcement', all.filter(n => n.type === 'announcement').length);
+        setCount('count-exam', all.filter(n => n.type === 'exam').length);
+        setCount('count-holiday', all.filter(n => n.type === 'holiday').length);
+    }
+
+    function renderNotices(filter) {
+        const container = document.getElementById('all-notices-container');
+        if(!container) return;
+        let list = window.allNotices;
+        if(filter === 'important') list = list.filter(n => n.important);
+        else if(filter !== 'all') list = list.filter(n => n.type === filter);
+
+        if(list.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state" style="grid-column:1/-1;">
+                    <i class="fas fa-bell-slash"></i>
+                    <p>এই বিভাগে কোনো নোটিশ নেই।</p>
+                </div>`;
+            return;
+        }
+        container.innerHTML = list.map(n => createNoticeCard(n)).join('');
+    }
+
+    function createNoticeCard(notice) {
+        let typeText = notice.type === 'exam' ? 'পরীক্ষা' : (notice.type === 'holiday' ? 'ছুটি' : 'ঘোষণা');
+        let importantBadgeHtml = notice.important ? `<div class="notice-badge important-badge"><i class="fas fa-exclamation-circle"></i> জরুরী</div>` : '';
+        let importantClass = notice.important ? 'important' : '';
+        return `
+            <div class="notice-card ${importantClass}" onclick="viewNotice('${notice.id}')">
+                <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;">
+                    ${importantBadgeHtml}
+                    <div class="notice-badge ${notice.type}">${typeText}</div>
+                </div>
+                <h4 class="notice-title">${notice.title}</h4>
+                <p class="notice-date"><i class="fas fa-calendar-alt"></i> ${notice.date}</p>
+                <div class="notice-read-more">বিস্তারিত পড়ুন <i class="fas fa-arrow-right"></i></div>
+            </div>`;
+    }
+
+    window.filterNotices = (filter, btn) => {
+        window.currentFilter = filter;
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        if(btn) btn.classList.add('active');
+        renderNotices(filter);
+    };
+
+    window.viewNotice = (id) => {
+        const notice = window.allNotices.find(n => n.id === id);
+        if(!notice) return;
+        let attachHtml = notice.attachment ? `<a href="${notice.attachment}" target="_blank" class="btn btn-primary" style="margin-top:20px;text-decoration:none;"><i class="fas fa-download"></i> ফাইল দেখুন</a>` : '';
+        const detCont = document.getElementById('notice-details-content');
+        if(detCont) {
+            detCont.innerHTML = `
+                <div style="border-bottom:2px solid var(--border);padding-bottom:15px;margin-bottom:15px;">
+                    <h2 style="color:var(--primary);font-size:1.5rem;line-height:1.4;">${notice.title}</h2>
+                    <p style="color:var(--text-light);font-size:0.9rem;margin-top:5px;"><i class="fas fa-calendar-alt"></i> প্রকাশিত: ${notice.date}</p>
+                </div>
+                <div style="font-size:1.05rem;white-space:pre-wrap;color:var(--text-main);line-height:1.8;">${notice.description}</div>
+                ${attachHtml}`;
+            openModal('notice-modal');
+        }
+    };
+
+    window.openModal = (id) => { const el = document.getElementById(id); if(el) el.style.display='flex'; };
+    window.closeModal = (id) => { const el = document.getElementById(id); if(el) el.style.display='none'; };
+</script>
+
+<!-- AOS -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>document.addEventListener('DOMContentLoaded', () => AOS.init({ duration:700, once:true, offset:80 }));</script>
+
+<script>
+function navigateTo(url) {
+    if(window.location.href.includes(url.split('#')[0])) return;
+    const ov = document.getElementById('page-transition-overlay');
+    if(ov) { 
+        ov.classList.remove('loaded'); /* স্পিনার আবার চালু করুন */
+        setTimeout(() => { window.location.href = url; }, 250); 
+    } else { 
+        window.location.href = url; 
+    }
+}
+
+// পেজ লোড সম্পন্ন হলে স্পিনারটি আড়াল করার ট্রিগার
+document.addEventListener('DOMContentLoaded', () => {
+    const ov = document.getElementById('page-transition-overlay');
+    if(ov) {
+        // সামান্য ডিলে দিয়ে হাইড করলে ট্রানজিশনটি চোখের পলকে অত্যন্ত প্রিমিয়াম লাগে
+        setTimeout(() => {
+            ov.classList.add('loaded');
+        }, 120);
+    }
+});
+function handleNavClick(url, el) {
+    const rip = document.createElement('span'); rip.className = 'ripple-circle';
+    el.appendChild(rip); setTimeout(() => { if(rip.parentNode) rip.parentNode.removeChild(rip); }, 550);
+    navigateTo(url);
+}
+document.addEventListener('DOMContentLoaded', function() {
+    const ham = document.getElementById('hamburger');
+    const nav = document.getElementById('nav-links');
+    if(ham && nav) {
+        ham.addEventListener('click', (e) => {
+            e.stopPropagation();
+            nav.classList.toggle('active');
+            document.body.classList.toggle('drawer-open');
+        });
+
+        // ড্রয়ারের বাইরে ক্লিক করলে ড্রয়ার বন্ধ হওয়ার নেটিভ ফিচার
+        document.addEventListener('click', (e) => {
+            if(!nav.contains(e.target) && !ham.contains(e.target)) {
+                nav.classList.remove('active');
+                document.body.classList.remove('drawer-open');
+            }
+        });
+    }
+    document.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => { const n = document.getElementById('nav-links'); if(n) n.classList.remove('active'); }));
+});
+// ===== BOTTOM NAV AUTO-HIDE ON SCROLL (Native Android Feel) =====
+let lastScrollY = window.scrollY;
+window.addEventListener('scroll', () => {
+    const bottomNav = document.getElementById('bottom-nav');
+    if (!bottomNav) return;
+    
+    const currentScrollY = window.scrollY;
+    
+    // পেজের একদম নিচে পৌঁছালে স্বয়ংক্রিয়ভাবে মেনুবার ভেসে উঠবে (Pro UX Feature)
+    const isAtBottom = (window.innerHeight + window.scrollY) >= (document.documentElement.scrollHeight - 30);
+    
+    if (isAtBottom) {
+        bottomNav.classList.remove('bottom-nav-hidden');
+    } else if (currentScrollY > lastScrollY && currentScrollY > 80) {
+        // নিচে স্ক্রল করলে হাইড হবে
+        bottomNav.classList.add('bottom-nav-hidden');
+    } else {
+        // ওপরে স্ক্রল করলে ভেসে উঠবে
+        bottomNav.classList.remove('bottom-nav-hidden');
+    }
+    
+    lastScrollY = currentScrollY;
+}, { passive: true });
+</script>
+</body>
+</html>

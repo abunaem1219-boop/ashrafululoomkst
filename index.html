@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#056C46">
+    <link rel="apple-touch-icon" href="https://i.ibb.co.com/Rp1mmvLf/20260310-005555.png">
+    <title>জামিয়া আরাবিয়া আশরাফুল উলূম কুষ্টিয়া</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Noto+Sans+Bengali:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Swiper -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- AOS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+
+    <!-- Shared CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Page Transition Overlay (Home page default loaded) -->
+<div id="page-transition-overlay">
+    <div class="glass-loader-card">
+        <div class="glass-spinner-wrap">
+            <div class="glass-spinner-ring"></div>
+            <img class="glass-spinner-logo" src="https://i.ibb.co.com/qFRmPqgK/20260310-005555.png" alt="Logo" crossorigin="anonymous">
+        </div>
+    </div>
+</div>
+
+<div id="main-wrapper">
+
+<!-- Header -->
+    <header>
+        <div class="container navbar">
+            <div class="brand" id="brand-logo" onclick="navigateTo('index.html')">
+                <img src="https://i.ibb.co.com/qFRmPqgK/20260310-005555.png" crossorigin="anonymous" alt="Logo">
+                <h1>জামিয়া আরাবিয়া<br>আশরাফুল উলূম কুষ্টিয়া</h1>
+            </div>
+            <div class="hamburger" id="hamburger"><i class="fas fa-bars"></i></div>
+            
+            <div class="nav-links" id="nav-links">
+                <!-- ড্রয়ার হেডার -->
+                <div class="drawer-header">
+                    <img src="https://i.ibb.co.com/qFRmPqgK/20260310-005555.png" alt="Logo" crossorigin="anonymous">
+                    <div class="drawer-header-info">
+                        <h3>জামিয়া আরাবিয়া আশরাফুল উলূম</h3>
+                        <p>কুষ্টিয়া, বাংলাদেশ</p>
+                    </div>
+                </div>
+
+                <!-- ড্রয়ারের অপশন তালিকা -->
+                <ul class="drawer-menu">
+                    <li class="only-mobile"><a href="#" onclick="Swal.fire({title: 'ইউজার প্রোফাইল', text: 'লগইন এবং প্রোফাইল সেকশনটি পরবর্তী আপডেটে যুক্ত করা হবে!', icon: 'info', confirmButtonColor: '#056C46'})"><i class="fas fa-user-circle"></i> প্রোফাইল</a></li>
+                    <li><a href="index.html#contact"><i class="fas fa-address-book"></i> যোগাযোগ করুন</a></li>
+                    <li class="only-mobile"><a href="#" onclick="Swal.fire({title: 'প্রাইভেসি পলিসি', text: 'মাদরাসার সকল ডেটা ও ব্যবহারকারীর তথ্য এনক্রিপ্ট পদ্ধতিতে সুরক্ষিত থাকে।', icon: 'success', confirmButtonColor: '#056C46'})"><i class="fas fa-shield-alt"></i> প্রাইভেসি পলিসি</a></li>
+                    <li class="only-mobile"><a href="#" onclick="navigator.share ? navigator.share({title: 'জামিয়া আরাবিয়া', url: window.location.href}) : Swal.fire({title: 'লিংক কপি করুন', text: window.location.href, icon: 'success'})"><i class="fas fa-share-alt"></i> শেয়ার করুন</a></li>
+                    <li><a href="about.html"><i class="fas fa-info-circle"></i> মাদরাসা সম্পর্কে</a></li>
+                </ul>
+
+                <!-- ড্রয়ার ফুটার (ভার্সন কোড) -->
+                <div class="drawer-footer">
+                    <p>ভার্সন ১.০.০ (Build 2026)</p>
+                </div>
+            </div> <!-- nav-links এর শেষ ট্যাগ -->
+        </div> <!-- container navbar এর শেষ ট্যাগ -->
+    </header>
+
+<!-- Banner Slider -->
+<section id="home">
+    <div class="banner-slider-wrap">
+        <div class="swiper swiper-banner" id="heroBannerSwiper">
+            <div class="swiper-wrapper" id="heroBannerWrapper">
+                <div class="swiper-slide">
+                    <div class="banner-slide-inner">
+                        <img class="banner-img"
+                             src="https://i.ibb.co.com/ycd9T2PK/IMG-20260311-233709.png"
+                             alt="জামিয়া আরাবিয়া" loading="eager">
+                        <div class="banner-overlay"></div>
+                        <div class="banner-text">
+                            <h2>জামিয়া আরাবিয়া আশরাফুল উলূম কুষ্টিয়া</h2>
+                            <p>কুষ্টিয়ার ঐতিহ্যবাহী ও বিশ্বস্ত দ্বীনি শিক্ষা প্রতিষ্ঠান</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+</section>
+
+<!-- Premium Islamic Dashboard Section -->
+<section class="islamic-dashboard">
+    <div class="container">
+        
+        <!-- ১. নামাজের প্রিমিয়াম রিয়েল-টাইম কার্ড -->
+        <div class="prayer-hero-card">
+            <div class="prayer-status-wrap">
+                <div class="prayer-status-info">
+                    <h4>এখন সময়</h4>
+                    <h2 id="current-prayer-name">লোডিং...</h2>
+                    <p id="current-prayer-range"></p>
+                </div>
+                <div class="prayer-card-icon" id="prayer-icon-div">
+                    <i class="fas fa-moon"></i>
+                </div>
+            </div>
+            
+            <div class="prayer-countdown-wrap">
+                <h3 id="next-prayer-title">পরবর্তী নামাজ: ...</h3>
+                <h1 id="next-prayer-timer">- ০০:০০:০০</h1>
+            </div>
+            
+            <div class="prayer-card-footer">
+                <span onclick="openModal('all-prayer-modal')"><i class="fas fa-list-alt"></i> সকল নামাজ</span>
+                <span>Kushtia (কুষ্টিয়া) <i class="fas fa-chevron-right"></i></span>
+            </div>
+        </div>
+
+        <!-- ২. আসসালামু আলাইকুম গ্রিটিং কার্ড -->
+        <div class="greeting-card">
+            <h3>আসসালামু আলাইকুম</h3>
+            <i class="fas fa-cloud-sun"></i>
+        </div>
+
+<!-- আজকের হাদিস বার (ডেডিকেটেড পেজে লিংক করা) -->
+<div class="hadith-prompt-bar" onclick="navigateTo('hadith.html')">
+    <div class="hadith-prompt-info">
+        <i class="fas fa-sparkles"></i>
+        <span>আজকের হাদিসটি পড়ুন</span>
+    </div>
+    <div class="prompt-btn">জানুন <i class="fas fa-arrow-right"></i></div>
+</div>
+
+<!-- ৮টি ক্যাটাগরি প্রফেশনাল গ্রিড বোতাম (পেজে লিংক করা) -->
+<div class="islamic-feature-grid">
+    <button class="feature-item" onclick="navigateTo('quran.html')">
+        <div class="feature-icon-box" style="color:#056c46;"><i class="fas fa-quran"></i></div>
+        <span class="feature-label">আল কুরআন</span>
+    </button>
+    <button class="feature-item" onclick="navigateTo('roza.html')">
+        <div class="feature-icon-box" style="color:#d97706;"><i class="fas fa-calendar-alt"></i></div>
+        <span class="feature-label">রোজা</span>
+    </button>
+    <button class="feature-item" onclick="navigateTo('namaz.html')">
+        <div class="feature-icon-box" style="color:#2563eb;"><i class="fas fa-mosque"></i></div>
+        <span class="feature-label">নামাজ শিক্ষা</span>
+    </button>
+    <button class="feature-item" onclick="navigateTo('dua.html')">
+        <div class="feature-icon-box" style="color:#7c3aed;"><i class="fas fa-hands"></i></div>
+        <span class="feature-label">দোয়া ও আমল</span>
+    </button>
+    <button class="feature-item" onclick="navigateTo('tasbih.html')">
+        <div class="feature-icon-box" style="color:#0891b2;"><i class="fas fa-calculator"></i></div>
+        <span class="feature-label">তসবীহ</span>
+    </button>
+    <button class="feature-item" onclick="navigateTo('allah-names.html')">
+        <div class="feature-icon-box" style="color:#db2777;"><i class="fas fa-star-and-crescent"></i></div>
+        <span class="feature-label">আল্লাহর নাম</span>
+    </button>
+    <button class="feature-item" onclick="navigateTo('qibla.html')">
+        <div class="feature-icon-box" style="color:#ea580c;"><i class="fas fa-compass"></i></div>
+        <span class="feature-label">কিবলা</span>
+    </button>
+    <button class="feature-item" onclick="navigateTo('zakat.html')">
+        <div class="feature-icon-box" style="color:#16a34a;"><i class="fas fa-coins"></i></div>
+        <span class="feature-label">যাকাত</span>
+    </button>
+</div>
+
+    </div>
+</section>
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+    <span class="lightbox-close" onclick="closeLightbox()"><i class="fas fa-times"></i></span>
+    <img src="" id="lightbox-img" alt="Gallery Image">
+</div>
+
+<!-- Footer -->
+<footer id="contact" data-aos="fade-up" data-aos-offset="50">
+    <div class="container">
+        <div class="footer-content">
+            <div>
+                <h2 style="color:var(--primary-light);margin-bottom:1rem;">জামিয়া আরাবিয়া আশরাফুল উলূম কুষ্টিয়া</h2>
+                <p><i class="fas fa-map-marker-alt"></i> ঠিকানা: কুষ্টিয়া সদর, কুষ্টিয়া, বাংলাদেশ</p>
+                <p><i class="fas fa-phone"></i> মোবাইল: +880 1775-431464</p>
+                <p><i class="fas fa-envelope"></i> ইমেইল: info@ashraful-uloom.com</p>
+            </div>
+            <div>
+                <h3 style="margin-bottom:1rem;">গুরুত্বপূর্ণ লিংক</h3>
+                <ul style="line-height:2;">
+                    <li><a href="index.html">হোম</a></li>
+                    <li><a href="notice.html">নোটিশ বোর্ড</a></li>
+                    <li><a href="about.html">মাদরাসা সম্পর্কে</a></li>
+                    <li><a href="results.html">ফলাফল</a></li>
+                    <li><a href="gallery.html">গ্যালারি</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 1999 Jamia Arabia Ashraful Uloom Kushtia. All Rights Reserved [Nazmul Vai].</p>
+        </div>
+    </div>
+</footer>
+
+</div><!-- /main-wrapper -->
+
+<!-- Bottom Navigation -->
+<nav class="bottom-nav" id="bottom-nav" role="navigation" aria-label="মূল নেভিগেশন">
+    <button class="bottom-nav-item active" id="bnav-home" onclick="handleNavClick('index.html', this)" aria-label="হোম">
+        <span class="nav-icon"><i class="fas fa-home"></i></span>
+        <span class="nav-label">হোম</span>
+    </button>
+    <button class="bottom-nav-item" id="bnav-notice" onclick="handleNavClick('notice.html', this)" aria-label="নোটিশ">
+        <span class="nav-icon"><i class="fas fa-bell"></i></span>
+        <span class="nav-label">নোটিশ</span>
+    </button>
+    <button class="bottom-nav-item" id="bnav-results" onclick="handleNavClick('results.html', this)" aria-label="ফলাফল">
+        <span class="nav-icon"><i class="fas fa-graduation-cap"></i></span>
+        <span class="nav-label">ফলাফল</span>
+    </button>
+    <button class="bottom-nav-item" id="bnav-gallery" onclick="handleNavClick('gallery.html', this)" aria-label="গ্যালারি">
+        <span class="nav-icon"><i class="fas fa-images"></i></span>
+        <span class="nav-label">গ্যালারি</span>
+    </button>
+    <button class="bottom-nav-item" id="bnav-info" onclick="handleNavClick('teachers.html', this)" aria-label="শিক্ষকবৃন্দ">
+        <span class="nav-icon"><i class="fas fa-users"></i></span>
+        <span class="nav-label">শিক্ষকবৃন্দ</span>
+    </button>
+</nav>
+
+<!-- Firebase & Page JS -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyBXBgFGqDyPiE6ZVER249FA0a91ukICO_U",
+        authDomain: "ashraful-uloom-madrasa.firebaseapp.com",
+        databaseURL: "https://ashraful-uloom-madrasa-default-rtdb.firebaseio.com",
+        projectId: "ashraful-uloom-madrasa",
+        storageBucket: "ashraful-uloom-madrasa.firebasestorage.app",
+        messagingSenderId: "180777617285",
+        appId: "1:180777617285:web:f4ab13a6a2aa0d6cda66ec"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    window.allNotices = [];
+
+// ===== BENGALI DIGIT TRANSLATOR =====
+    function toBangali(numStr) {
+        const translate = { '0':'০', '1':'১', '2':'২', '3':'৩', '4':'৪', '5':'৫', '6':'৬', '7':'৭', '8':'৮', '9':'৯' };
+        return String(numStr).split('').map(c => translate[c] || c).join('');
+    }
+
+    // ===== DYNAMIC PRAYER WIDGET LOGIC =====
+    let prayerTimesToday = {};
+    async function fetchPrayerTimes() {
+        try {
+            const res = await fetch('https://api.aladhan.com/v1/timingsByCity?city=Kushtia&country=Bangladesh&method=1');
+            const data = await res.json();
+            const t = data.data.timings;
+            prayerTimesToday = t;
+            
+            // মোডালের জন্য ফিক্সড ভ্যালু সেট
+            const setFix = (id, v) => { const el=document.getElementById(id); if(el) el.innerText = toBangali(v); };
+            setFix('m-fajr', t.Fajr); setFix('m-dhuhr', t.Dhuhr);
+            setFix('m-asr', t.Asr); setFix('m-maghrib', t.Maghrib); setFix('m-isha', t.Isha);
+            
+            // সেহরি ও ইফতার সময় (সেহরি = ফজর শুরুর ১০ মিনিট পূর্বে)
+            const fajrTime = t.Fajr;
+            const [fH, fM] = fajrTime.split(':').map(Number);
+            let sM = fM - 10; let sH = fH;
+            if(sM < 0) { sM += 60; sH -= 1; }
+            const sehriTimeStr = `${String(sH).padStart(2,'0')}:${String(sM).padStart(2,'0')}`;
+            
+            const stEl = document.getElementById('sehri-time-doc'); if(stEl) stEl.innerText = toBangali(sehriTimeStr) + " AM";
+            const ifEl = document.getElementById('iftar-time-doc'); if(ifEl) ifEl.innerText = toBangali(t.Maghrib) + " PM";
+
+            startPrayerCountdown(t);
+        } catch(e) {
+            console.log("Prayer time fetch failed", e);
+        }
+    }
+    fetchPrayerTimes();
+
+    function startPrayerCountdown(timings) {
+        const prayers = [
+            { name: "ফজর", time: timings.Fajr, icon: "fa-cloud-meatball", bgDay: false },
+            { name: "যোহর", time: timings.Dhuhr, icon: "fa-sun", bgDay: true },
+            { name: "আসর", time: timings.Asr, icon: "fa-cloud-sun", bgDay: true },
+            { name: "মাগরিব", time: timings.Maghrib, icon: "fa-wind", bgDay: false },
+            { name: "এশা", time: timings.Isha, icon: "fa-moon", bgDay: false }
+        ];
+
+        function updateWidget() {
+            const now = new Date();
+            const currentMin = now.getHours() * 60 + now.getMinutes();
+            
+            let currentPrayerIdx = 4; // Default to Isha
+            let nextPrayerIdx = 0; // Default to Fajr
+            
+            const parsedPrayers = prayers.map(p => {
+                const [h, m] = p.time.split(':').map(Number);
+                return { ...p, minutes: h * 60 + m };
+            });
+
+            // বর্তমান ও পরবর্তী নামাজ নির্ধারণ
+            for (let i = 0; i < parsedPrayers.length; i++) {
+                if (currentMin >= parsedPrayers[i].minutes) {
+                    currentPrayerIdx = i;
+                    nextPrayerIdx = (i + 1) % 5;
+                }
+            }
+
+            const current = parsedPrayers[currentPrayerIdx];
+            const next = parsedPrayers[nextPrayerIdx];
+
+            // UI আপডেট
+            const cpName = document.getElementById('current-prayer-name');
+            const cpRange = document.getElementById('current-prayer-range');
+            const npTitle = document.getElementById('next-prayer-title');
+            const iconDiv = document.getElementById('prayer-icon-div');
+
+            if(cpName) cpName.innerText = current.name;
+            if(cpRange) cpRange.innerText = toBangali(current.time) + " - " + toBangali(next.time);
+            if(npTitle) npTitle.innerText = `পরবর্তী নামাজ: ${next.name}`;
+            
+            if(iconDiv) {
+                iconDiv.innerHTML = current.bgDay ? `<i class="fas fa-sun" style="color:#eab308;"></i>` : `<i class="fas fa-moon" style="color:#fef08a;"></i>`;
+            }
+
+            // কাউন্টডাউন হিসাব
+            let diffMin = 0;
+            if (next.minutes > currentMin) {
+                diffMin = next.minutes - currentMin;
+            } else {
+                // রাত ১২টার পরের নামাজের জন্য
+                diffMin = (24 * 60 - currentMin) + next.minutes;
+            }
+
+            const totalSec = diffMin * 60 - now.getSeconds();
+            const h = Math.floor(totalSec / 3600);
+            const m = Math.floor((totalSec % 3600) / 60);
+            const s = totalSec % 60;
+
+            const timerEl = document.getElementById('next-prayer-timer');
+            if(timerEl) {
+                timerEl.innerText = `- ${toBangali(String(h).padStart(2,'0'))}:${toBangali(String(m).padStart(2,'0'))}:${toBangali(String(s).padStart(2,'0'))}`;
+            }
+        }
+
+        setInterval(updateWidget, 1000);
+        updateWidget();
+    }
+
+    // ===== INTERACTIVE TASBIH COUNTER =====
+    let tasbihCount = 0;
+    window.incrementTasbih = () => {
+        tasbihCount++;
+        const disp = document.getElementById('tasbih-count-display');
+        if(disp) disp.innerText = toBangali(tasbihCount);
+        // হ্যাপটিক ভাইব্রেশন সিমুলেশন
+        if(navigator.vibrate) navigator.vibrate(50);
+    };
+    window.resetTasbih = () => {
+        tasbihCount = 0;
+        const disp = document.getElementById('tasbih-count-display');
+        if(disp) disp.innerText = "০";
+    };
+
+    // ===== ZAKAT CALCULATOR =====
+    window.calculateZakat = () => {
+        const cash = parseFloat(document.getElementById('z-cash').value) || 0;
+        const gold = parseFloat(document.getElementById('z-gold').value) || 0;
+        const total = cash + gold;
+        const zakat = (total * 0.025).toFixed(2);
+        const resEl = document.getElementById('z-result');
+        if(resEl) resEl.innerText = toBangali(zakat);
+    };
+
+    // ===== DYNAMIC HADITH SYNC =====
+    onValue(ref(db, 'dailyHadith'), (snap) => {
+        const d = snap.val();
+        const dht = document.getElementById('dashboard-hadith-text');
+        const dhr = document.getElementById('dashboard-hadith-ref');
+        if(d) {
+            if(dht) dht.innerText = d.text || '';
+            if(dhr) dhr.innerText = d.reference || '';
+        }
+    });
+
+    // ===== BANNERS =====
+    const DEFAULT_BANNER_SLIDES = [
+        { image:'https://i.ibb.co.com/ycd9T2PK/IMG-20260311-233709.png', title:'জামিয়া আরাবিয়া আশরাফুল উলূম কুষ্টিয়া', subtitle:'কুষ্টিয়ার ঐতিহ্যবাহী ও বিশ্বস্ত দ্বীনি শিক্ষা প্রতিষ্ঠান'},
+        { image:'https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=900&q=80', title:'ইসলামী শিক্ষার আলো', subtitle:'কুরআন ও সুন্নাহর আলোকে আদর্শ জীবন গঠন করুন'},
+        { image:'https://images.unsplash.com/photo-1591035897819-f4bdf739f446?w=900&q=80', title:'হিফজুল কুরআন বিভাগ', subtitle:'বিশেষজ্ঞ শিক্ষকদের তত্ত্বাবধানে হিফজ কার্যক্রম চলমান'},
+        { image:'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=900&q=80', title:'ভর্তি চলছে ২০২৬', subtitle:'নূরানী, হিফজ, কিতাব ও দাওরায়ে হাদীস বিভাগে আসন সীমিত'}
+    ];
+
+    function buildSlideHTML(b) {
+        return `<div class="swiper-slide">
+            <div class="banner-slide-inner">
+                <img class="banner-img" src="${b.image||''}" alt="${b.title||''}" loading="lazy" crossorigin="anonymous">
+                <div class="banner-overlay"></div>
+                <div class="banner-text">
+                    <h2>${b.title||''}</h2>
+                    ${b.subtitle ? `<p>${b.subtitle}</p>` : ''}
+                </div>
+            </div>
+        </div>`;
+    }
+
+    function rebuildSwiper(slides) {
+        const wrapper = document.getElementById('heroBannerWrapper');
+        if(!wrapper) return;
+        wrapper.innerHTML = slides.map(buildSlideHTML).join('');
+        if(window.heroBannerSwiperInstance) { window.heroBannerSwiperInstance.destroy(true, true); window.heroBannerSwiperInstance = null; }
+        if(typeof Swiper !== 'undefined') {
+            window.heroBannerSwiperInstance = new Swiper('#heroBannerSwiper', {
+                loop: slides.length > 1, speed: 700,
+                autoplay: { delay: 3800, disableOnInteraction: false, pauseOnMouseEnter: true },
+                grabCursor: true, touchRatio: 1, touchAngle: 45, threshold: 5,
+                pagination: { el: '#heroBannerSwiper .swiper-pagination', clickable: true },
+                on: {
+                    slideChange: function() {
+                        const ai = this.slides[this.activeIndex] && this.slides[this.activeIndex].querySelector('img.banner-img');
+                        if(ai) { ai.style.transform='scale(1.0)'; requestAnimationFrame(()=>requestAnimationFrame(()=>{ if(ai) ai.style.transform='scale(1.05)'; })); }
+                    }
+                }
+            });
+        }
+    }
+
+    onValue(ref(db, 'banners'), (snap) => {
+        const data = snap.val();
+        if(data && Object.keys(data).length > 0) {
+            const slides = Object.keys(data).map(k => ({ image: data[k].image||'', title: data[k].title||'', subtitle: data[k].subtitle||'' }));
+            rebuildSwiper(slides);
+        } else {
+            rebuildSwiper(DEFAULT_BANNER_SLIDES);
+        }
+    });
+
+    // ===== MODAL CONTROLS =====
+    window.openModal = (id) => { const el = document.getElementById(id); if(el) el.style.display='flex'; };
+    window.closeModal = (id) => { const el = document.getElementById(id); if(el) el.style.display='none'; };
+    window.openLightbox = (src) => {
+        const img = document.getElementById('lightbox-img');
+        const lb = document.getElementById('lightbox');
+        if(img) img.src = src;
+        if(lb) { lb.style.display='flex'; lb.classList.add('show'); }
+    };
+    window.closeLightbox = () => {
+        const lb = document.getElementById('lightbox');
+        if(lb) { lb.style.display='none'; lb.classList.remove('show'); }
+    };
+</script>
+
+<!-- Swiper Fallback Init -->
+<script>
+(function() {
+    window.heroBannerSwiperInstance = null;
+    function initFallback() {
+        if(window.heroBannerSwiperInstance) return;
+        if(typeof Swiper === 'undefined') { setTimeout(initFallback, 150); return; }
+        window.heroBannerSwiperInstance = new Swiper('#heroBannerSwiper', {
+            loop:true, speed:700,
+            autoplay:{ delay:3800, disableOnInteraction:false },
+            grabCursor:true, pagination:{ el:'#heroBannerSwiper .swiper-pagination', clickable:true }
+        });
+    }
+    document.addEventListener('DOMContentLoaded', () => setTimeout(initFallback, 1200));
+})();
+</script>
+
+<!-- AOS -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>document.addEventListener('DOMContentLoaded', () => AOS.init({ duration:700, once:true, offset:80 }));</script>
+
+<!-- Shared Page JS -->
+<script>
+// ===== PAGE NAVIGATION & TRANSITIONS =====
+function navigateTo(url) {
+    if(window.location.href.includes(url.split('#')[0])) return;
+    const ov = document.getElementById('page-transition-overlay');
+    if(ov) { 
+        ov.classList.remove('loaded'); 
+        setTimeout(() => { window.location.href = url; }, 250); 
+    } else { 
+        window.location.href = url; 
+    }
+}
+
+// নিচের নেভিগেশন বারের র্যাপল ইফেক্ট এবং ক্লিক হ্যান্ডলার (যা ডিলিট হয়েছিল)
+function handleNavClick(url, el) {
+    const rip = document.createElement('span'); 
+    rip.className = 'ripple-circle';
+    el.appendChild(rip); 
+    setTimeout(() => { 
+        if(rip.parentNode) rip.parentNode.removeChild(rip); 
+    }, 550);
+    navigateTo(url);
+}
+
+// লোডার বন্ধ করার নিরাপদ ফাংশন
+function hidePageLoader() {
+    const ov = document.getElementById('page-transition-overlay');
+    if(ov) {
+        ov.classList.add('loaded');
+    }
+}
+
+// পেজ লোড স্টেট চেক
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    setTimeout(hidePageLoader, 150);
+} else {
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(hidePageLoader, 150);
+    });
+}
+
+// ===== HAMBURGER & SIDE DRAWER =====
+document.addEventListener('DOMContentLoaded', function() {
+    const ham = document.getElementById('hamburger');
+    const nav = document.getElementById('nav-links');
+    if(ham && nav) {
+        // ড্রয়ার খোলা বা বন্ধ করা
+        ham.addEventListener('click', (e) => {
+            e.stopPropagation();
+            nav.classList.toggle('active');
+            document.body.classList.toggle('drawer-open');
+        });
+
+        // ড্রয়ারের লিংকে ক্লিক করলে ড্রয়ার বন্ধ করা
+        document.querySelectorAll('.drawer-menu a').forEach(a => {
+            a.addEventListener('click', () => {
+                nav.classList.remove('active');
+                document.body.classList.remove('drawer-open');
+            });
+        });
+
+        // ড্রয়ারের বাইরে ক্লিক করলে ড্রয়ার স্বয়ংক্রিয়ভাবে বন্ধ হওয়া
+        document.addEventListener('click', (e) => {
+            if(!nav.contains(e.target) && !ham.contains(e.target)) {
+                nav.classList.remove('active');
+                document.body.classList.remove('drawer-open');
+            }
+        });
+    }
+
+    // ===== ADMIN HIDDEN TRIGGER (5 clicks on logo → admin.html) =====
+    let clickCount = 0, clickTimer = null;
+    const brand = document.getElementById('brand-logo');
+    if(brand) {
+        brand.addEventListener('click', (e) => {
+            e.preventDefault();
+            clickCount++;
+            if(clickCount === 1) clickTimer = setTimeout(() => { clickCount = 0; }, 2500);
+            if(clickCount >= 5) {
+                clearTimeout(clickTimer);
+                clickCount = 0;
+                navigateTo('admin.html');
+            }
+        });
+    }
+});
+
+</script>
+
+<!-- PWA -->
+<script>
+if("serviceWorker" in navigator) {
+    window.addEventListener("load", () => navigator.serviceWorker.register("/service-worker.js"));
+}
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault(); deferredPrompt = e;
+    const btn = document.createElement("button");
+    btn.innerText = "Install App";
+    btn.style.cssText = "position:fixed;top:10px;right:10px;padding:10px 15px;background:#056C46;color:#fff;border:none;border-radius:6px;z-index:9999;cursor:pointer;box-shadow:0 4px 6px rgba(0,0,0,0.1);";
+    document.body.appendChild(btn);
+    btn.addEventListener("click", () => { btn.remove(); deferredPrompt.prompt(); });
+});
+// ===== BOTTOM NAV AUTO-HIDE ON SCROLL (Native Android Feel) =====
+let lastScrollY = window.scrollY;
+window.addEventListener('scroll', () => {
+    const bottomNav = document.getElementById('bottom-nav');
+    if (!bottomNav) return;
+    
+    const currentScrollY = window.scrollY;
+    
+    // পেজের একদম নিচে পৌঁছালে স্বয়ংক্রিয়ভাবে মেনুবার ভেসে উঠবে (Pro UX Feature)
+    const isAtBottom = (window.innerHeight + window.scrollY) >= (document.documentElement.scrollHeight - 30);
+    
+    if (isAtBottom) {
+        bottomNav.classList.remove('bottom-nav-hidden');
+    } else if (currentScrollY > lastScrollY && currentScrollY > 80) {
+        // নিচে স্ক্রল করলে হাইড হবে
+        bottomNav.classList.add('bottom-nav-hidden');
+    } else {
+        // ওপরে স্ক্রল করলে ভেসে উঠবে
+        bottomNav.classList.remove('bottom-nav-hidden');
+    }
+    
+    lastScrollY = currentScrollY;
+}, { passive: true });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#056C46">
+    <title>আজকের হাদিস — জামিয়া আরাবিয়া আশরাফুল উলূম কুষ্টিয়া</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Noto+Sans+Bengali:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="page-transition-overlay">
+    <div class="glass-loader-card">
+        <div class="glass-spinner-wrap">
+            <div class="glass-spinner-ring"></div>
+            <img class="glass-spinner-logo" src="https://i.ibb.co.com/qFRmPqgK/20260310-005555.png" alt="Logo" crossorigin="anonymous">
+        </div>
+    </div>
+</div>
+
+<div id="main-wrapper">
+    <header>
+        <div class="container navbar">
+            <div class="brand" id="brand-logo" onclick="navigateTo('index.html')">
+                <img src="https://i.ibb.co.com/qFRmPqgK/20260310-005555.png" crossorigin="anonymous" alt="Logo">
+                <h1>জামিয়া আরাবিয়া<br>আশরাফুল উলূম কুষ্টিয়া</h1>
+            </div>
+            <div class="hamburger" id="hamburger"><i class="fas fa-bars"></i></div>
+            
+            <div class="nav-links" id="nav-links">
+                <div class="drawer-header">
+                    <img src="https://i.ibb.co.com/qFRmPqgK/20260310-005555.png" alt="Logo" crossorigin="anonymous">
+                    <div class="drawer-header-info">
+                        <h3>জামিয়া আরাবিয়া আশরাফুল উলূম</h3>
+                        <p>কুষ্টিয়া, বাংলাদেশ</p>
+                    </div>
+                </div>
+                <ul class="drawer-menu">
+                    <li><a href="index.html#contact"><i class="fas fa-address-book"></i> যোগাযোগ করুন</a></li>
+                    <li><a href="about.html"><i class="fas fa-info-circle"></i> মাদরাসা সম্পর্কে</a></li>
+                </ul>
+                <div class="drawer-footer"><p>ভার্সন ১.০.০ (Build 2026)</p></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-hero">
+        <div class="container">
+            <button class="back-btn" onclick="navigateTo('index.html')"><i class="fas fa-arrow-left"></i> হোমে ফিরুন</button>
+            <h2><i class="fas fa-book-open" style="margin-right:10px;"></i>আজকের হাদিস</h2>
+            <p>কুরআন ও সুন্নাহর আলোকে আদর্শ জীবন গড়ি</p>
+        </div>
+    </div>
+
+    <section style="padding-top:3rem;">
+        <div class="container">
+            <div style="background:white; padding:2rem; border-radius:20px; box-shadow:var(--shadow-md); text-align:center;">
+                <i class="fas fa-quote-left" style="font-size:2.5rem; color:var(--primary); margin-bottom:1rem; opacity:0.2;"></i>
+                <p id="page-hadith-text" style="font-size:1.2rem; line-height:1.8; font-weight:500; color:var(--text-main); margin-bottom:1.5rem;">আজকের হাদিস লোড হচ্ছে...</p>
+                <h4 id="page-hadith-ref" style="color:var(--primary); font-size:1rem; border-top:1px solid var(--border); padding-top:15px; display:inline-block; font-weight:700;"></h4>
+            </div>
+        </div>
+    </section>
+</div>
+
+<nav class="bottom-nav" id="bottom-nav">
+    <button class="bottom-nav-item active" onclick="handleNavClick('index.html', this)"><span class="nav-icon"><i class="fas fa-home"></i></span><span class="nav-label">হোম</span></button>
+    <button class="bottom-nav-item" onclick="handleNavClick('notice.html', this)"><span class="nav-icon"><i class="fas fa-bell"></i></span><span class="nav-label">নোটিশ</span></button>
+    <button class="bottom-nav-item" onclick="handleNavClick('results.html', this)"><span class="nav-icon"><i class="fas fa-graduation-cap"></i></span><span class="nav-label">ফলাফল</span></button>
+    <button class="bottom-nav-item" onclick="handleNavClick('gallery.html', this)"><span class="nav-icon"><i class="fas fa-images"></i></span><span class="nav-label">গ্যালারি</span></button>
+    <button class="bottom-nav-item" onclick="handleNavClick('teachers.html', this)"><span class="nav-icon"><i class="fas fa-users"></i></span><span class="nav-label">শিক্ষকবৃন্দ</span></button>
+</nav>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+    const app = initializeApp({
+        apiKey:"AIzaSyBXBgFGqDyPiE6ZVER249FA0a91ukICO_U",
+        authDomain:"ashraful-uloom-madrasa.firebaseapp.com",
+        databaseURL:"https://ashraful-uloom-madrasa-default-rtdb.firebaseio.com",
+        projectId:"ashraful-uloom-madrasa",
+        storageBucket:"ashraful-uloom-madrasa.firebasestorage.app"
+    });
+    const db = getDatabase(app);
+    onValue(ref(db, 'dailyHadith'), (snap) => {
+        const d = snap.val();
+        if(d) {
+            document.getElementById('page-hadith-text').innerText = d.text || '';
+            document.getElementById('page-hadith-ref').innerText = d.reference || '';
+        }
+    });
+</script>
+
+<script>
+// ===== SHARED PAGE JS =====
+function navigateTo(url) { if(window.location.href.includes(url.split('#')[0])) return; const ov = document.getElementById('page-transition-overlay'); if(ov) { ov.classList.remove('loaded'); setTimeout(() => { window.location.href = url; }, 250); } else { window.location.href = url; } }
+function handleNavClick(url, el) { const rip = document.createElement('span'); rip.className = 'ripple-circle'; el.appendChild(rip); setTimeout(() => { if(rip.parentNode) rip.parentNode.removeChild(rip); }, 550); navigateTo(url); }
+document.addEventListener('DOMContentLoaded', () => { const ham = document.getElementById('hamburger'); const nav = document.getElementById('nav-links'); if(ham && nav) { ham.addEventListener('click', (e) => { e.stopPropagation(); nav.classList.toggle('active'); document.body.classList.toggle('drawer-open'); }); document.addEventListener('click', (e) => { if(!nav.contains(e.target) && !ham.contains(e.target)) { nav.classList.remove('active'); document.body.classList.remove('drawer-open'); } }); } });
+window.addEventListener('DOMContentLoaded', () => { const ov = document.getElementById('page-transition-overlay'); if(ov) setTimeout(() => { ov.classList.add('loaded'); }, 150); });
+</script>
+</body>
+</html>

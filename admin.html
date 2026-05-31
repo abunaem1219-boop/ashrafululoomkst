@@ -1,0 +1,2311 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#056C46">
+    <title>এডমিন প্যানেল — জামিয়া আরাবিয়া আশরাফুল উলূম কুষ্টিয়া</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Noto+Sans+Bengali:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
+    <!-- SheetJS for XLSX bulk upload -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+
+<style>
+/* ============================================================
+   DESIGN TOKENS — PREMIUM ADMIN
+   ============================================================ */
+:root {
+    --p:          #056C46;
+    --p-dark:     #033d28;
+    --p-mid:      #078055;
+    --p-light:    #e6f5ef;
+    --p-glow:     rgba(5,108,70,0.15);
+    --gold:       #c9a84c;
+    --gold-light: #f5e6b8;
+    --danger:     #dc2626;
+    --warning:    #d97706;
+    --info:       #0369a1;
+    --surface:    #ffffff;
+    --bg:         #f4f7f5;
+    --bg2:        #eef3f0;
+    --border:     #dde8e3;
+    --text:       #1a2e25;
+    --text-mid:   #3d5a4c;
+    --text-soft:  #6b8c7a;
+    --radius:     12px;
+    --radius-lg:  18px;
+    --shadow:     0 2px 16px rgba(5,108,70,0.10);
+    --shadow-lg:  0 8px 40px rgba(5,108,70,0.14);
+    --transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+    font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* ============================================================
+   PAGE TRANSITION OVERLAY
+   ============================================================ */
+#page-transition-overlay {
+    position: fixed; inset: 0; z-index: 9999;
+    background: linear-gradient(135deg, var(--p-dark), var(--p));
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+#page-transition-overlay.active { opacity: 1; pointer-events: all; }
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.admin-header {
+    background: linear-gradient(135deg, var(--p-dark), var(--p));
+    color: white;
+    position: sticky; top: 0; z-index: 1000;
+    box-shadow: 0 2px 20px rgba(5,108,70,0.3);
+}
+.admin-header-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px; padding: 0 20px; max-width: 1400px; margin: 0 auto;
+}
+.admin-brand {
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 700; font-size: 1.05rem; color: white;
+}
+.admin-brand-logo {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(255,255,255,0.18);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+}
+.admin-header-actions { display: flex; gap: 8px; align-items: center; }
+.admin-back-btn, .admin-logout-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 16px; border-radius: 50px; border: none;
+    font-size: 0.83rem; font-weight: 600; cursor: pointer;
+    transition: var(--transition); font-family: inherit;
+}
+.admin-back-btn { background: rgba(255,255,255,0.18); color: white; }
+.admin-back-btn:hover { background: rgba(255,255,255,0.30); }
+.admin-logout-btn { background: rgba(220,38,38,0.85); color: white; display: none; }
+.admin-logout-btn:hover { background: #dc2626; }
+.admin-logout-btn.visible { display: inline-flex; }
+
+/* ============================================================
+   LOGIN CARD
+   ============================================================ */
+.admin-login-wrap {
+    display: flex; align-items: center; justify-content: center;
+    min-height: calc(100vh - 60px); padding: 2rem;
+}
+.admin-login-card {
+    background: var(--surface); border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg); padding: 2.5rem;
+    width: 100%; max-width: 440px; text-align: center;
+}
+.login-icon {
+    width: 80px; height: 80px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--p-dark), var(--p));
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1.5rem;
+    box-shadow: 0 8px 32px rgba(5,108,70,0.28);
+    font-size: 2rem; color: white;
+}
+.admin-login-card h2 { color: var(--p); font-size: 1.6rem; margin-bottom: .4rem; }
+.admin-login-card > p { color: var(--text-soft); font-size: .9rem; margin-bottom: 2rem; }
+
+/* ============================================================
+   DASHBOARD WRAP
+   ============================================================ */
+.admin-dashboard-wrap { display: none; }
+.admin-dashboard-wrap.visible { display: block; }
+.dashboard-inner { max-width: 1300px; margin: 0 auto; padding: 24px 20px; }
+
+/* ============================================================
+   STATS CARDS ROW
+   ============================================================ */
+.stats-row {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr));
+    gap: 14px; margin-bottom: 24px;
+}
+.stat-card {
+    background: var(--surface); border-radius: var(--radius);
+    padding: 18px; box-shadow: var(--shadow);
+    border-left: 4px solid var(--p); position: relative; overflow: hidden;
+    transition: var(--transition);
+}
+.stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+.stat-card.gold { border-left-color: var(--gold); }
+.stat-card.info  { border-left-color: var(--info); }
+.stat-card.warn  { border-left-color: var(--warning); }
+.stat-card .stat-icon {
+    width: 42px; height: 42px; border-radius: 10px;
+    background: var(--p-light); display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; color: var(--p); margin-bottom: 10px;
+}
+.stat-card.gold .stat-icon { background: #fef3c7; color: var(--gold); }
+.stat-card.info  .stat-icon { background: #e0f2fe; color: var(--info); }
+.stat-card.warn  .stat-icon { background: #fef9c3; color: var(--warning); }
+.stat-num { font-size: 1.8rem; font-weight: 700; color: var(--text); line-height: 1; }
+.stat-lbl { font-size: .78rem; color: var(--text-soft); margin-top: 4px; font-weight: 500; }
+
+/* ============================================================
+   TAB NAVIGATION — SIDEBAR STYLE ON DESKTOP
+   ============================================================ */
+.admin-layout {
+    display: grid; grid-template-columns: 240px 1fr; gap: 20px;
+    align-items: start;
+}
+@media (max-width: 900px) {
+    .admin-layout { grid-template-columns: 1fr; }
+    .admin-sidebar { display: none; }
+    .admin-top-nav { display: flex !important; }
+}
+
+/* Sidebar */
+.admin-sidebar {
+    background: var(--surface); border-radius: var(--radius-lg);
+    box-shadow: var(--shadow); overflow: hidden;
+    position: sticky; top: 80px;
+}
+.sidebar-header {
+    background: linear-gradient(135deg, var(--p-dark), var(--p));
+    color: white; padding: 16px 18px;
+    font-weight: 700; font-size: .9rem;
+    display: flex; align-items: center; gap: 8px;
+}
+.nav-group-title {
+    font-size: .7rem; font-weight: 700; letter-spacing: .08em;
+    color: var(--text-soft); text-transform: uppercase;
+    padding: 12px 18px 6px;
+}
+.sidebar-btn {
+    display: flex; align-items: center; gap: 10px;
+    width: 100%; padding: 11px 18px; border: none;
+    background: none; cursor: pointer; text-align: left;
+    font-family: inherit; font-size: .88rem; font-weight: 500;
+    color: var(--text-mid); transition: var(--transition);
+    border-left: 3px solid transparent;
+}
+.sidebar-btn:hover { background: var(--p-light); color: var(--p); }
+.sidebar-btn.active {
+    background: var(--p-light); color: var(--p);
+    border-left-color: var(--p); font-weight: 700;
+}
+.sidebar-btn i { width: 18px; text-align: center; font-size: .9rem; }
+.sidebar-divider { height: 1px; background: var(--border); margin: 6px 0; }
+
+/* Top nav (mobile) */
+.admin-top-nav {
+    display: none; gap: 6px; flex-wrap: wrap;
+    margin-bottom: 16px;
+}
+.top-nav-btn {
+    padding: 7px 12px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 8px;
+    font-family: inherit; font-size: .78rem; font-weight: 600;
+    cursor: pointer; color: var(--text-mid); transition: var(--transition);
+}
+.top-nav-btn.active, .top-nav-btn:hover {
+    background: var(--p); color: white; border-color: var(--p);
+}
+
+/* ============================================================
+   CONTENT PANELS
+   ============================================================ */
+.admin-content { min-width: 0; }
+.admin-section { display: none; animation: fadeUp 0.3s ease; }
+.admin-section.active { display: block; }
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   FORM ELEMENTS
+   ============================================================ */
+.form-card {
+    background: var(--surface); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 22px; margin-bottom: 18px;
+}
+.form-card-title {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 1.05rem; font-weight: 700; color: var(--p);
+    margin-bottom: 20px; padding-bottom: 12px;
+    border-bottom: 2px solid var(--border);
+}
+.form-card-title i { width: 28px; height: 28px; border-radius: 7px; background: var(--p-light); display: flex; align-items: center; justify-content: center; font-size: .9rem; }
+.form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 14px; }
+.form-group { margin-bottom: 14px; }
+.form-group label {
+    display: block; font-size: .83rem; font-weight: 600;
+    color: var(--text-mid); margin-bottom: 6px;
+}
+.form-control {
+    width: 100%; padding: 10px 14px;
+    border: 1.5px solid var(--border); border-radius: 9px;
+    font-family: inherit; font-size: .9rem; color: var(--text);
+    background: #fff; transition: var(--transition);
+    outline: none;
+}
+.form-control:focus { border-color: var(--p); box-shadow: 0 0 0 3px var(--p-glow); }
+.form-control::placeholder { color: var(--text-soft); }
+textarea.form-control { resize: vertical; min-height: 90px; }
+select.form-control { cursor: pointer; }
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 10px 20px; border-radius: 9px; border: none;
+    font-family: inherit; font-size: .88rem; font-weight: 700;
+    cursor: pointer; transition: var(--transition);
+}
+.btn-primary { background: var(--p); color: white; }
+.btn-primary:hover { background: var(--p-dark); transform: translateY(-1px); box-shadow: 0 4px 14px var(--p-glow); }
+.btn-outline { background: none; border: 1.5px solid var(--p); color: var(--p); }
+.btn-outline:hover { background: var(--p-light); }
+.btn-danger { background: var(--danger); color: white; }
+.btn-danger:hover { background: #b91c1c; }
+.btn-warn { background: var(--warning); color: white; }
+.btn-warn:hover { background: #b45309; }
+.btn-info { background: var(--info); color: white; }
+.btn-info:hover { background: #0c4a6e; }
+.btn-sm { padding: 6px 12px; font-size: .78rem; border-radius: 7px; }
+.btn-icon { width: 34px; height: 34px; padding: 0; border-radius: 8px; justify-content: center; }
+
+/* Old compatibility */
+.btn-success { background: var(--p); color: white; }
+.btn-success:hover { background: var(--p-dark); }
+.delete-btn { background: var(--danger); color: white; padding: 5px 10px; border: none; border-radius: 6px; cursor: pointer; font-size: .8rem; }
+.delete-btn:hover { background: #b91c1c; }
+.btn-view-marks { background: var(--info); color: white; padding: 5px 10px; border: none; border-radius: 6px; cursor: pointer; font-size: .8rem; }
+.btn-view-marks:hover { background: #0c4a6e; }
+
+/* ============================================================
+   TABLE
+   ============================================================ */
+.table-wrap { overflow-x: auto; border-radius: var(--radius); }
+table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+thead tr { background: linear-gradient(135deg, var(--p-dark), var(--p)); }
+thead th { color: white; padding: 11px 14px; text-align: left; font-weight: 600; white-space: nowrap; }
+tbody tr { border-bottom: 1px solid var(--border); transition: background .15s; }
+tbody tr:hover { background: var(--p-light); }
+tbody td { padding: 10px 14px; color: var(--text); }
+
+/* ============================================================
+   BADGE & STATUS
+   ============================================================ */
+.badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 3px 10px; border-radius: 50px; font-size: .72rem; font-weight: 700;
+}
+.badge-green   { background: #dcfce7; color: #166534; }
+.badge-red     { background: #fee2e2; color: #991b1b; }
+.badge-yellow  { background: #fef9c3; color: #92400e; }
+.badge-blue    { background: #dbeafe; color: #1e40af; }
+.badge-gray    { background: #f3f4f6; color: #374151; }
+
+/* ============================================================
+   SUBJECT ROW
+   ============================================================ */
+.subject-row {
+    display: grid; grid-template-columns: 1fr 120px auto; gap: 10px;
+    margin-bottom: 10px; align-items: center;
+}
+@media (max-width: 480px) { .subject-row { grid-template-columns: 1fr 90px auto; } }
+
+/* ============================================================
+   BANNER THUMBS
+   ============================================================ */
+.banner-grid { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+.banner-thumb {
+    position: relative; width: 140px; border-radius: 10px;
+    overflow: hidden; box-shadow: var(--shadow); border: 1.5px solid var(--border);
+}
+.banner-thumb img { width: 100%; height: 80px; object-fit: cover; display: block; }
+.banner-thumb-info { padding: 5px 7px; background: #f8fafb; font-size: .72rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.banner-thumb-actions { display: flex; gap: 3px; padding: 4px 6px; background: #eef3f0; }
+
+/* ============================================================
+   RESULT MANAGEMENT — NEW TABS
+   ============================================================ */
+/* Exam Session cards */
+.exam-session-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 12px; }
+.exam-session-card {
+    background: var(--surface); border-radius: var(--radius);
+    border: 1.5px solid var(--border); padding: 16px;
+    box-shadow: var(--shadow); transition: var(--transition);
+    position: relative; overflow: hidden;
+}
+.exam-session-card::before {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 4px; height: 100%; background: var(--p);
+}
+.exam-session-card.published::before { background: #16a34a; }
+.exam-session-card.hidden::before { background: #9ca3af; }
+.exam-session-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+.exam-card-title { font-weight: 700; font-size: .95rem; color: var(--text); margin-bottom: 4px; }
+.exam-card-meta { font-size: .78rem; color: var(--text-soft); margin-bottom: 12px; }
+.exam-card-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+
+/* Jamaat / Branch lists */
+.sortable-list { list-style: none; }
+.sortable-item {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--surface); border: 1.5px solid var(--border);
+    border-radius: 9px; padding: 10px 14px; margin-bottom: 8px;
+    cursor: grab; transition: var(--transition);
+}
+.sortable-item:hover { border-color: var(--p); background: var(--p-light); }
+.sortable-item .drag-handle { color: var(--text-soft); cursor: grab; }
+.sortable-item .item-name { flex: 1; font-weight: 600; font-size: .9rem; }
+.sortable-item .item-actions { display: flex; gap: 5px; }
+
+/* Bulk upload */
+.upload-zone {
+    border: 2.5px dashed var(--border); border-radius: var(--radius-lg);
+    padding: 40px 20px; text-align: center; cursor: pointer;
+    transition: var(--transition); background: var(--bg2);
+}
+.upload-zone:hover, .upload-zone.dragover { border-color: var(--p); background: var(--p-light); }
+.upload-zone-icon { font-size: 2.5rem; color: var(--text-soft); margin-bottom: 10px; }
+.upload-zone-text { font-size: .92rem; color: var(--text-mid); }
+.upload-zone-sub { font-size: .78rem; color: var(--text-soft); margin-top: 4px; }
+
+.progress-bar-wrap {
+    background: var(--border); border-radius: 50px; height: 10px;
+    overflow: hidden; margin: 12px 0;
+}
+.progress-bar-fill {
+    height: 100%; border-radius: 50px;
+    background: linear-gradient(90deg, var(--p), var(--p-mid));
+    transition: width 0.3s ease;
+}
+
+/* Validation log */
+.validation-log { max-height: 260px; overflow-y: auto; border-radius: 8px; border: 1px solid var(--border); }
+.log-item {
+    display: flex; align-items: flex-start; gap: 8px;
+    padding: 8px 12px; border-bottom: 1px solid var(--border); font-size: .82rem;
+}
+.log-item:last-child { border-bottom: none; }
+.log-item.error { background: #fef2f2; color: #991b1b; }
+.log-item.warn  { background: #fffbeb; color: #92400e; }
+.log-item.ok    { background: #f0fdf4; color: #166534; }
+
+/* Result publish panel */
+.publish-toggle-card {
+    border-radius: var(--radius-lg); padding: 24px;
+    background: linear-gradient(135deg, var(--p-dark) 0%, var(--p) 100%);
+    color: white; box-shadow: var(--shadow-lg); margin-bottom: 18px;
+}
+.toggle-row {
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    flex-wrap: wrap;
+}
+/* CSS toggle switch */
+.switch { position: relative; display: inline-block; width: 54px; height: 28px; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider {
+    position: absolute; cursor: pointer; inset: 0;
+    background: rgba(255,255,255,0.3); border-radius: 28px; transition: .3s;
+}
+.slider::before {
+    content: ''; position: absolute; height: 20px; width: 20px;
+    left: 4px; bottom: 4px; background: white; border-radius: 50%; transition: .3s;
+}
+input:checked + .slider { background: #4ade80; }
+input:checked + .slider::before { transform: translateX(26px); }
+
+/* Merit settings */
+.merit-option-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px; background: var(--bg2); border-radius: 9px; margin-bottom: 8px;
+}
+.merit-option-row input[type="radio"] { width: 18px; height: 18px; accent-color: var(--p); }
+.merit-label { font-weight: 600; font-size: .9rem; }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 600px) {
+    .dashboard-inner { padding: 14px 12px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+    .form-card { padding: 16px; }
+    .exam-session-grid { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg2); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--p); }
+
+/* Existing utility classes for backward compat */
+.mt-2 { margin-top: 1rem; }
+.form-section-title {
+    font-size: 1.05rem; font-weight: 700; color: var(--p);
+    margin-bottom: 1rem; padding-bottom: 8px;
+    border-bottom: 2px solid var(--border);
+    display: flex; align-items: center; gap: 8px;
+}
+.table-responsive { overflow-x: auto; }
+</style>
+</head>
+<body>
+
+<div id="page-transition-overlay"></div>
+
+<!-- ============================================================
+     ADMIN HEADER
+     ============================================================ -->
+<div class="admin-header">
+    <div class="admin-header-inner">
+        <div class="admin-brand">
+            <div class="admin-brand-logo"><i class="fas fa-shield-alt"></i></div>
+            এডমিন প্যানেল
+        </div>
+        <div class="admin-header-actions">
+            <button class="admin-back-btn" onclick="navigateTo('index.html')">
+                <i class="fas fa-home"></i> সাইটে যান
+            </button>
+            <button class="admin-logout-btn" id="btn-logout" onclick="adminLogout()">
+                <i class="fas fa-sign-out-alt"></i> লগআউট
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================
+     LOGIN CARD
+     ============================================================ -->
+<div class="admin-login-wrap" id="admin-login-wrap">
+    <div class="admin-login-card">
+        <div class="login-icon"><i class="fas fa-lock"></i></div>
+        <h2>এডমিন লগইন</h2>
+        <p>শুধুমাত্র অনুমোদিত ব্যক্তিদের জন্য</p>
+        <div class="form-group" style="text-align:left;">
+            <label>ইমেইল</label>
+            <input type="email" id="admin-email" class="form-control" placeholder="admin@example.com">
+        </div>
+        <div class="form-group" style="text-align:left;">
+            <label>পাসওয়ার্ড</label>
+            <input type="password" id="admin-password" class="form-control" placeholder="••••••••">
+        </div>
+        <button class="btn btn-primary" style="width:100%;padding:12px;font-size:1rem;justify-content:center;" onclick="verifyAdmin()">
+            <i class="fas fa-sign-in-alt"></i> লগইন করুন
+        </button>
+        <p style="margin-top:1.2rem;font-size:0.82rem;color:var(--text-soft);">
+            <i class="fas fa-shield-alt"></i> শুধুমাত্র অনুমোদিত ব্যক্তিদের প্রবেশাধিকার আছে
+        </p>
+    </div>
+</div>
+
+<!-- ============================================================
+     ADMIN DASHBOARD
+     ============================================================ -->
+<div class="admin-dashboard-wrap" id="admin-dashboard-wrap">
+<div class="dashboard-inner">
+
+    <!-- Stats Row -->
+    <div class="stats-row" id="stats-row">
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-graduation-cap"></i></div>
+            <div class="stat-num" id="stat-results">0</div>
+            <div class="stat-lbl">মোট ফলাফল</div>
+        </div>
+        <div class="stat-card gold">
+            <div class="stat-icon"><i class="fas fa-calendar-alt"></i></div>
+            <div class="stat-num" id="stat-exams">0</div>
+            <div class="stat-lbl">পরীক্ষা সেশন</div>
+        </div>
+        <div class="stat-card info">
+            <div class="stat-icon"><i class="fas fa-users"></i></div>
+            <div class="stat-num" id="stat-teachers">0</div>
+            <div class="stat-lbl">শিক্ষক</div>
+        </div>
+        <div class="stat-card warn">
+            <div class="stat-icon"><i class="fas fa-bell"></i></div>
+            <div class="stat-num" id="stat-notices">0</div>
+            <div class="stat-lbl">নোটিশ</div>
+        </div>
+    </div>
+
+    <!-- Mobile top nav -->
+    <div class="admin-top-nav" id="mobile-nav">
+        <button class="top-nav-btn active" onclick="switchTab('admin-info',event,this)"><i class="fas fa-info-circle"></i> তথ্য</button>
+        <button class="top-nav-btn" onclick="switchTab('admin-notice',event,this)"><i class="fas fa-bell"></i> নোটিশ</button>
+        <button class="top-nav-btn" onclick="switchTab('admin-hadith',event,this)"><i class="fas fa-book-open"></i> হাদিস</button>
+        <button class="top-nav-btn" onclick="switchTab('admin-teachers',event,this)"><i class="fas fa-users"></i> শিক্ষক</button>
+        <button class="top-nav-btn" onclick="switchTab('admin-results',event,this)"><i class="fas fa-graduation-cap"></i> ফলাফল</button>
+        <button class="top-nav-btn" onclick="switchTab('admin-exam-mgmt',event,this)"><i class="fas fa-calendar"></i> পরীক্ষা</button>
+        <button class="top-nav-btn" onclick="switchTab('admin-jamaat-mgmt',event,this)"><i class="fas fa-list-ol"></i> জামাত</button>
+        <button class="top-nav-btn" onclick="switchTab('admin-branch-mgmt',event,this)"><i class="fas fa-code-branch"></i> শাখা</button>
+        <button class="top-nav-btn" onclick="switchTab('admin-result-upload',event,this)"><i class="fas fa-cloud-upload-alt"></i> আপলোড</button>
+        <button class="top-nav-btn" onclick="switchTab('admin-bulk-upload',event,this)"><i class="fas fa-file-csv"></i> বাল্ক</button>
+        <button class="top-nav-btn" onclick="switchTab('admin-merit-settings',event,this)"><i class="fas fa-medal"></i> মেধা</button>
+        <button class="top-nav-btn" onclick="switchTab('admin-result-control',event,this)"><i class="fas fa-toggle-on"></i> কন্ট্রোল</button>
+        <button class="top-nav-btn" onclick="switchTab('admin-result-settings',event,this)"><i class="fas fa-clock"></i> সেটিংস</button>
+        <button class="top-nav-btn" onclick="switchTab('admin-gallery',event,this)"><i class="fas fa-images"></i> গ্যালারি</button>
+        <button class="top-nav-btn" onclick="switchTab('admin-banner',event,this)"><i class="fas fa-image"></i> ব্যানার</button>
+    </div>
+
+    <div class="admin-layout">
+
+        <!-- ========== SIDEBAR ========== -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header"><i class="fas fa-th-large"></i> নেভিগেশন</div>
+
+            <div class="nav-group-title">সাইট ম্যানেজমেন্ট</div>
+            <button class="sidebar-btn active" onclick="switchTab('admin-info',event,this)"><i class="fas fa-info-circle"></i> মাদরাসা তথ্য</button>
+            <button class="sidebar-btn" onclick="switchTab('admin-notice',event,this)"><i class="fas fa-bell"></i> নোটিশ বোর্ড</button>
+            <button class="sidebar-btn" onclick="switchTab('admin-hadith',event,this)"><i class="fas fa-book-open"></i> হাদিস</button>
+            <button class="sidebar-btn" onclick="switchTab('admin-teachers',event,this)"><i class="fas fa-users"></i> শিক্ষক</button>
+            <button class="sidebar-btn" onclick="switchTab('admin-gallery',event,this)"><i class="fas fa-images"></i> গ্যালারি</button>
+            <button class="sidebar-btn" onclick="switchTab('admin-banner',event,this)"><i class="fas fa-image"></i> ব্যানার</button>
+
+            <div class="sidebar-divider"></div>
+            <div class="nav-group-title">রেজাল্ট ম্যানেজমেন্ট</div>
+            <button class="sidebar-btn" onclick="switchTab('admin-exam-mgmt',event,this)"><i class="fas fa-calendar-alt"></i> পরীক্ষা সেশন</button>
+            <button class="sidebar-btn" onclick="switchTab('admin-jamaat-mgmt',event,this)"><i class="fas fa-list-ol"></i> জামাত ম্যানেজমেন্ট</button>
+            <button class="sidebar-btn" onclick="switchTab('admin-branch-mgmt',event,this)"><i class="fas fa-code-branch"></i> শাখা ম্যানেজমেন্ট</button>
+            <button class="sidebar-btn" onclick="switchTab('admin-result-upload',event,this)"><i class="fas fa-plus-circle"></i> রেজাল্ট আপলোড</button>
+            <button class="sidebar-btn" onclick="switchTab('admin-bulk-upload',event,this)"><i class="fas fa-file-csv"></i> বাল্ক আপলোড</button>
+            <button class="sidebar-btn" onclick="switchTab('admin-results',event,this)"><i class="fas fa-table"></i> রেজাল্ট তালিকা</button>
+            <button class="sidebar-btn" onclick="switchTab('admin-merit-settings',event,this)"><i class="fas fa-medal"></i> মেধা তালিকা সেটিংস</button>
+            <button class="sidebar-btn" onclick="switchTab('admin-result-control',event,this)"><i class="fas fa-toggle-on"></i> রেজাল্ট কন্ট্রোল</button>
+            <button class="sidebar-btn" onclick="switchTab('admin-result-settings',event,this)"><i class="fas fa-clock"></i> কাউন্টডাউন সেটিংস</button>
+        </aside>
+
+        <!-- ========== CONTENT ========== -->
+        <div class="admin-content">
+
+            <!-- =============================================
+                 TAB: মাদরাসা তথ্য
+                 ============================================= -->
+            <div id="admin-info" class="admin-section active">
+                <div class="form-card">
+                    <div class="form-card-title"><i class="fas fa-edit"></i> তথ্য আপডেট করুন</div>
+                    <div class="form-group">
+                        <label>অবস্থান</label>
+                        <input type="text" id="edit-location" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>প্রতিষ্ঠা সাল</label>
+                        <input type="text" id="edit-year" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>বিভাগসমূহ</label>
+                        <input type="text" id="edit-depts" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>লক্ষ্য ও উদ্দেশ্য</label>
+                        <textarea id="edit-goals" class="form-control" rows="4"></textarea>
+                    </div>
+                    <button class="btn btn-primary" onclick="saveInfo()">
+                        <i class="fas fa-save"></i> সেভ করুন
+                    </button>
+                </div>
+            </div>
+
+            <!-- =============================================
+                 TAB: নোটিশ বোর্ড
+                 ============================================= -->
+            <div id="admin-notice" class="admin-section">
+                <div class="form-card">
+                    <div class="form-card-title"><i class="fas fa-plus-circle"></i> নতুন নোটিশ যোগ করুন</div>
+                    <div class="form-group">
+                        <label>শিরোনাম</label>
+                        <input type="text" id="n-title" class="form-control" placeholder="নোটিশের শিরোনাম">
+                    </div>
+                    <div class="form-group">
+                        <label>বিস্তারিত</label>
+                        <textarea id="n-desc" class="form-control" rows="4" placeholder="বিস্তারিত বিবরণ…"></textarea>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>ক্যাটাগরি</label>
+                            <select id="n-type" class="form-control">
+                                <option value="announcement">ঘোষণা</option>
+                                <option value="exam">পরীক্ষা</option>
+                                <option value="holiday">ছুটি</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>তারিখ</label>
+                            <input type="date" id="n-date" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group" style="display:flex;align-items:center;gap:10px;">
+                        <input type="checkbox" id="n-important" style="width:18px;height:18px;accent-color:var(--danger);">
+                        <label for="n-important" style="margin:0;color:var(--danger);font-weight:600;">জরুরী নোটিশ</label>
+                    </div>
+                    <div class="form-group">
+                        <label>ফাইল লিংক (ঐচ্ছিক)</label>
+                        <input type="url" id="n-attachment" class="form-control" placeholder="https://...">
+                    </div>
+                    <button class="btn btn-primary" onclick="saveNotice()">
+                        <i class="fas fa-paper-plane"></i> নোটিশ পাবলিশ করুন
+                    </button>
+                </div>
+                <div class="form-card">
+                    <div class="form-card-title"><i class="fas fa-list"></i> বর্তমান নোটিশসমূহ</div>
+                    <div id="admin-notice-list" style="display:flex;flex-direction:column;gap:8px;"></div>
+                </div>
+            </div>
+
+            <!-- =============================================
+                 TAB: হাদিস
+                 ============================================= -->
+            <div id="admin-hadith" class="admin-section">
+                <div class="form-card">
+                    <div class="form-card-title"><i class="fas fa-book-open"></i> আজকের হাদিস</div>
+                    <div class="form-group">
+                        <label>হাদিসের টেক্সট</label>
+                        <textarea id="h-text" class="form-control" rows="6" placeholder="এখানে হাদিস লিখুন..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>সূত্র / রেফারেন্স</label>
+                        <input type="text" id="h-reference" class="form-control" placeholder="যেমন: সহীহ বুখারী">
+                    </div>
+                    <button class="btn btn-primary" onclick="saveHadith()">
+                        <i class="fas fa-save"></i> হাদিস সেভ করুন
+                    </button>
+                </div>
+            </div>
+
+            <!-- =============================================
+                 TAB: শিক্ষক
+                 ============================================= -->
+            <div id="admin-teachers" class="admin-section">
+                <div class="form-card">
+                    <div class="form-card-title"><i class="fas fa-user-plus"></i> শিক্ষক যোগ / আপডেট</div>
+                    <div class="form-group">
+                        <label>নাম</label>
+                        <input type="text" id="t-name" class="form-control" placeholder="পূর্ণ নাম">
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>পদবী</label>
+                            <input type="text" id="t-desig" class="form-control" placeholder="পদবী">
+                        </div>
+                        <div class="form-group">
+                            <label>মোবাইল</label>
+                            <input type="text" id="t-phone" class="form-control" placeholder="01XXXXXXXXX">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>ছবি আপলোড (ঐচ্ছিক)</label>
+                        <input type="file" id="t-photo-file" class="form-control" accept="image/*">
+                        <small style="color:var(--text-soft);font-size:.75rem;">ছবি না দিলে ডিফল্ট ছবি ব্যবহার হবে।</small>
+                    </div>
+                    <div style="display:flex;gap:10px;">
+                        <button class="btn btn-primary" id="btn-save-teacher" onclick="saveTeacher()">
+                            <i class="fas fa-save"></i> শিক্ষক সেভ করুন
+                        </button>
+                        <button class="btn btn-outline" onclick="resetTeacherForm()">
+                            <i class="fas fa-times"></i> বাতিল
+                        </button>
+                    </div>
+                </div>
+                <div class="form-card">
+                    <div class="form-card-title"><i class="fas fa-list"></i> শিক্ষক তালিকা</div>
+                    <div id="admin-teacher-list"></div>
+                </div>
+            </div>
+
+            <!-- =============================================
+                 TAB: রেজাল্ট তালিকা (পুরনো)
+                 ============================================= -->
+            <div id="admin-results" class="admin-section">
+                <div class="form-card">
+                    <div class="form-card-title"><i class="fas fa-table"></i> সকল রেজাল্ট</div>
+                    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;align-items:center;">
+                        <input type="text" id="result-search" class="form-control" style="max-width:260px;" placeholder="🔍 নাম বা রোল দিয়ে খুঁজুন...">
+                        <select id="result-filter-class" class="form-control" style="max-width:200px;">
+                            <option value="">সব বিভাগ</option>
+                        </select>
+                    </div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead><tr><th>রোল</th><th>নাম</th><th>বিভাগ</th><th>গ্রেড</th><th>অ্যাকশন</th></tr></thead>
+                            <tbody id="admin-result-list"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- =============================================
+                 TAB: পরীক্ষা সেশন ম্যানেজমেন্ট
+                 ============================================= -->
+            <div id="admin-exam-mgmt" class="admin-section">
+                <div class="form-card">
+                    <div class="form-card-title"><i class="fas fa-plus-circle"></i> নতুন পরীক্ষা সেশন তৈরি করুন</div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>সেশন ID (unique)</label>
+                            <input type="text" id="exam-id" class="form-control" placeholder="যেমন: exam2026">
+                        </div>
+                        <div class="form-group">
+                            <label>সেশনের নাম</label>
+                            <input type="text" id="exam-name-create" class="form-control" placeholder="যেমন: বার্ষিক পরীক্ষা">
+                        </div>
+                        <div class="form-group">
+                            <label>হিজরি সাল</label>
+                            <input type="text" id="exam-hijri" class="form-control" placeholder="১৪৪৭">
+                        </div>
+                        <div class="form-group">
+                            <label>ইংরেজি সাল</label>
+                            <input type="text" id="exam-year" class="form-control" placeholder="2026">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>বিবরণ (ঐচ্ছিক)</label>
+                        <input type="text" id="exam-desc" class="form-control" placeholder="সংক্ষিপ্ত বিবরণ">
+                    </div>
+                    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                        <button class="btn btn-primary" id="btn-save-exam" onclick="saveExamSession()">
+                            <i class="fas fa-save"></i> সেশন সেভ করুন
+                        </button>
+                        <button class="btn btn-outline" onclick="resetExamForm()">
+                            <i class="fas fa-times"></i> বাতিল
+                        </button>
+                    </div>
+                </div>
+                <div class="form-card">
+                    <div class="form-card-title"><i class="fas fa-calendar-alt"></i> সকল পরীক্ষা সেশন</div>
+                    <div class="exam-session-grid" id="exam-session-list">
+                        <p style="color:var(--text-soft);font-size:.88rem;">কোনো সেশন নেই।</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- =============================================
+                 TAB: জামাত ম্যানেজমেন্ট
+                 ============================================= -->
+            <div id="admin-jamaat-mgmt" class="admin-section">
+                <div class="form-card">
+                    <div class="form-card-title"><i class="fas fa-plus-circle"></i> নতুন জামাত যোগ করুন</div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>জামাতের নাম (বাংলা)</label>
+                            <input type="text" id="jamaat-name" class="form-control" placeholder="যেমন: তাকমীল">
+                        </div>
+                        <div class="form-group">
+                            <label>ID (English, no space)</label>
+                            <input type="text" id="jamaat-id" class="form-control" placeholder="যেমন: takmil">
+                        </div>
+                        <div class="form-group">
+                            <label>ক্রম নম্বর</label>
+                            <input type="number" id="jamaat-order" class="form-control" placeholder="1">
+                        </div>
+                    </div>
+                    <div style="display:flex;gap:10px;">
+                        <button class="btn btn-primary" id="btn-save-jamaat" onclick="saveJamaat()">
+                            <i class="fas fa-save"></i> জামাত সেভ করুন
+                        </button>
+                        <button class="btn btn-outline" onclick="resetJaamatForm()">
+                            <i class="fas fa-times"></i> বাতিল
+                        </button>
+                    </div>
+                </div>
+                <div class="form-card">
+                    <div class="form-card-title"><i class="fas fa-list-ol"></i> জামাত তালিকা <span style="font-size:.75rem;font-weight:400;color:var(--text-soft);margin-left:6px;">(ড্র্যাগ করে সাজান)</span></div>
+                    <ul class="sortable-list" id="jamaat-list"></ul>
+                </div>
+            </div>
+
+            <!-- =============================================
+                 TAB: শাখা ম্যানেজমেন্ট
+                 ============================================= -->
+            <div id="admin-branch-mgmt" class="admin-section">
+                <div class="form-card">
+                    <div class="form-card-title"><i class="fas fa-plus-circle"></i> নতুন শাখা যোগ করুন</div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>শাখার নাম (বাংলা)</label>
+                            <input type="text" id="branch-name" class="form-control" placeholder="যেমন: বালক শাখা">
+                        </div>
+                        <div class="form-group">
+                            <label>ID (English, no space)</label>
+                            <input type="text" id="branch-id" class="form-control" placeholder="যেমন: boys">
+                        </div>
+                    </div>
+                    <div style="display:flex;gap:10px;">
+                        <button class="btn btn-primary" id="btn-save-branch" onclick="saveBranch()">
+                            <i class="fas fa-save"></i> শাখা সেভ করুন
+                        </button>
+                        <button class="btn btn-outline" onclick="resetBranchForm()">
+                            <i class="fas fa-times"></i> বাতিল
+                        </button>
+                    </div>
+                </div>
+                <div class="form-card">
+                    <div class="form-card-title"><i class="fas fa-code-branch"></i> শাখা তালিকা</div>
+                    <ul class="sortable-list" id="branch-list"></ul>
+                </div>
+            </div>
+
+            <!-- =============================================
+                 TAB: রেজাল্ট আপলোড (উন্নত)
+                 ============================================= -->
+            <div id="admin-result-upload" class="admin-section">
+                <div class="form-card">
+                    <div class="form-card-title"><i class="fas fa-plus-circle"></i> রেজাল্ট যোগ / আপডেট করুন</div>
+
+                    <!-- Context selectors -->
+                    <div style="background:var(--p-light);border-radius:10px;padding:14px;margin-bottom:16px;">
+                        <div style="font-size:.82rem;font-weight:700;color:var(--p);margin-bottom:10px;display:flex;align-items:center;gap:6px;">
+                            <i class="fas fa-filter"></i> রেজাল্ট কনটেক্সট নির্বাচন করুন
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>পরীক্ষা সেশন</label>
+                                <select id="r-exam-session" class="form-control">
+                                    <option value="">-- সেশন নির্বাচন --</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>জামাত</label>
+                                <select id="r-jamaat" class="form-control">
+                                    <option value="">-- জামাত নির্বাচন --</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>শাখা</label>
+                                <select id="r-branch" class="form-control">
+                                    <option value="">-- শাখা নির্বাচন --</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Student info -->
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>শিক্ষার্থীর নাম</label>
+                            <input type="text" id="r-name" class="form-control" placeholder="পূর্ণ নাম">
+                        </div>
+                        <div class="form-group">
+                            <label>রোল নম্বর</label>
+                            <input type="text" id="r-roll" class="form-control" placeholder="রোল নম্বর">
+                        </div>
+                    </div>
+
+                    <!-- Legacy compat: class/year -->
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>বিভাগ (পুরনো সিস্টেম)</label>
+                            <select id="r-class" class="form-control">
+                                <option value="নূরানী">নূরানী</option>
+                                <option value="হিফজ">হিফজ</option>
+                                <option value="কিতাব বিভাগ">কিতাব বিভাগ</option>
+                                <option value="দাওরায়ে হাদীস">দাওরায়ে হাদীস</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="r-year-group" style="display:none;">
+                            <label>বর্ষ</label>
+                            <select id="r-year" class="form-control">
+                                <option value="প্রথম বর্ষ">প্রথম বর্ষ</option>
+                                <option value="দ্বিতীয় বর্ষ">দ্বিতীয় বর্ষ</option>
+                                <option value="তৃতীয় বর্ষ">তৃতীয় বর্ষ</option>
+                                <option value="চতুর্থ বর্ষ">চতুর্থ বর্ষ</option>
+                                <option value="পঞ্চম বর্ষ">পঞ্চম বর্ষ</option>
+                                <option value="ষষ্ঠ বর্ষ">ষষ্ঠ বর্ষ</option>
+                                <option value="সপ্তম বর্ষ">সপ্তম বর্ষ</option>
+                                <option value="অষ্টম বর্ষ">অষ্টম বর্ষ</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Remarks -->
+                    <div class="form-group">
+                        <label>মন্তব্য / রিমার্কস (ঐচ্ছিক)</label>
+                        <input type="text" id="r-remarks" class="form-control" placeholder="বিশেষ মন্তব্য থাকলে লিখুন">
+                    </div>
+
+                    <!-- Subjects -->
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin:14px 0 10px;">
+                        <h4 style="font-size:.92rem;font-weight:700;color:var(--text);">বিষয় ভিত্তিক নম্বর</h4>
+                        <button class="btn btn-outline btn-sm" onclick="addSubjectRow()">
+                            <i class="fas fa-plus"></i> বিষয় যোগ করুন
+                        </button>
+                    </div>
+                    <div id="r-subjects-container">
+                        <div class="subject-row">
+                            <input type="text" class="form-control r-sub-name" value="আদব" readonly>
+                            <input type="number" class="form-control r-sub-mark" placeholder="নম্বর" min="0">
+                        </div>
+                        <div class="subject-row">
+                            <input type="text" class="form-control r-sub-name" placeholder="বিষয়ের নাম">
+                            <input type="number" class="form-control r-sub-mark" placeholder="নম্বর" min="0">
+                            <button class="delete-btn btn-sm" onclick="if(this.parentElement)this.parentElement.remove()"><i class="fas fa-times"></i></button>
+                        </div>
+                    </div>
+
+                    <div id="result-form-preview" style="display:none;background:var(--p-light);border-radius:9px;padding:12px;margin:12px 0;font-size:.85rem;"></div>
+
+                    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;">
+                        <button class="btn btn-primary" id="btn-save-result" onclick="saveResult()">
+                            <i class="fas fa-save"></i> রেজাল্ট সেভ করুন
+                        </button>
+                        <button class="btn btn-outline" onclick="resetResultForm()">
+                            <i class="fas fa-times"></i> রিসেট
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- =============================================
+                 TAB: বাল্ক আপলোড
+                 ============================================= -->
+            <div id="admin-bulk-upload" class="admin-section">
+                <div class="form-card">
+                    <div class="form-card-title"><i class="fas fa-file-csv"></i> বাল্ক রেজাল্ট আপলোড (CSV/XLSX)</div>
+
+                    <!-- Context -->
+                    <div style="background:var(--p-light);border-radius:10px;padding:14px;margin-bottom:16px;">
+                        <div style="font-size:.82rem;font-weight:700;color:var(--p);margin-bottom:10px;">আপলোডের জন্য কনটেক্সট নির্বাচন করুন</div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>পরীক্ষা সেশন</label>
+                                <select id="bulk-exam-session" class="form-control">
+                                    <option value="">-- সেশন নির্বাচন --</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>জামাত</label>
+                                <select id="bulk-jamaat" class="form-control">
+                                    <option value="">-- জামাত নির্বাচন --</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>শাখা</label>
+                                <select id="bulk-branch" class="form-control">
+                                    <option value="">-- শাখা নির্বাচন --</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Template download -->
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
+                        <button class="btn btn-info" onclick="downloadCSVTemplate()">
+                            <i class="fas fa-download"></i> CSV টেমপ্লেট ডাউনলোড
+                        </button>
+                        <span style="font-size:.78rem;color:var(--text-soft);">টেমপ্লেট ডাউনলোড করে পূরণ করুন, তারপর এখানে আপলোড করুন।</span>
+                    </div>
+
+                    <!-- Drop zone -->
+                    <div class="upload-zone" id="bulk-drop-zone" onclick="document.getElementById('bulk-file-input').click()">
+                        <div class="upload-zone-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                        <div class="upload-zone-text">CSV বা XLSX ফাইল ড্র্যাগ করুন বা ক্লিক করুন</div>
+                        <div class="upload-zone-sub">সর্বোচ্চ ৫ MB · CSV ও XLSX সাপোর্টেড</div>
+                    </div>
+                    <input type="file" id="bulk-file-input" accept=".csv,.xlsx" style="display:none" onchange="handleBulkFile(this)">
+
+                    <!-- Preview table -->
+                    <div id="bulk-preview-wrap" style="display:none;margin-top:14px;">
+                        <div style="font-weight:700;color:var(--text);margin-bottom:8px;font-size:.9rem;" id="bulk-preview-count"></div>
+                        <div class="table-wrap" style="max-height:300px;overflow-y:auto;">
+                            <table>
+                                <thead><tr id="bulk-preview-thead"></tr></thead>
+                                <tbody id="bulk-preview-tbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Validation log -->
+                    <div id="bulk-validation-wrap" style="display:none;margin-top:14px;">
+                        <div style="font-weight:700;color:var(--danger);margin-bottom:8px;font-size:.9rem;">
+                            <i class="fas fa-exclamation-triangle"></i> ভ্যালিডেশন রিপোর্ট
+                        </div>
+                        <div class="validation-log" id="bulk-validation-log"></div>
+                    </div>
+
+                    <!-- Progress -->
+                    <div id="bulk-progress-wrap" style="display:none;margin-top:14px;">
+                        <div style="font-size:.85rem;font-weight:600;color:var(--text);margin-bottom:6px;" id="bulk-progress-label">আপলোড হচ্ছে...</div>
+                        <div class="progress-bar-wrap">
+                            <div class="progress-bar-fill" id="bulk-progress-bar" style="width:0%"></div>
+                        </div>
+                    </div>
+
+                    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;">
+                        <button class="btn btn-primary" id="btn-start-bulk" onclick="startBulkUpload()" style="display:none;">
+                            <i class="fas fa-upload"></i> আপলোড শুরু করুন
+                        </button>
+                        <button class="btn btn-outline" onclick="resetBulkUpload()" id="btn-reset-bulk" style="display:none;">
+                            <i class="fas fa-redo"></i> রিসেট
+                        </button>
+                    </div>
+
+                    <div id="bulk-result-summary" style="display:none;margin-top:14px;"></div>
+                </div>
+            </div>
+
+            <!-- =============================================
+                 TAB: মেধা তালিকা সেটিংস
+                 ============================================= -->
+            <div id="admin-merit-settings" class="admin-section">
+                <div class="form-card">
+                    <div class="form-card-title"><i class="fas fa-medal"></i> মেধা তালিকা সেটিংস</div>
+
+                    <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;background:var(--p-light);padding:14px;border-radius:10px;">
+                        <label class="switch">
+                            <input type="checkbox" id="merit-enabled" onchange="saveMeritSettings()">
+                            <span class="slider"></span>
+                        </label>
+                        <div>
+                            <div style="font-weight:700;font-size:.9rem;">মেধা তালিকা সক্রিয় করুন</div>
+                            <div style="font-size:.78rem;color:var(--text-soft);">বন্ধ থাকলে মেধা তালিকা দেখা যাবে না</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>মেধা তালিকায় কতজন দেখাবে?</label>
+                        <div style="display:flex;flex-direction:column;gap:8px;margin-top:6px;">
+                            <div class="merit-option-row">
+                                <input type="radio" name="merit-count" id="merit-10" value="10" onchange="saveMeritSettings()">
+                                <label for="merit-10" class="merit-label">শীর্ষ ১০ জন</label>
+                            </div>
+                            <div class="merit-option-row">
+                                <input type="radio" name="merit-count" id="merit-20" value="20" onchange="saveMeritSettings()">
+                                <label for="merit-20" class="merit-label">শীর্ষ ২০ জন</label>
+                            </div>
+                            <div class="merit-option-row">
+                                <input type="radio" name="merit-count" id="merit-50" value="50" onchange="saveMeritSettings()">
+                                <label for="merit-50" class="merit-label">শীর্ষ ৫০ জন</label>
+                            </div>
+                            <div class="merit-option-row">
+                                <input type="radio" name="merit-count" id="merit-all" value="all" onchange="saveMeritSettings()">
+                                <label for="merit-all" class="merit-label">সকল শিক্ষার্থী</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-top:10px;">
+                        <label>মেধা তালিকার ধরন</label>
+                        <select id="merit-type" class="form-control" onchange="saveMeritSettings()">
+                            <option value="overall">সামগ্রিক (Overall)</option>
+                            <option value="per_jamaat">জামাতভিত্তিক (Per Jamaat)</option>
+                        </select>
+                    </div>
+
+                    <div style="background:#fef9c3;border-radius:9px;padding:12px;font-size:.82rem;color:#92400e;margin-top:10px;">
+                        <i class="fas fa-info-circle"></i> মেধা তালিকা স্বয়ংক্রিয়ভাবে গড় নম্বর অনুযায়ী তৈরি হবে।
+                    </div>
+                </div>
+            </div>
+
+            <!-- =============================================
+                 TAB: রেজাল্ট কন্ট্রোল
+                 ============================================= -->
+            <div id="admin-result-control" class="admin-section">
+                <div class="publish-toggle-card">
+                    <div class="toggle-row">
+                        <div>
+                            <div style="font-size:1.1rem;font-weight:700;margin-bottom:4px;">রেজাল্ট পাবলিশ কন্ট্রোল</div>
+                            <div style="font-size:.83rem;opacity:.8;">রেজাল্ট পেজে রেজাল্ট দেখানো বা লুকানো নিয়ন্ত্রণ করুন</div>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:12px;">
+                            <span style="font-size:.88rem;opacity:.85;" id="publish-status-text">লোড হচ্ছে...</span>
+                            <label class="switch">
+                                <input type="checkbox" id="global-publish-toggle" onchange="toggleGlobalPublish()">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-card">
+                    <div class="form-card-title"><i class="fas fa-calendar-check"></i> সেশনভিত্তিক পাবলিশ কন্ট্রোল</div>
+                    <div id="session-publish-list">
+                        <p style="color:var(--text-soft);font-size:.88rem;">পরীক্ষা সেশন লোড হচ্ছে...</p>
+                    </div>
+                </div>
+
+                <div class="form-card">
+                    <div class="form-card-title"><i class="fas fa-clock"></i> শিডিউল পাবলিশ</div>
+                    <div class="form-group">
+                        <label>পরীক্ষা সেশন নির্বাচন করুন</label>
+                        <select id="schedule-exam-select" class="form-control">
+                            <option value="">-- সেশন নির্বাচন --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>পাবলিশের তারিখ ও সময়</label>
+                        <input type="datetime-local" id="schedule-datetime" class="form-control">
+                    </div>
+                    <button class="btn btn-primary" onclick="saveSchedulePublish()">
+                        <i class="fas fa-calendar-plus"></i> শিডিউল সেট করুন
+                    </button>
+                    <div style="background:#dbeafe;border-radius:9px;padding:12px;font-size:.82rem;color:#1e40af;margin-top:12px;">
+                        <i class="fas fa-info-circle"></i> নির্ধারিত সময়ে স্বয়ংক্রিয়ভাবে রেজাল্ট পাবলিশ হবে।
+                    </div>
+                </div>
+            </div>
+
+            <!-- =============================================
+                 TAB: কাউন্টডাউন সেটিংস (পুরনো — অটুট)
+                 ============================================= -->
+            <div id="admin-result-settings" class="admin-section">
+                <div class="form-card">
+                    <div class="form-card-title"><i class="fas fa-clock"></i> ফলাফল পাবলিশ সেটিংস (Countdown Timer)</div>
+                    <p style="color:var(--text-soft);margin-bottom:20px;font-size:.88rem;">
+                        আপনি যদি নিচে সময় নির্ধারণ করে দেন, তবে ওই সময় পর্যন্ত ছাত্রদের ফলাফল না দেখিয়ে একটি কাউন্টডাউন টাইমার দেখাবে।
+                    </p>
+                    <div class="form-group">
+                        <label>কাউন্টডাউন চালু করুন?</label>
+                        <select id="rs-enabled" class="form-control">
+                            <option value="true">হ্যাঁ (Yes)</option>
+                            <option value="false">না (No - সরাসরি ফলাফল দেখাবে)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>পরীক্ষার নাম (যা টাইমারের উপরে দেখাবে)</label>
+                        <input type="text" id="rs-exam-name" class="form-control" placeholder="যেমন: বার্ষিক পরীক্ষার ফলাফল">
+                    </div>
+                    <div class="form-group">
+                        <label>ফলাফল প্রকাশের তারিখ ও সময়</label>
+                        <input type="datetime-local" id="rs-datetime" class="form-control">
+                    </div>
+                    <button class="btn btn-primary" onclick="saveResultSettings()">
+                        <i class="fas fa-save"></i> সেটিংস সেভ করুন
+                    </button>
+                </div>
+            </div>
+
+            <!-- =============================================
+                 TAB: গ্যালারি
+                 ============================================= -->
+            <div id="admin-gallery" class="admin-section">
+                <div class="form-card">
+                    <div class="form-card-title"><i class="fas fa-upload"></i> গ্যালারি ছবি আপলোড</div>
+                    <div class="form-group">
+                        <label>ছবি নির্বাচন করুন</label>
+                        <input type="file" id="g-url-file" class="form-control" accept="image/*">
+                    </div>
+                    <button class="btn btn-primary" onclick="saveGalleryImage()">
+                        <i class="fas fa-cloud-upload-alt"></i> ছবি আপলোড করুন
+                    </button>
+                </div>
+                <div class="form-card">
+                    <div class="form-card-title"><i class="fas fa-images"></i> গ্যালারি তালিকা</div>
+                    <div id="admin-gallery-list" style="display:flex;gap:10px;flex-wrap:wrap;"></div>
+                </div>
+            </div>
+
+            <!-- =============================================
+                 TAB: ব্যানার
+                 ============================================= -->
+            <div id="admin-banner" class="admin-section">
+                <div class="form-card">
+                    <div class="form-card-title"><i class="fas fa-image"></i> ব্যানার ম্যানেজার</div>
+                    <div class="form-group">
+                        <label>ব্যানারের ছবি URL</label>
+                        <input type="url" id="b-image" class="form-control" placeholder="https://i.ibb.co/...">
+                    </div>
+                    <div class="form-group">
+                        <label>শিরোনাম</label>
+                        <input type="text" id="b-title" class="form-control" placeholder="যেমন: জামিয়া আরাবিয়া আশরাফুল উলূম কুষ্টিয়া">
+                    </div>
+                    <div class="form-group">
+                        <label>সাব-টাইটেল (ঐচ্ছিক)</label>
+                        <input type="text" id="b-subtitle" class="form-control" placeholder="সংক্ষিপ্ত বিবরণ">
+                    </div>
+                    <button class="btn btn-primary" id="btn-save-banner" onclick="saveBanner()">
+                        <i class="fas fa-plus"></i> ব্যানার যোগ করুন
+                    </button>
+                </div>
+                <div class="form-card">
+                    <div class="form-card-title"><i class="fas fa-th"></i> বর্তমান ব্যানারসমূহ</div>
+                    <div class="banner-grid" id="admin-banner-list">
+                        <p style="color:var(--text-soft);">লোড হচ্ছে...</p>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- /admin-content -->
+    </div><!-- /admin-layout -->
+</div><!-- /dashboard-inner -->
+</div><!-- /admin-dashboard-wrap -->
+
+<!-- ============================================================
+     FIREBASE & ALL LOGIC
+     ============================================================ -->
+<script type="module">
+import { initializeApp }     from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { getDatabase, ref, set, push, onValue, remove, update, get }
+                              from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut }
+                              from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+
+/* ── Firebase Config ── */
+const firebaseConfig = {
+    apiKey:            "AIzaSyBXBgFGqDyPiE6ZVER249FA0a91ukICO_U",
+    authDomain:        "ashraful-uloom-madrasa.firebaseapp.com",
+    databaseURL:       "https://ashraful-uloom-madrasa-default-rtdb.firebaseio.com",
+    projectId:         "ashraful-uloom-madrasa",
+    storageBucket:     "ashraful-uloom-madrasa.firebasestorage.app",
+    messagingSenderId: "180777617285",
+    appId:             "1:180777617285:web:f4ab13a6a2aa0d6cda66ec"
+};
+const app  = initializeApp(firebaseConfig);
+const db   = getDatabase(app);
+const auth = getAuth(app);
+
+/* ── Constants ── */
+const IMGBB_API_KEY  = "da4148f76289d909eb01bee3cc2268d4";
+const DEFAULT_AVATAR = "https://i.ibb.co.com/ycd9T2PK/IMG-20260311-233709.png";
+
+/* ── State ── */
+window.allResults        = [];
+window.editingTeacherId  = null;
+window.editingResultId   = null;
+window.existingTeacherPhoto = null;
+window.editingBannerId   = null;
+window.editingExamId     = null;
+window.editingJaamatId   = null;
+window.editingBranchId   = null;
+window.bulkData          = [];
+let   teachersDataStore  = {};
+let   examSessionsStore  = {};
+let   jamaatStore        = {};
+let   branchStore        = {};
+
+/* ============================================================
+   AUTH
+   ============================================================ */
+onAuthStateChanged(auth, (user) => {
+    if (user) { showDashboard(); loadAllData(); }
+    else       { showLogin(); }
+});
+
+function showLogin() {
+    const lw = document.getElementById('admin-login-wrap');
+    const dw = document.getElementById('admin-dashboard-wrap');
+    const lb = document.getElementById('btn-logout');
+    if (lw) lw.style.display = 'flex';
+    if (dw) dw.classList.remove('visible');
+    if (lb) lb.classList.remove('visible');
+}
+function showDashboard() {
+    const lw = document.getElementById('admin-login-wrap');
+    const dw = document.getElementById('admin-dashboard-wrap');
+    const lb = document.getElementById('btn-logout');
+    if (lw) lw.style.display = 'none';
+    if (dw) dw.classList.add('visible');
+    if (lb) lb.classList.add('visible');
+}
+
+window.verifyAdmin = () => {
+    const email = (document.getElementById('admin-email')||{}).value||'';
+    const pass  = (document.getElementById('admin-password')||{}).value||'';
+    if (!email||!pass) return Swal.fire({ icon:'warning', title:'অসম্পূর্ণ!', text:'ইমেইল ও পাসওয়ার্ড দিন।', timer:2000, showConfirmButton:false });
+    Swal.fire({ title:'লগইন হচ্ছে...', allowOutsideClick:false, didOpen:()=>Swal.showLoading() });
+    signInWithEmailAndPassword(auth, email, pass)
+        .then(()=>Swal.fire({ icon:'success', title:'স্বাগতম!', text:'এডমিন প্যানেলে প্রবেশ করা হয়েছে।', timer:1500, showConfirmButton:false }))
+        .catch(()=>Swal.fire({ icon:'error', title:'লগইন ব্যর্থ!', text:'ইমেইল বা পাসওয়ার্ড সঠিক নয়।', confirmButtonColor:'#056C46' }));
+};
+
+window.adminLogout = () => {
+    Swal.fire({ title:'লগআউট করবেন?', icon:'question', showCancelButton:true,
+        confirmButtonText:'হ্যাঁ', cancelButtonText:'না',
+        confirmButtonColor:'#dc2626', cancelButtonColor:'#056C46' })
+    .then(r => { if (r.isConfirmed) signOut(auth); });
+};
+
+/* ============================================================
+   LOAD ALL DATA
+   ============================================================ */
+function loadAllData() {
+    /* Info */
+    onValue(ref(db,'info'), snap => {
+        const d = snap.val(); if (!d) return;
+        const s = (id,v) => { const el=document.getElementById(id); if(el) el.value=v||''; };
+        s('edit-location',d.location); s('edit-year',d.year);
+        s('edit-depts',d.depts); s('edit-goals',d.goals);
+    });
+
+    /* Hadith */
+    onValue(ref(db,'dailyHadith'), snap => {
+        const d = snap.val(); if (!d) return;
+        const ht=document.getElementById('h-text'); if(ht) ht.value=d.text||'';
+        const hr=document.getElementById('h-reference'); if(hr) hr.value=d.reference||'';
+    });
+
+    /* Teachers */
+    onValue(ref(db,'teachers'), snap => {
+        const adminList = document.getElementById('admin-teacher-list');
+        if (adminList) adminList.innerHTML = '';
+        teachersDataStore = snap.val()||{};
+        const keys = Object.keys(teachersDataStore);
+        const statTeachers = document.getElementById('stat-teachers');
+        if (statTeachers) statTeachers.textContent = keys.length;
+        if (keys.length) {
+            keys.forEach(key => {
+                const t = teachersDataStore[key];
+                if (adminList) adminList.innerHTML += `
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:1px solid var(--border);gap:10px;">
+                    <div style="display:flex;align-items:center;gap:10px;">
+                        <img src="${t.photo||DEFAULT_AVATAR}" style="width:38px;height:38px;border-radius:50%;object-fit:cover;border:2px solid var(--border);" onerror="this.src='${DEFAULT_AVATAR}'">
+                        <div><strong>${t.name||''}</strong><br><small style="color:var(--text-soft);">${t.designation||''}</small></div>
+                    </div>
+                    <div style="display:flex;gap:6px;">
+                        <button class="btn-view-marks btn-sm" onclick="editTeacher('${key}')"><i class="fas fa-edit"></i></button>
+                        <button class="delete-btn btn-sm" onclick="deleteRecord('teachers/${key}')"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>`;
+            });
+        } else {
+            if (adminList) adminList.innerHTML = '<p style="color:var(--text-soft);text-align:center;padding:1rem;">কোনো শিক্ষক যোগ করা হয়নি।</p>';
+        }
+    });
+
+    /* Notices */
+    onValue(ref(db,'notices'), snap => {
+        const data = snap.val();
+        const adminList = document.getElementById('admin-notice-list');
+        if (adminList) adminList.innerHTML='';
+        const statNotices = document.getElementById('stat-notices');
+        const notices = data ? Object.keys(data).map(k=>({...data[k],id:k})) : [];
+        if (statNotices) statNotices.textContent = notices.length;
+        notices.sort((a,b)=>new Date(b.date)-new Date(a.date));
+        notices.forEach(n => {
+            const typeText = n.type==='exam'?'পরীক্ষা':(n.type==='holiday'?'ছুটি':'ঘোষণা');
+            if (adminList) adminList.innerHTML += `
+            <div style="background:var(--bg2);padding:10px 14px;border-radius:8px;display:flex;justify-content:space-between;align-items:center;gap:10px;">
+                <div style="flex:1;min-width:0;">
+                    <strong style="display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${n.title}</strong>
+                    ${n.important?'<span class="badge badge-red">জরুরী</span>':''} 
+                    <small style="color:var(--text-soft);">${n.date} | ${typeText}</small>
+                </div>
+                <button class="delete-btn btn-sm" onclick="deleteRecord('notices/${n.id}')"><i class="fas fa-trash"></i></button>
+            </div>`;
+        });
+    });
+
+    /* Legacy Results (flat) */
+    onValue(ref(db,'results'), snap => {
+        const data = snap.val();
+        window.allResults = [];
+        const adminList = document.getElementById('admin-result-list');
+        if (adminList) adminList.innerHTML='';
+        const statRes = document.getElementById('stat-results');
+        if (data) {
+            Object.keys(data).forEach(key => {
+                const r=data[key]; r.id=key;
+                window.allResults.push(r);
+            });
+        }
+        if (statRes) statRes.textContent = window.allResults.length;
+        renderResultTable(window.allResults, adminList);
+        populateFilterClassOptions();
+    });
+
+    /* Gallery */
+    onValue(ref(db,'gallery'), snap => {
+        const adminList = document.getElementById('admin-gallery-list');
+        if (adminList) adminList.innerHTML='';
+        const data = snap.val();
+        if (data) {
+            Object.keys(data).forEach(key => {
+                const url = data[key].url;
+                if (adminList) adminList.innerHTML += `
+                <div style="width:100px;position:relative;">
+                    <img src="${url}" crossorigin="anonymous" style="width:100%;height:70px;object-fit:cover;border-radius:6px;">
+                    <button class="delete-btn" style="position:absolute;top:2px;right:2px;padding:2px 5px;font-size:.7rem;" onclick="deleteRecord('gallery/${key}')">X</button>
+                </div>`;
+            });
+        } else {
+            if (adminList) adminList.innerHTML='<p style="color:var(--text-soft);">কোনো ছবি নেই।</p>';
+        }
+    });
+
+    /* Result Settings (countdown) */
+    onValue(ref(db,'siteSettings/resultPublish'), snap => {
+        const data = snap.val(); if (!data) return;
+        const rsE=document.getElementById('rs-enabled');
+        const rsN=document.getElementById('rs-exam-name');
+        const rsD=document.getElementById('rs-datetime');
+        const gpt=document.getElementById('global-publish-toggle');
+        const pst=document.getElementById('publish-status-text');
+        if (rsE) rsE.value = data.enabled?'true':'false';
+        if (rsN) rsN.value = data.examName||'';
+        if (data.publishTimestamp && rsD) {
+            const dt=new Date(data.publishTimestamp);
+            dt.setMinutes(dt.getMinutes()-dt.getTimezoneOffset());
+            rsD.value=dt.toISOString().slice(0,16);
+        }
+        if (gpt) gpt.checked = !data.enabled; // toggle means "published = countdown disabled"
+        if (pst) pst.textContent = data.enabled ? '🔒 কাউন্টডাউন চলছে' : '✅ রেজাল্ট প্রকাশিত';
+    });
+
+    /* Banners */
+    onValue(ref(db,'banners'), snap => {
+        const data = snap.val();
+        const adminList = document.getElementById('admin-banner-list');
+        if (!adminList) return;
+        if (data && Object.keys(data).length > 0) {
+            adminList.innerHTML='';
+            Object.keys(data).forEach(key => {
+                const b = data[key];
+                adminList.innerHTML += `
+                <div class="banner-thumb" id="bthumb-${key}">
+                    <img src="${b.image||''}" alt="${b.title||''}" crossorigin="anonymous">
+                    <div class="banner-thumb-info">${b.title||'(শিরোনাম নেই)'}</div>
+                    <div class="banner-thumb-actions">
+                        <button class="btn-view-marks" style="flex:1;padding:3px 6px;font-size:.7rem;" onclick="editBanner('${key}')"><i class="fas fa-edit"></i></button>
+                        <button class="delete-btn" style="flex:1;padding:3px 6px;font-size:.7rem;" onclick="deleteBanner('${key}')"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>`;
+            });
+        } else {
+            adminList.innerHTML='<p style="color:var(--text-soft);font-size:.9rem;">এখনো কোনো ব্যানার যোগ করা হয়নি।</p>';
+        }
+    });
+
+    /* Exam Sessions */
+    onValue(ref(db,'examSessions'), snap => {
+        examSessionsStore = snap.val()||{};
+        const statExams = document.getElementById('stat-exams');
+        if (statExams) statExams.textContent = Object.keys(examSessionsStore).length;
+        renderExamSessions();
+        populateExamDropdowns();
+    });
+
+    /* Jamaat */
+    onValue(ref(db,'jamaats'), snap => {
+        jamaatStore = snap.val()||{};
+        renderJaamatList();
+        populateJaamatDropdowns();
+    });
+
+    /* Branch */
+    onValue(ref(db,'branches'), snap => {
+        branchStore = snap.val()||{};
+        renderBranchList();
+        populateBranchDropdowns();
+    });
+
+    /* Merit Settings */
+    onValue(ref(db,'siteSettings/meritSettings'), snap => {
+        const data = snap.val(); if (!data) return;
+        const me = document.getElementById('merit-enabled');
+        if (me) me.checked = !!data.enabled;
+        const mc = document.querySelector(`input[name="merit-count"][value="${data.count||10}"]`);
+        if (mc) mc.checked = true;
+        const mt = document.getElementById('merit-type');
+        if (mt) mt.value = data.type||'overall';
+    });
+}
+
+/* ============================================================
+   RENDER HELPERS
+   ============================================================ */
+function renderResultTable(results, tbody) {
+    if (!tbody) return;
+    if (results.length === 0) { tbody.innerHTML='<tr><td colspan="5" style="text-align:center;padding:1rem;color:var(--text-soft);">কোনো ফলাফল নেই।</td></tr>'; return; }
+    tbody.innerHTML = results.map(r => {
+        const yearTxt = r.className==='কিতাব বিভাগ'&&r.year?`<small style="color:var(--text-soft);">(${r.year})</small>`:'';
+        return `<tr>
+            <td>${r.roll||''}</td>
+            <td>${r.name||''}</td>
+            <td>${r.className||''} ${yearTxt}</td>
+            <td><span class="badge ${getBadgeClass(r.grade)}">${r.grade||''}</span></td>
+            <td style="white-space:nowrap;">
+                <button class="btn-view-marks btn-sm" style="margin-right:4px;" onclick="editResult('${r.id}')"><i class="fas fa-edit"></i></button>
+                <button class="delete-btn btn-sm" onclick="deleteRecord('results/${r.id}')"><i class="fas fa-trash"></i></button>
+            </td>
+        </tr>`;
+    }).join('');
+}
+function getBadgeClass(grade) {
+    if (!grade) return 'badge-gray';
+    if (grade==='মুমতাজ') return 'badge-green';
+    if (grade==='জায়্যিদ জিদ্দান') return 'badge-blue';
+    if (grade==='জায়্যিদ') return 'badge-blue';
+    if (grade==='মাকবুল') return 'badge-yellow';
+    return 'badge-red';
+}
+function populateFilterClassOptions() {
+    const sel = document.getElementById('result-filter-class');
+    if (!sel) return;
+    const classes = [...new Set(window.allResults.map(r=>r.className).filter(Boolean))];
+    const cur = sel.value;
+    sel.innerHTML = '<option value="">সব বিভাগ</option>' + classes.map(c=>`<option value="${c}">${c}</option>`).join('');
+    sel.value = cur;
+}
+
+/* ── Exam Sessions ── */
+function renderExamSessions() {
+    const grid = document.getElementById('exam-session-list');
+    if (!grid) return;
+    const keys = Object.keys(examSessionsStore);
+    if (!keys.length) { grid.innerHTML='<p style="color:var(--text-soft);font-size:.88rem;">কোনো সেশন তৈরি করা হয়নি।</p>'; return; }
+    grid.innerHTML = keys.map(key => {
+        const s = examSessionsStore[key];
+        const statusClass = s.status==='published'?'published':(s.status==='hidden'?'hidden':'');
+        const statusBadge = s.status==='published'
+            ? '<span class="badge badge-green">প্রকাশিত</span>'
+            : (s.status==='hidden' ? '<span class="badge badge-gray">লুকানো</span>' : '<span class="badge badge-yellow">ড্রাফট</span>');
+        return `<div class="exam-session-card ${statusClass}">
+            <div class="exam-card-title">${s.name||key}</div>
+            <div class="exam-card-meta">${s.hijri||''} হিজরি / ${s.year||''} · ${s.description||''}</div>
+            <div style="margin-bottom:8px;">${statusBadge}</div>
+            <div class="exam-card-actions">
+                <button class="btn btn-outline btn-sm" onclick="editExamSession('${key}')"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-primary btn-sm" onclick="publishExamSession('${key}','published')"><i class="fas fa-eye"></i></button>
+                <button class="btn btn-warn btn-sm" onclick="publishExamSession('${key}','hidden')"><i class="fas fa-eye-slash"></i></button>
+                <button class="btn btn-danger btn-sm" onclick="deleteRecord('examSessions/${key}')"><i class="fas fa-trash"></i></button>
+            </div>
+        </div>`;
+    }).join('');
+    renderSessionPublishList(keys);
+}
+function renderSessionPublishList(keys) {
+    const wrap = document.getElementById('session-publish-list');
+    if (!wrap) return;
+    if (!keys.length) { wrap.innerHTML='<p style="color:var(--text-soft);font-size:.88rem;">পরীক্ষা সেশন নেই।</p>'; return; }
+    wrap.innerHTML = keys.map(key => {
+        const s = examSessionsStore[key];
+        const isPublished = s.status==='published';
+        return `<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--bg2);border-radius:9px;margin-bottom:8px;gap:12px;">
+            <div>
+                <div style="font-weight:600;font-size:.9rem;">${s.name||key}</div>
+                <div style="font-size:.75rem;color:var(--text-soft);">${s.hijri||''} / ${s.year||''}</div>
+            </div>
+            <label class="switch" title="${isPublished?'প্রকাশিত':'লুকানো'}">
+                <input type="checkbox" ${isPublished?'checked':''} onchange="publishExamSession('${key}', this.checked?'published':'hidden')">
+                <span class="slider"></span>
+            </label>
+        </div>`;
+    }).join('');
+}
+
+function populateExamDropdowns() {
+    const selectors = ['r-exam-session','bulk-exam-session','schedule-exam-select'];
+    selectors.forEach(id => {
+        const sel = document.getElementById(id);
+        if (!sel) return;
+        const cur = sel.value;
+        sel.innerHTML = '<option value="">-- সেশন নির্বাচন --</option>' +
+            Object.keys(examSessionsStore).map(k=>`<option value="${k}">${examSessionsStore[k].name||k}</option>`).join('');
+        if (cur) sel.value = cur;
+    });
+}
+
+/* ── Jamaat ── */
+function renderJaamatList() {
+    const ul = document.getElementById('jamaat-list');
+    if (!ul) return;
+    const items = Object.keys(jamaatStore)
+        .map(k=>({...jamaatStore[k], _key:k}))
+        .sort((a,b)=>(a.order||0)-(b.order||0));
+    if (!items.length) { ul.innerHTML='<p style="color:var(--text-soft);font-size:.88rem;padding:10px;">কোনো জামাত নেই।</p>'; return; }
+    ul.innerHTML = items.map(j=>`
+        <li class="sortable-item" draggable="true" data-id="${j._key}">
+            <span class="drag-handle"><i class="fas fa-grip-vertical"></i></span>
+            <span class="item-name">${j.name||j._key}</span>
+            <small style="color:var(--text-soft);font-size:.75rem;">${j.id||''}</small>
+            <div class="item-actions">
+                <button class="btn btn-outline btn-sm btn-icon" onclick="editJamaat('${j._key}')"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-danger btn-sm btn-icon" onclick="deleteRecord('jamaats/${j._key}')"><i class="fas fa-trash"></i></button>
+            </div>
+        </li>`).join('');
+    initDragSort(ul, 'jamaats');
+}
+function populateJaamatDropdowns() {
+    ['r-jamaat','bulk-jamaat'].forEach(id => {
+        const sel=document.getElementById(id); if (!sel) return;
+        const cur=sel.value;
+        sel.innerHTML='<option value="">-- জামাত নির্বাচন --</option>'+
+            Object.keys(jamaatStore)
+            .map(k=>({...jamaatStore[k],_key:k}))
+            .sort((a,b)=>(a.order||0)-(b.order||0))
+            .map(j=>`<option value="${j._key}">${j.name||j._key}</option>`).join('');
+        if (cur) sel.value=cur;
+    });
+}
+
+/* ── Branch ── */
+function renderBranchList() {
+    const ul = document.getElementById('branch-list');
+    if (!ul) return;
+    const items = Object.keys(branchStore).map(k=>({...branchStore[k],_key:k}));
+    if (!items.length) { ul.innerHTML='<p style="color:var(--text-soft);font-size:.88rem;padding:10px;">কোনো শাখা নেই।</p>'; return; }
+    ul.innerHTML = items.map(b=>`
+        <li class="sortable-item">
+            <span class="drag-handle"><i class="fas fa-grip-vertical"></i></span>
+            <span class="item-name">${b.name||b._key}</span>
+            <small style="color:var(--text-soft);font-size:.75rem;">${b.id||''}</small>
+            <div class="item-actions">
+                <button class="btn btn-outline btn-sm btn-icon" onclick="editBranch('${b._key}')"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-danger btn-sm btn-icon" onclick="deleteRecord('branches/${b._key}')"><i class="fas fa-trash"></i></button>
+            </div>
+        </li>`).join('');
+}
+function populateBranchDropdowns() {
+    ['r-branch','bulk-branch'].forEach(id => {
+        const sel=document.getElementById(id); if (!sel) return;
+        const cur=sel.value;
+        sel.innerHTML='<option value="">-- শাখা নির্বাচন --</option>'+
+            Object.keys(branchStore).map(k=>`<option value="${k}">${branchStore[k].name||k}</option>`).join('');
+        if (cur) sel.value=cur;
+    });
+}
+
+/* ============================================================
+   DRAG SORT
+   ============================================================ */
+function initDragSort(ul, dbPath) {
+    let dragged=null;
+    ul.querySelectorAll('.sortable-item').forEach(item => {
+        item.addEventListener('dragstart', ()=>{ dragged=item; setTimeout(()=>item.style.opacity='0.5',0); });
+        item.addEventListener('dragend',   ()=>{ item.style.opacity='1'; dragged=null; saveNewOrder(ul, dbPath); });
+        item.addEventListener('dragover',  e=>{ e.preventDefault(); const after=getDragAfterElement(ul,e.clientY); if(!after) ul.appendChild(dragged); else ul.insertBefore(dragged,after); });
+    });
+}
+function getDragAfterElement(ul, y) {
+    const items=[...ul.querySelectorAll('.sortable-item:not([style*="opacity: 0.5"])')];
+    return items.reduce((closest,child)=>{
+        const box=child.getBoundingClientRect(), offset=y-(box.top+box.height/2);
+        if (offset<0&&offset>closest.offset) return {offset,element:child};
+        return closest;
+    },{offset:-Infinity}).element;
+}
+function saveNewOrder(ul, dbPath) {
+    const items=[...ul.querySelectorAll('.sortable-item')];
+    items.forEach((item,i)=>update(ref(db,`${dbPath}/${item.dataset.id}`),{order:i+1}));
+}
+
+/* ============================================================
+   TAB SWITCH
+   ============================================================ */
+window.switchTab = (tabId, event, btn) => {
+    document.querySelectorAll('.admin-section').forEach(el=>el.classList.remove('active'));
+    document.querySelectorAll('.sidebar-btn,.top-nav-btn').forEach(el=>el.classList.remove('active'));
+    const el=document.getElementById(tabId); if(el) el.classList.add('active');
+    if (btn) btn.classList.add('active');
+};
+/* legacy compat */
+window.switchAdminTab = (tabId, event) => {
+    const btn = event && event.currentTarget;
+    window.switchTab(tabId, event, btn);
+};
+
+/* ============================================================
+   IMAGE HELPERS
+   ============================================================ */
+async function compressImage(file) {
+    try { return await imageCompression(file,{maxSizeMB:.2,maxWidthOrHeight:800,useWebWorker:true,initialQuality:.8}); }
+    catch(e){ return file; }
+}
+async function uploadImageToImgBB(file) {
+    const fd=new FormData(); fd.append('image',file);
+    const res=await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`,{method:'POST',body:fd});
+    const data=await res.json();
+    if (data.success) return data.data.url;
+    throw new Error('Upload failed');
+}
+
+/* ============================================================
+   SAVE FUNCTIONS — EXISTING
+   ============================================================ */
+window.saveInfo = () => {
+    const g=id=>{const el=document.getElementById(id);return el?el.value:'';};
+    set(ref(db,'info'),{location:g('edit-location'),year:g('edit-year'),depts:g('edit-depts'),goals:g('edit-goals')})
+        .then(()=>Swal.fire({icon:'success',title:'সফল!',text:'তথ্য সেভ হয়েছে!',timer:2000,showConfirmButton:false}));
+};
+window.saveHadith = () => {
+    const text=(document.getElementById('h-text')||{}).value||'';
+    const refName=(document.getElementById('h-reference')||{}).value||'';
+    set(ref(db,'dailyHadith'),{text,reference:refName})
+        .then(()=>Swal.fire({icon:'success',title:'সফল!',text:'হাদিস সেভ হয়েছে!',timer:2000,showConfirmButton:false}));
+};
+window.saveResultSettings = () => {
+    const isEnabled=(document.getElementById('rs-enabled')||{}).value==='true';
+    const examName=(document.getElementById('rs-exam-name')||{}).value||'';
+    const dtVal=(document.getElementById('rs-datetime')||{}).value||'';
+    const timestamp=dtVal?new Date(dtVal).getTime():0;
+    set(ref(db,'siteSettings/resultPublish'),{enabled:isEnabled,examName,publishTimestamp:timestamp})
+        .then(()=>Swal.fire({icon:'success',title:'সফল!',text:'সেটিংস আপডেট হয়েছে!',timer:2000,showConfirmButton:false}));
+};
+window.saveNotice = () => {
+    const title=(document.getElementById('n-title')||{}).value||'';
+    const desc =(document.getElementById('n-desc')||{}).value||'';
+    const type =(document.getElementById('n-type')||{}).value||'announcement';
+    const date =(document.getElementById('n-date')||{}).value||'';
+    const important=(document.getElementById('n-important')||{}).checked||false;
+    const attachment=(document.getElementById('n-attachment')||{}).value||'';
+    if (!title||!date||!desc) return alert('শিরোনাম, বিস্তারিত এবং তারিখ অবশ্যই দিতে হবে!');
+    push(ref(db,'notices'),{title,description:desc,type,date,important,attachment})
+        .then(()=>{
+            Swal.fire({icon:'success',title:'পাবলিশ হয়েছে!',text:'নোটিশ যোগ করা হয়েছে।',timer:2000,showConfirmButton:false});
+            ['n-title','n-desc','n-date','n-attachment'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+            const nim=document.getElementById('n-important'); if(nim) nim.checked=false;
+        });
+};
+
+/* Teacher */
+window.resetTeacherForm = () => {
+    window.editingTeacherId=null; window.existingTeacherPhoto=null;
+    ['t-name','t-desig','t-phone','t-photo-file'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+    const btn=document.getElementById('btn-save-teacher'); if(btn) btn.innerHTML='<i class="fas fa-save"></i> শিক্ষক সেভ করুন';
+};
+window.editTeacher = id => {
+    const t=teachersDataStore[id]; if(!t) return;
+    window.editingTeacherId=id; window.existingTeacherPhoto=t.photo;
+    const s=(id,v)=>{const el=document.getElementById(id);if(el)el.value=v||'';};
+    s('t-name',t.name); s('t-desig',t.designation); s('t-phone',t.phone);
+    const tpf=document.getElementById('t-photo-file'); if(tpf) tpf.value='';
+    const btn=document.getElementById('btn-save-teacher'); if(btn) btn.innerHTML='<i class="fas fa-save"></i> শিক্ষক আপডেট করুন';
+    document.getElementById('admin-teachers').scrollIntoView({behavior:'smooth',block:'start'});
+};
+window.saveTeacher = async () => {
+    const name=(document.getElementById('t-name')||{}).value||'';
+    const desig=(document.getElementById('t-desig')||{}).value||'';
+    const phone=(document.getElementById('t-phone')||{}).value||'';
+    const fileInput=document.getElementById('t-photo-file');
+    if (!name) return alert('নাম লিখুন');
+    let photoUrl=window.existingTeacherPhoto||DEFAULT_AVATAR;
+    if (fileInput&&fileInput.files&&fileInput.files.length>0) {
+        Swal.fire({title:'আপলোড হচ্ছে...',allowOutsideClick:false,didOpen:()=>Swal.showLoading()});
+        try{ const c=await compressImage(fileInput.files[0]); photoUrl=await uploadImageToImgBB(c); }
+        catch(e){ Swal.fire({icon:'error',title:'ত্রুটি!',text:'আপলোড ব্যর্থ।'}); return; }
+    }
+    const payload={name,designation:desig,phone,photo:photoUrl};
+    const fn=window.editingTeacherId
+        ?update(ref(db,'teachers/'+window.editingTeacherId),payload)
+        :push(ref(db,'teachers'),payload);
+    fn.then(()=>{Swal.fire({icon:'success',title:'সফল!',text:'শিক্ষকের তথ্য সেভ হয়েছে।',timer:2000,showConfirmButton:false});resetTeacherForm();});
+};
+
+/* Gallery */
+window.saveGalleryImage = async () => {
+    const fileInput=document.getElementById('g-url-file');
+    if (!fileInput||fileInput.files.length===0) return alert('ছবি নির্বাচন করুন');
+    Swal.fire({title:'আপলোড হচ্ছে...',allowOutsideClick:false,didOpen:()=>Swal.showLoading()});
+    try {
+        const c=await compressImage(fileInput.files[0]);
+        const url=await uploadImageToImgBB(c);
+        push(ref(db,'gallery'),{url})
+            .then(()=>{Swal.fire({icon:'success',title:'সফল!',text:'ছবি যোগ হয়েছে!',timer:2000,showConfirmButton:false});fileInput.value='';});
+    } catch(e){ Swal.fire({icon:'error',title:'ত্রুটি!',text:'আপলোড ব্যর্থ।'}); }
+};
+
+/* Banner */
+window.saveBanner = () => {
+    const image=(document.getElementById('b-image')||{}).value?.trim()||'';
+    const title=(document.getElementById('b-title')||{}).value?.trim()||'';
+    const subtitle=(document.getElementById('b-subtitle')||{}).value?.trim()||'';
+    if (!image) return Swal.fire({icon:'warning',title:'ছবির URL দিন!',timer:2000,showConfirmButton:false});
+    if (!title) return Swal.fire({icon:'warning',title:'শিরোনাম দিন!',timer:2000,showConfirmButton:false});
+    const payload={image,title,subtitle};
+    const fn=window.editingBannerId
+        ?update(ref(db,'banners/'+window.editingBannerId),payload)
+        :push(ref(db,'banners'),payload);
+    fn.then(()=>{Swal.fire({icon:'success',title:window.editingBannerId?'আপডেট হয়েছে!':'যোগ হয়েছে!',timer:2000,showConfirmButton:false});resetBannerForm();});
+};
+window.editBanner = id => {
+    onValue(ref(db,'banners/'+id),(snap)=>{
+        const b=snap.val(); if(!b) return;
+        window.editingBannerId=id;
+        const s=(i,v)=>{const el=document.getElementById(i);if(el)el.value=v||'';};
+        s('b-image',b.image); s('b-title',b.title); s('b-subtitle',b.subtitle);
+        const btn=document.getElementById('btn-save-banner');
+        if(btn) btn.innerHTML='<i class="fas fa-save"></i> ব্যানার আপডেট করুন';
+        document.getElementById('admin-banner').scrollIntoView({behavior:'smooth',block:'start'});
+    },{onlyOnce:true});
+};
+window.deleteBanner = id => {
+    Swal.fire({title:'ব্যানার মুছবেন?',icon:'warning',showCancelButton:true,
+        confirmButtonColor:'#dc2626',cancelButtonColor:'#056C46',
+        confirmButtonText:'হ্যাঁ, মুছুন!',cancelButtonText:'বাতিল'})
+    .then(r=>{if(r.isConfirmed)remove(ref(db,'banners/'+id)).then(()=>Swal.fire({icon:'success',title:'মুছে ফেলা হয়েছে!',timer:1500,showConfirmButton:false}));});
+};
+function resetBannerForm() {
+    window.editingBannerId=null;
+    ['b-image','b-title','b-subtitle'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+    const btn=document.getElementById('btn-save-banner');
+    if(btn) btn.innerHTML='<i class="fas fa-plus"></i> ব্যানার যোগ করুন';
+}
+
+/* ============================================================
+   RESULT CRUD — LEGACY (Flat) — PRESERVED
+   ============================================================ */
+window.addSubjectRow = () => {
+    const c=document.getElementById('r-subjects-container'); if(!c) return;
+    const div=document.createElement('div'); div.className='subject-row';
+    div.innerHTML=`<input type="text" class="form-control r-sub-name" placeholder="বিষয়ের নাম">
+        <input type="number" class="form-control r-sub-mark" placeholder="নম্বর" min="0">
+        <button class="delete-btn btn-sm" onclick="if(this.parentElement)this.parentElement.remove()"><i class="fas fa-times"></i></button>`;
+    c.appendChild(div);
+};
+
+function calculateGrade(avg) {
+    if (avg>=80) return {text:'মুমতাজ',class:''};
+    if (avg>=65) return {text:'জায়্যিদ জিদ্দান',class:''};
+    if (avg>=50) return {text:'জায়্যিদ',class:''};
+    if (avg>=33) return {text:'মাকবুল',class:''};
+    return {text:'রাসিব',class:'grade-rasib'};
+}
+
+window.resetResultForm = () => {
+    window.editingResultId=null;
+    const btn=document.getElementById('btn-save-result'); if(btn) btn.innerHTML='<i class="fas fa-save"></i> রেজাল্ট সেভ করুন';
+    const rn=document.getElementById('r-name'); if(rn) rn.value='';
+    const rr=document.getElementById('r-roll'); if(rr) rr.value='';
+    const rem=document.getElementById('r-remarks'); if(rem) rem.value='';
+    const rc=document.getElementById('r-subjects-container');
+    if(rc) rc.innerHTML=`
+        <div class="subject-row">
+            <input type="text" class="form-control r-sub-name" value="আদব" readonly>
+            <input type="number" class="form-control r-sub-mark" placeholder="নম্বর" min="0">
+        </div>
+        <div class="subject-row">
+            <input type="text" class="form-control r-sub-name" placeholder="বিষয়ের নাম">
+            <input type="number" class="form-control r-sub-mark" placeholder="নম্বর" min="0">
+            <button class="delete-btn btn-sm" onclick="if(this.parentElement)this.parentElement.remove()"><i class="fas fa-times"></i></button>
+        </div>`;
+};
+
+window.editResult = id => {
+    const r=window.allResults.find(x=>x.id===id); if(!r) return;
+    window.editingResultId=id;
+    switchTab('admin-result-upload',null,document.querySelector('.sidebar-btn[onclick*="admin-result-upload"]'));
+    setTimeout(()=>{
+        const rcEl=document.getElementById('r-class');
+        if(rcEl){ rcEl.value=r.className; rcEl.dispatchEvent(new Event('change')); }
+        const ryEl=document.getElementById('r-year');
+        if(r.className==='কিতাব বিভাগ'&&ryEl) ryEl.value=r.year||'প্রথম বর্ষ';
+        const rnEl=document.getElementById('r-name'); if(rnEl) rnEl.value=r.name;
+        const rrEl=document.getElementById('r-roll'); if(rrEl) rrEl.value=r.roll;
+        const remEl=document.getElementById('r-remarks'); if(remEl) remEl.value=r.remarks||'';
+        const container=document.getElementById('r-subjects-container');
+        if(container){
+            container.innerHTML='';
+            (r.subjects||[]).forEach(s=>{
+                const isAdab=(s.name==='আদব'||s.name.toLowerCase()==='adab');
+                container.innerHTML+=`<div class="subject-row">
+                    <input type="text" class="form-control r-sub-name" value="${s.name}" ${isAdab?'readonly':'placeholder="বিষয়ের নাম"'}>
+                    <input type="number" class="form-control r-sub-mark" value="${s.marks}" placeholder="নম্বর" min="0">
+                    ${isAdab?'':'<button class="delete-btn btn-sm" onclick="if(this.parentElement)this.parentElement.remove()"><i class="fas fa-times"></i></button>'}
+                </div>`;
+            });
+        }
+        const btn=document.getElementById('btn-save-result'); if(btn) btn.innerHTML='<i class="fas fa-save"></i> রেজাল্ট আপডেট করুন';
+        document.getElementById('admin-result-upload').scrollIntoView({behavior:'smooth',block:'start'});
+    },150);
+};
+
+window.saveResult = () => {
+    const className=(document.getElementById('r-class')||{}).value||'';
+    const name=(document.getElementById('r-name')||{}).value||'';
+    const roll=(document.getElementById('r-roll')||{}).value||'';
+    const remarks=(document.getElementById('r-remarks')||{}).value||'';
+    const ryEl=document.getElementById('r-year');
+    const yearVal=(className==='কিতাব বিভাগ'&&ryEl)?ryEl.value:'';
+
+    /* NEW context fields */
+    const examSession=(document.getElementById('r-exam-session')||{}).value||'';
+    const jamaat=(document.getElementById('r-jamaat')||{}).value||'';
+    const branch=(document.getElementById('r-branch')||{}).value||'';
+
+    if (!name||!roll) return alert('নাম ও রোল দিন');
+
+    const subNames=document.querySelectorAll('#r-subjects-container .r-sub-name');
+    const subMarks=document.querySelectorAll('#r-subjects-container .r-sub-mark');
+    let subjects=[],total=0,countForAvg=0;
+    for (let i=0;i<subNames.length;i++){
+        const n=subNames[i].value, m=parseFloat(subMarks[i].value)||0;
+        if(n){ subjects.push({name:n,marks:m}); if(n!=='আদব'&&n.toLowerCase()!=='adab'){total+=m;countForAvg++;} }
+    }
+    if (!subjects.length) return alert('অন্তত একটি বিষয় যোগ করুন');
+    const avg=countForAvg>0?(total/countForAvg).toFixed(2):0;
+    const gradeInfo=calculateGrade(avg);
+
+    const data={className,year:yearVal,name,roll,remarks,subjects,total,average:avg,grade:gradeInfo.text,gradeClass:gradeInfo.class,
+                examSession,jamaat,branch,updatedAt:Date.now()};
+
+    /* Save to legacy flat path */
+    const legacyFn=window.editingResultId
+        ?update(ref(db,'results/'+window.editingResultId),data)
+        :push(ref(db,'results'),data);
+
+    /* Also save to new structured path if context provided */
+    legacyFn.then(legacySnap=>{
+        if (examSession&&jamaat&&branch&&roll) {
+            const newPath=`structuredResults/${examSession}/${jamaat}/${branch}/roll_${roll}`;
+            const newKey=window.editingResultId||(legacySnap&&legacySnap.key)||'';
+            return set(ref(db,newPath),{...data,legacyId:newKey});
+        }
+    }).then(()=>{ Swal.fire({icon:'success',title:'সফল!',text:'ফলাফল সেভ হয়েছে।',timer:2000,showConfirmButton:false}); resetResultForm(); })
+    .catch(e=>console.error(e));
+};
+
+window.deleteRecord = path => {
+    Swal.fire({title:'আপনি কি নিশ্চিত?',text:'এটি মুছে ফেলা হবে!',icon:'warning',showCancelButton:true,
+        confirmButtonColor:'#dc2626',cancelButtonColor:'#056C46',
+        confirmButtonText:'হ্যাঁ, মুছুন!',cancelButtonText:'বাতিল'})
+    .then(r=>{if(r.isConfirmed)remove(ref(db,path)).then(()=>Swal.fire({icon:'success',title:'মুছে ফেলা হয়েছে!',timer:1500,showConfirmButton:false}));});
+};
+
+/* ============================================================
+   EXAM SESSION CRUD
+   ============================================================ */
+window.saveExamSession = () => {
+    const id=(document.getElementById('exam-id')||{}).value?.trim()||'';
+    const name=(document.getElementById('exam-name-create')||{}).value?.trim()||'';
+    const hijri=(document.getElementById('exam-hijri')||{}).value?.trim()||'';
+    const year=(document.getElementById('exam-year')||{}).value?.trim()||'';
+    const desc=(document.getElementById('exam-desc')||{}).value?.trim()||'';
+    if (!id||!name) return Swal.fire({icon:'warning',title:'ID ও নাম দিন!',timer:2000,showConfirmButton:false});
+    const targetKey=window.editingExamId||id;
+    const fn=window.editingExamId
+        ?update(ref(db,'examSessions/'+targetKey),{name,hijri,year,description:desc})
+        :set(ref(db,'examSessions/'+id),{name,hijri,year,description:desc,status:'draft',createdAt:Date.now()});
+    fn.then(()=>{Swal.fire({icon:'success',title:'সফল!',text:'সেশন সেভ হয়েছে।',timer:2000,showConfirmButton:false});resetExamForm();});
+};
+window.editExamSession = key => {
+    const s=examSessionsStore[key]; if(!s) return;
+    window.editingExamId=key;
+    const sv=(id,v)=>{const el=document.getElementById(id);if(el)el.value=v||'';};
+    sv('exam-id',key); sv('exam-name-create',s.name); sv('exam-hijri',s.hijri); sv('exam-year',s.year); sv('exam-desc',s.description);
+    const idEl=document.getElementById('exam-id'); if(idEl) idEl.disabled=true;
+    const btn=document.getElementById('btn-save-exam'); if(btn) btn.innerHTML='<i class="fas fa-save"></i> সেশন আপডেট করুন';
+    switchTab('admin-exam-mgmt',null,null);
+    document.getElementById('admin-exam-mgmt').scrollIntoView({behavior:'smooth',block:'start'});
+};
+window.resetExamForm = () => {
+    window.editingExamId=null;
+    ['exam-id','exam-name-create','exam-hijri','exam-year','exam-desc'].forEach(id=>{const el=document.getElementById(id);if(el){el.value='';el.disabled=false;}});
+    const btn=document.getElementById('btn-save-exam'); if(btn) btn.innerHTML='<i class="fas fa-save"></i> সেশন সেভ করুন';
+};
+window.publishExamSession = (key,status) => {
+    update(ref(db,'examSessions/'+key),{status})
+        .then(()=>Swal.fire({icon:'success',title:status==='published'?'প্রকাশিত হয়েছে!':'লুকানো হয়েছে!',timer:1500,showConfirmButton:false}));
+};
+
+/* ============================================================
+   JAMAAT CRUD
+   ============================================================ */
+window.saveJamaat = () => {
+    const name=(document.getElementById('jamaat-name')||{}).value?.trim()||'';
+    const jid=(document.getElementById('jamaat-id')||{}).value?.trim()||'';
+    const order=parseInt((document.getElementById('jamaat-order')||{}).value)||99;
+    if (!name) return alert('জামাতের নাম দিন');
+    const payload={name,id:jid,order};
+    const fn=window.editingJaamatId
+        ?update(ref(db,'jamaats/'+window.editingJaamatId),payload)
+        :push(ref(db,'jamaats'),payload);
+    fn.then(()=>{Swal.fire({icon:'success',title:'সফল!',text:'জামাত সেভ হয়েছে।',timer:1500,showConfirmButton:false});resetJaamatForm();});
+};
+window.editJamaat = key => {
+    const j=jamaatStore[key]; if(!j) return;
+    window.editingJaamatId=key;
+    const sv=(id,v)=>{const el=document.getElementById(id);if(el)el.value=v||'';};
+    sv('jamaat-name',j.name); sv('jamaat-id',j.id); sv('jamaat-order',j.order);
+    const btn=document.getElementById('btn-save-jamaat'); if(btn) btn.innerHTML='<i class="fas fa-save"></i> জামাত আপডেট করুন';
+};
+window.resetJaamatForm = () => {
+    window.editingJaamatId=null;
+    ['jamaat-name','jamaat-id','jamaat-order'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+    const btn=document.getElementById('btn-save-jamaat'); if(btn) btn.innerHTML='<i class="fas fa-save"></i> জামাত সেভ করুন';
+};
+
+/* ============================================================
+   BRANCH CRUD
+   ============================================================ */
+window.saveBranch = () => {
+    const name=(document.getElementById('branch-name')||{}).value?.trim()||'';
+    const bid=(document.getElementById('branch-id')||{}).value?.trim()||'';
+    if (!name) return alert('শাখার নাম দিন');
+    const payload={name,id:bid};
+    const fn=window.editingBranchId
+        ?update(ref(db,'branches/'+window.editingBranchId),payload)
+        :push(ref(db,'branches'),payload);
+    fn.then(()=>{Swal.fire({icon:'success',title:'সফল!',text:'শাখা সেভ হয়েছে।',timer:1500,showConfirmButton:false});resetBranchForm();});
+};
+window.editBranch = key => {
+    const b=branchStore[key]; if(!b) return;
+    window.editingBranchId=key;
+    const sv=(id,v)=>{const el=document.getElementById(id);if(el)el.value=v||'';};
+    sv('branch-name',b.name); sv('branch-id',b.id);
+    const btn=document.getElementById('btn-save-branch'); if(btn) btn.innerHTML='<i class="fas fa-save"></i> শাখা আপডেট করুন';
+};
+window.resetBranchForm = () => {
+    window.editingBranchId=null;
+    ['branch-name','branch-id'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+    const btn=document.getElementById('btn-save-branch'); if(btn) btn.innerHTML='<i class="fas fa-save"></i> শাখা সেভ করুন';
+};
+
+/* ============================================================
+   MERIT SETTINGS
+   ============================================================ */
+window.saveMeritSettings = () => {
+    const enabled=(document.getElementById('merit-enabled')||{}).checked||false;
+    const countEl=document.querySelector('input[name="merit-count"]:checked');
+    const count=countEl?countEl.value:'10';
+    const type=(document.getElementById('merit-type')||{}).value||'overall';
+    set(ref(db,'siteSettings/meritSettings'),{enabled,count,type})
+        .then(()=>Swal.fire({icon:'success',title:'সফল!',text:'মেধা সেটিংস সেভ হয়েছে।',timer:1500,showConfirmButton:false}));
+};
+
+/* ============================================================
+   RESULT CONTROL — GLOBAL PUBLISH TOGGLE
+   ============================================================ */
+window.toggleGlobalPublish = () => {
+    const gpt=document.getElementById('global-publish-toggle');
+    const isPublished=gpt&&gpt.checked; // checked = published (countdown disabled)
+    update(ref(db,'siteSettings/resultPublish'),{enabled:!isPublished})
+        .then(()=>{
+            const pst=document.getElementById('publish-status-text');
+            if(pst) pst.textContent=isPublished?'✅ রেজাল্ট প্রকাশিত':'🔒 কাউন্টডাউন চলছে';
+            Swal.fire({icon:'success',title:isPublished?'রেজাল্ট প্রকাশিত হয়েছে!':'রেজাল্ট লুকানো হয়েছে!',timer:1500,showConfirmButton:false});
+        });
+};
+
+window.saveSchedulePublish = () => {
+    const examKey=(document.getElementById('schedule-exam-select')||{}).value||'';
+    const dtVal=(document.getElementById('schedule-datetime')||{}).value||'';
+    if (!examKey) return alert('সেশন নির্বাচন করুন');
+    if (!dtVal)   return alert('তারিখ ও সময় দিন');
+    const timestamp=new Date(dtVal).getTime();
+    update(ref(db,'examSessions/'+examKey),{scheduledPublish:timestamp})
+        .then(()=>Swal.fire({icon:'success',title:'শিডিউল সেট হয়েছে!',text:'নির্ধারিত সময়ে রেজাল্ট প্রকাশ হবে।',timer:2000,showConfirmButton:false}));
+};
+
+/* ============================================================
+   BULK UPLOAD
+   ============================================================ */
+window.downloadCSVTemplate = () => {
+    const header=['roll','name','className','year','subject1_name','subject1_marks','subject2_name','subject2_marks','subject3_name','subject3_marks','remarks'];
+    const sample=['101','মোহাম্মদ আলী','কিতাব বিভাগ','প্রথম বর্ষ','আদব','75','ফিকহ','80','নাহু','70','ভালো ছাত্র'];
+    const csv=[header,sample].map(r=>r.join(',')).join('\n');
+    const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'});
+    const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+    a.download='result_template.csv'; a.click();
+};
+
+window.handleBulkFile = fileInput => {
+    const file=fileInput.files[0]; if(!file) return;
+    const ext=file.name.split('.').pop().toLowerCase();
+    const reader=new FileReader();
+    if (ext==='csv') {
+        reader.onload=e=>parseBulkCSV(e.target.result);
+        reader.readAsText(file);
+    } else if (ext==='xlsx'||ext==='xls') {
+        reader.onload=e=>{
+            const data=new Uint8Array(e.target.result);
+            const wb=XLSX.read(data,{type:'array'});
+            const ws=wb.Sheets[wb.SheetNames[0]];
+            const csv=XLSX.utils.sheet_to_csv(ws);
+            parseBulkCSV(csv);
+        };
+        reader.readAsArrayBuffer(file);
+    } else { alert('শুধুমাত্র CSV বা XLSX ফাইল সাপোর্ট করে।'); }
+};
+
+function parseBulkCSV(csvText) {
+    const lines=csvText.trim().split('\n').filter(l=>l.trim());
+    if (lines.length<2) { alert('ফাইলে কোনো ডেটা নেই।'); return; }
+    const headers=lines[0].split(',').map(h=>h.trim().replace(/"/g,''));
+    const rows=lines.slice(1).map(line=>line.split(',').map(c=>c.trim().replace(/"/g,'')));
+    window.bulkData=rows.map(row=>{
+        const obj={};
+        headers.forEach((h,i)=>obj[h]=row[i]||'');
+        return obj;
+    });
+    validateAndShowBulkPreview(headers, rows);
+}
+
+function validateAndShowBulkPreview(headers, rows) {
+    const previewWrap=document.getElementById('bulk-preview-wrap');
+    const previewCount=document.getElementById('bulk-preview-count');
+    const previewThead=document.getElementById('bulk-preview-thead');
+    const previewTbody=document.getElementById('bulk-preview-tbody');
+    const valWrap=document.getElementById('bulk-validation-wrap');
+    const valLog=document.getElementById('bulk-validation-log');
+    const btnStart=document.getElementById('btn-start-bulk');
+    const btnReset=document.getElementById('btn-reset-bulk');
+
+    if(previewCount) previewCount.textContent=`মোট ${rows.length} টি রেকর্ড পাওয়া গেছে`;
+    if(previewThead) previewThead.innerHTML=headers.map(h=>`<th>${h}</th>`).join('');
+    if(previewTbody) previewTbody.innerHTML=rows.slice(0,10).map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')+(rows.length>10?`<tr><td colspan="${headers.length}" style="text-align:center;color:var(--text-soft);padding:8px;">...আরো ${rows.length-10} টি</td></tr>`:'');
+    if(previewWrap) previewWrap.style.display='block';
+
+    /* Validation */
+    const errors=[];
+    const rollSet=new Set();
+    rows.forEach((row,i)=>{
+        const roll=row[0]||''; const name=row[1]||'';
+        if (!roll) errors.push({type:'error',msg:`সারি ${i+2}: রোল নম্বর নেই।`});
+        else if (rollSet.has(roll)) errors.push({type:'warn',msg:`সারি ${i+2}: রোল ${roll} ডুপ্লিকেট!`});
+        else rollSet.add(roll);
+        if (!name) errors.push({type:'warn',msg:`সারি ${i+2}: নাম নেই।`});
+    });
+
+    if (errors.length>0) {
+        if(valWrap) valWrap.style.display='block';
+        if(valLog) valLog.innerHTML=errors.map(e=>`<div class="log-item ${e.type}"><i class="fas fa-${e.type==='error'?'times-circle':'exclamation-triangle'}"></i>${e.msg}</div>`).join('');
+    } else {
+        if(valWrap) valWrap.style.display='none';
+    }
+
+    const hasErrors=errors.some(e=>e.type==='error');
+    if(btnStart) btnStart.style.display=hasErrors?'none':'inline-flex';
+    if(btnReset) btnReset.style.display='inline-flex';
+}
+
+window.startBulkUpload = async () => {
+    if (!window.bulkData||!window.bulkData.length) return;
+    const examSession=(document.getElementById('bulk-exam-session')||{}).value||'';
+    const jamaat=(document.getElementById('bulk-jamaat')||{}).value||'';
+    const branch=(document.getElementById('bulk-branch')||{}).value||'';
+    if (!examSession||!jamaat||!branch) return Swal.fire({icon:'warning',title:'কনটেক্সট নির্বাচন করুন!',text:'পরীক্ষা সেশন, জামাত ও শাখা নির্বাচন করুন।',confirmButtonColor:'#056C46'});
+
+    const progWrap=document.getElementById('bulk-progress-wrap');
+    const progBar=document.getElementById('bulk-progress-bar');
+    const progLabel=document.getElementById('bulk-progress-label');
+    const btnStart=document.getElementById('btn-start-bulk');
+    if(progWrap) progWrap.style.display='block';
+    if(btnStart) btnStart.disabled=true;
+
+    const total=window.bulkData.length;
+    let done=0,success=0,fail=0;
+
+    for (const row of window.bulkData) {
+        try {
+            const roll=row.roll||row.Roll||'';
+            const name=row.name||row.Name||'';
+            const className=row.className||row.class||'';
+            const year=row.year||'';
+            const remarks=row.remarks||'';
+
+            /* Build subjects from pairs */
+            const subjects=[];
+            let total_marks=0,countForAvg=0;
+            for (let i=1;i<=10;i++) {
+                const sn=row[`subject${i}_name`]||'';
+                const sm=parseFloat(row[`subject${i}_marks`])||0;
+                if(sn){ subjects.push({name:sn,marks:sm}); if(sn!=='আদব'){total_marks+=sm;countForAvg++;} }
+            }
+            const avg=countForAvg>0?(total_marks/countForAvg).toFixed(2):0;
+            const gradeInfo=calculateGrade(parseFloat(avg));
+
+            const data={className,year,name,roll,remarks,subjects,total:total_marks,average:avg,grade:gradeInfo.text,
+                        examSession,jamaat,branch,updatedAt:Date.now()};
+
+            const legacySnap=await push(ref(db,'results'),data);
+            const newPath=`structuredResults/${examSession}/${jamaat}/${branch}/roll_${roll}`;
+            await set(ref(db,newPath),{...data,legacyId:legacySnap.key});
+            success++;
+        } catch(e){ fail++; }
+        done++;
+        const pct=Math.round((done/total)*100);
+        if(progBar) progBar.style.width=pct+'%';
+        if(progLabel) progLabel.textContent=`আপলোড হচ্ছে... ${done}/${total} (${pct}%)`;
+        await new Promise(r=>setTimeout(r,30)); // small delay
+    }
+
+    if(progLabel) progLabel.textContent=`আপলোড সম্পন্ন!`;
+    const summary=document.getElementById('bulk-result-summary');
+    if(summary){
+        summary.style.display='block';
+        summary.innerHTML=`<div style="background:var(--p-light);padding:14px;border-radius:9px;font-size:.9rem;">
+            <strong style="color:var(--p);"><i class="fas fa-check-circle"></i> আপলোড সম্পন্ন!</strong><br>
+            ✅ সফল: ${success} · ❌ ব্যর্থ: ${fail} · মোট: ${total}
+        </div>`;
+    }
+    if(btnStart) btnStart.disabled=false;
+    Swal.fire({icon:'success',title:'বাল্ক আপলোড সম্পন্ন!',html:`সফল: <b>${success}</b> | ব্যর্থ: <b>${fail}</b>`,confirmButtonColor:'#056C46'});
+};
+
+window.resetBulkUpload = () => {
+    window.bulkData=[];
+    ['bulk-preview-wrap','bulk-validation-wrap','bulk-progress-wrap','bulk-result-summary'].forEach(id=>{
+        const el=document.getElementById(id); if(el) el.style.display='none';
+    });
+    ['btn-start-bulk','btn-reset-bulk'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
+    const fi=document.getElementById('bulk-file-input'); if(fi) fi.value='';
+    const pbar=document.getElementById('bulk-progress-bar'); if(pbar) pbar.style.width='0%';
+};
+
+/* ============================================================
+   DOM EVENTS
+   ============================================================ */
+document.addEventListener('DOMContentLoaded', () => {
+    /* Class change → show/hide year */
+    const rClass=document.getElementById('r-class');
+    if(rClass) rClass.addEventListener('change',e=>{
+        const rYG=document.getElementById('r-year-group');
+        if(rYG) rYG.style.display=e.target.value==='কিতাব বিভাগ'?'block':'none';
+    });
+
+    /* Enter on login */
+    const passEl=document.getElementById('admin-password');
+    if(passEl) passEl.addEventListener('keydown',e=>{if(e.key==='Enter')verifyAdmin();});
+
+    /* Result search/filter */
+    const rsInput=document.getElementById('result-search');
+    const rfSel=document.getElementById('result-filter-class');
+    function filterResults(){
+        const q=(rsInput&&rsInput.value||'').toLowerCase();
+        const cls=rfSel&&rfSel.value||'';
+        const filtered=window.allResults.filter(r=>{
+            const matchQ=!q||(r.name||'').toLowerCase().includes(q)||(r.roll||'').toString().includes(q);
+            const matchC=!cls||r.className===cls;
+            return matchQ&&matchC;
+        });
+        renderResultTable(filtered,document.getElementById('admin-result-list'));
+    }
+    if(rsInput) rsInput.addEventListener('input',filterResults);
+    if(rfSel) rfSel.addEventListener('change',filterResults);
+
+    /* Bulk drop zone */
+    const dz=document.getElementById('bulk-drop-zone');
+    if(dz){
+        dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('dragover');});
+        dz.addEventListener('dragleave',()=>dz.classList.remove('dragover'));
+        dz.addEventListener('drop',e=>{
+            e.preventDefault(); dz.classList.remove('dragover');
+            const file=e.dataTransfer.files[0];
+            if(file){ const fi=document.getElementById('bulk-file-input'); if(fi){ fi.files=e.dataTransfer.files; handleBulkFile(fi); } }
+        });
+    }
+
+    /* Page transition reveal */
+    const ov=document.getElementById('page-transition-overlay');
+    if(ov&&ov.classList.contains('active')){ setTimeout(()=>ov.classList.remove('active'),200); }
+});
+
+</script>
+
+<script>
+function navigateTo(url) {
+    if (window.location.href.includes(url.split('#')[0])) return;
+    const ov=document.getElementById('page-transition-overlay');
+    if(ov){ ov.classList.add('active'); setTimeout(()=>{ window.location.href=url; },280); }
+    else { window.location.href=url; }
+}
+</script>
+
+</body>
+</html>
