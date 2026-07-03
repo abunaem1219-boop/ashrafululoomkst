@@ -109,6 +109,9 @@
         <div class="prayer-hero-card">
             <div class="prayer-status-wrap">
                 <div class="prayer-status-info">
+                    <h5 id="hijri-date-text" style="font-size: 0.78rem; opacity: 0.9; font-weight: 500; color: #fcd34d; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+                        <i class="fas fa-calendar-alt"></i> লোডিং হিজরি...
+                    </h5>
                     <h4>এখন সময়</h4>
                     <h2 id="current-prayer-name">লোডিং...</h2>
                     <p id="current-prayer-range"></p>
@@ -135,50 +138,50 @@
             <i class="fas fa-cloud-sun"></i>
         </div>
 
-<!-- আজকের হাদিস বার (ডেডিকেটেড পেজে লিংক করা) -->
-<div class="hadith-prompt-bar" onclick="navigateTo('hadith.html')">
-    <div class="hadith-prompt-info">
-        <i class="fas fa-sparkles"></i>
-        <span>আজকের হাদিসটি পড়ুন</span>
-    </div>
-    <div class="prompt-btn">জানুন <i class="fas fa-arrow-right"></i></div>
-</div>
+        <!-- আজকের হাদিস বার (ডেডিকেটেড পেজে লিংক করা) -->
+        <div class="hadith-prompt-bar" onclick="navigateTo('hadith.html')">
+            <div class="hadith-prompt-info">
+                <i class="fas fa-sparkles"></i>
+                <span>আজকের হাদিসটি পড়ুন</span>
+            </div>
+            <div class="prompt-btn">জানুন <i class="fas fa-arrow-right"></i></div>
+        </div>
 
-<!-- ৮টি ক্যাটাগরি প্রফেশনাল গ্রিড বোতাম (পেজে লিংক করা) -->
-<div class="islamic-feature-grid">
-    <button class="feature-item" onclick="navigateTo('quran.html')">
-        <div class="feature-icon-box" style="color:#056c46;"><i class="fas fa-quran"></i></div>
-        <span class="feature-label">আল কুরআন</span>
-    </button>
-    <button class="feature-item" onclick="navigateTo('roza.html')">
-        <div class="feature-icon-box" style="color:#d97706;"><i class="fas fa-calendar-alt"></i></div>
-        <span class="feature-label">রোজা</span>
-    </button>
-    <button class="feature-item" onclick="navigateTo('namaz.html')">
-        <div class="feature-icon-box" style="color:#2563eb;"><i class="fas fa-mosque"></i></div>
-        <span class="feature-label">নামাজ শিক্ষা</span>
-    </button>
-    <button class="feature-item" onclick="navigateTo('dua.html')">
-        <div class="feature-icon-box" style="color:#7c3aed;"><i class="fas fa-hands"></i></div>
-        <span class="feature-label">দোয়া ও আমল</span>
-    </button>
-    <button class="feature-item" onclick="navigateTo('tasbih.html')">
-        <div class="feature-icon-box" style="color:#0891b2;"><i class="fas fa-calculator"></i></div>
-        <span class="feature-label">তসবীহ</span>
-    </button>
-    <button class="feature-item" onclick="navigateTo('allah-names.html')">
-        <div class="feature-icon-box" style="color:#db2777;"><i class="fas fa-star-and-crescent"></i></div>
-        <span class="feature-label">আল্লাহর নাম</span>
-    </button>
-    <button class="feature-item" onclick="navigateTo('qibla.html')">
-        <div class="feature-icon-box" style="color:#ea580c;"><i class="fas fa-compass"></i></div>
-        <span class="feature-label">কিবলা</span>
-    </button>
-    <button class="feature-item" onclick="navigateTo('zakat.html')">
-        <div class="feature-icon-box" style="color:#16a34a;"><i class="fas fa-coins"></i></div>
-        <span class="feature-label">যাকাত</span>
-    </button>
-</div>
+        <!-- ৮টি ক্যাটাগরি প্রফেশনাল গ্রিড বোতাম (পেজে লিংক করা) -->
+        <div class="islamic-feature-grid">
+            <button class="feature-item" onclick="navigateTo('quran.html')">
+                <div class="feature-icon-box" style="color:#056c46;"><i class="fas fa-quran"></i></div>
+                <span class="feature-label">আল কুরআন</span>
+            </button>
+            <button class="feature-item" onclick="navigateTo('roza.html')">
+                <div class="feature-icon-box" style="color:#d97706;"><i class="fas fa-calendar-alt"></i></div>
+                <span class="feature-label">রোজা</span>
+            </button>
+            <button class="feature-item" onclick="navigateTo('namaz.html')">
+                <div class="feature-icon-box" style="color:#2563eb;"><i class="fas fa-mosque"></i></div>
+                <span class="feature-label">নামাজ শিক্ষা</span>
+            </button>
+            <button class="feature-item" onclick="navigateTo('dua.html')">
+                <div class="feature-icon-box" style="color:#7c3aed;"><i class="fas fa-hands"></i></div>
+                <span class="feature-label">দোয়া ও আমল</span>
+            </button>
+            <button class="feature-item" onclick="navigateTo('tasbih.html')">
+                <div class="feature-icon-box" style="color:#0891b2;"><i class="fas fa-calculator"></i></div>
+                <span class="feature-label">তসবীহ</span>
+            </button>
+            <button class="feature-item" onclick="navigateTo('allah-names.html')">
+                <div class="feature-icon-box" style="color:#db2777;"><i class="fas fa-star-and-crescent"></i></div>
+                <span class="feature-label">আল্লাহর নাম</span>
+            </button>
+            <button class="feature-item" onclick="navigateTo('qibla.html')">
+                <div class="feature-icon-box" style="color:#ea580c;"><i class="fas fa-compass"></i></div>
+                <span class="feature-label">কিবলা</span>
+            </button>
+            <button class="feature-item" onclick="navigateTo('zakat.html')">
+                <div class="feature-icon-box" style="color:#16a34a;"><i class="fas fa-coins"></i></div>
+                <span class="feature-label">যাকাত</span>
+            </button>
+        </div>
 
     </div>
 </section>
@@ -267,6 +270,18 @@
         return String(numStr).split('').map(c => translate[c] || c).join('');
     }
 
+    // ===== 24-HOUR TO 12-HOUR CONVERTER WITH AM/PM =====
+    function convertTo12Hour(timeStr) {
+        if (!timeStr) return '';
+        const cleanTime = timeStr.split(' ')[0]; // অতিরিক্ত লেখা বা জোন বাদ দেওয়ার জন্য
+        const [h, m] = cleanTime.split(':').map(Number);
+        const ampm = h >= 12 ? 'PM' : 'AM';
+        const h12 = h % 12 || 12;
+        const paddedH = String(h12).padStart(2, '0');
+        const paddedM = String(m).padStart(2, '0');
+        return `${paddedH}:${paddedM} ${ampm}`;
+    }
+
     // ===== DYNAMIC PRAYER WIDGET LOGIC =====
     let prayerTimesToday = {};
     async function fetchPrayerTimes() {
@@ -275,21 +290,46 @@
             const data = await res.json();
             const t = data.data.timings;
             prayerTimesToday = t;
+
+            // ১. হিজরি তারিখ ডাইনামিক রূপান্তর ও প্রদর্শন
+            const hijriDate = data.data.date.hijri;
+            const hijriMonthsBengali = {
+                1: "মহররম", 2: "সফর", 3: "রবিউল আউয়াল", 4: "রবিউস সানি",
+                5: "জমাদিউল আউয়াল", 6: "জমাদিউস সানি", 7: "রজব", 8: "শাবান",
+                9: "রমজান", 10: "শাওয়াল", 11: "জিলকদ", 12: "জিলহজ"
+            };
+            const hijriDay = toBangali(hijriDate.day);
+            const hijriMonthName = hijriMonthsBengali[hijriDate.month.number] || hijriDate.month.en;
+            const hijriYear = toBangali(hijriDate.year);
+            const fullHijriDate = `${hijriDay} ${hijriMonthName}, ${hijriYear} হিজরি`;
             
-            // মোডালের জন্য ফিক্সড ভ্যালু সেট
-            const setFix = (id, v) => { const el=document.getElementById(id); if(el) el.innerText = toBangali(v); };
-            setFix('m-fajr', t.Fajr); setFix('m-dhuhr', t.Dhuhr);
-            setFix('m-asr', t.Asr); setFix('m-maghrib', t.Maghrib); setFix('m-isha', t.Isha);
+            const hjEl = document.getElementById('hijri-date-text');
+            if(hjEl) {
+                hjEl.innerHTML = `<i class="fas fa-calendar-alt"></i> ${fullHijriDate}`;
+            }
             
-            // সেহরি ও ইফতার সময় (সেহরি = ফজর শুরুর ১০ মিনিট পূর্বে)
+            // ২. মোডালের জন্য ফিক্সড ভ্যালু সেট (১২ ঘণ্টার AM/PM ফরম্যাটে)
+            const setFix = (id, v) => { 
+                const el = document.getElementById(id); 
+                if(el) el.innerText = toBangali(convertTo12Hour(v)); 
+            };
+            setFix('m-fajr', t.Fajr); 
+            setFix('m-dhuhr', t.Dhuhr);
+            setFix('m-asr', t.Asr); 
+            setFix('m-maghrib', t.Maghrib); 
+            setFix('m-isha', t.Isha);
+            
+            // সেহরি ও ইফতার সময় (১২ ঘণ্টার AM/PM ফরম্যাটে)
             const fajrTime = t.Fajr;
             const [fH, fM] = fajrTime.split(':').map(Number);
             let sM = fM - 10; let sH = fH;
             if(sM < 0) { sM += 60; sH -= 1; }
             const sehriTimeStr = `${String(sH).padStart(2,'0')}:${String(sM).padStart(2,'0')}`;
             
-            const stEl = document.getElementById('sehri-time-doc'); if(stEl) stEl.innerText = toBangali(sehriTimeStr) + " AM";
-            const ifEl = document.getElementById('iftar-time-doc'); if(ifEl) ifEl.innerText = toBangali(t.Maghrib) + " PM";
+            const stEl = document.getElementById('sehri-time-doc'); 
+            if(stEl) stEl.innerText = toBangali(convertTo12Hour(sehriTimeStr));
+            const ifEl = document.getElementById('iftar-time-doc'); 
+            if(ifEl) ifEl.innerText = toBangali(convertTo12Hour(t.Maghrib));
 
             startPrayerCountdown(t);
         } catch(e) {
@@ -337,7 +377,11 @@
             const iconDiv = document.getElementById('prayer-icon-div');
 
             if(cpName) cpName.innerText = current.name;
-            if(cpRange) cpRange.innerText = toBangali(current.time) + " - " + toBangali(next.time);
+            
+            // নামাজের রেঞ্জ ১২ ঘণ্টার AM/PM ফরম্যাটে প্রদর্শন
+            if(cpRange) {
+                cpRange.innerText = toBangali(convertTo12Hour(current.time)) + " - " + toBangali(convertTo12Hour(next.time));
+            }
             if(npTitle) npTitle.innerText = `পরবর্তী নামাজ: ${next.name}`;
             
             if(iconDiv) {
@@ -349,7 +393,6 @@
             if (next.minutes > currentMin) {
                 diffMin = next.minutes - currentMin;
             } else {
-                // রাত ১২টার পরের নামাজের জন্য
                 diffMin = (24 * 60 - currentMin) + next.minutes;
             }
 
