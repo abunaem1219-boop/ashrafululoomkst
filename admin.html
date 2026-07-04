@@ -173,53 +173,94 @@ body {
     .admin-top-nav { display: flex !important; }
 }
 
-/* Sidebar */
+/* ============================================================
+   CATEGORIZED SIDEBAR & RESPONSIVE MOBILE NAV
+   ============================================================ */
+.admin-layout {
+    display: grid; grid-template-columns: 260px 1fr; gap: 20px;
+    align-items: start;
+}
 .admin-sidebar {
-    background: var(--surface); border-radius: var(--radius-lg);
-    box-shadow: var(--shadow); overflow: hidden;
+    background: transparent;
+    box-shadow: none;
     position: sticky; top: 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 .sidebar-header {
     background: linear-gradient(135deg, var(--p-dark), var(--p));
-    color: white; padding: 16px 18px;
-    font-weight: 700; font-size: .9rem;
-    display: flex; align-items: center; gap: 8px;
+    color: white; padding: 14px 18px;
+    border-radius: var(--radius);
+    font-weight: 700; font-size: .95rem;
+    display: flex; align-items: center; gap: 10px;
+    box-shadow: var(--shadow);
 }
-.nav-group-title {
-    font-size: .7rem; font-weight: 700; letter-spacing: .08em;
-    color: var(--text-soft); text-transform: uppercase;
-    padding: 12px 18px 6px;
+.nav-category {
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1.5px solid var(--border);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+}
+.nav-category:hover {
+    border-color: var(--p-mid);
+}
+.nav-category-title {
+    background: var(--p-light);
+    color: var(--p-dark);
+    padding: 10px 14px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1.5px solid var(--border);
+    letter-spacing: 0.02em;
+}
+.nav-category-body {
+    display: flex;
+    flex-direction: column;
 }
 .sidebar-btn {
     display: flex; align-items: center; gap: 10px;
-    width: 100%; padding: 11px 18px; border: none;
+    width: 100%; padding: 11px 16px; border: none;
     background: none; cursor: pointer; text-align: left;
-    font-family: inherit; font-size: .88rem; font-weight: 500;
+    font-family: inherit; font-size: .85rem; font-weight: 500;
     color: var(--text-mid); transition: var(--transition);
     border-left: 3px solid transparent;
 }
-.sidebar-btn:hover { background: var(--p-light); color: var(--p); }
+.sidebar-btn:hover { 
+    background: var(--p-light); 
+    color: var(--p); 
+    padding-left: 20px;
+}
 .sidebar-btn.active {
     background: var(--p-light); color: var(--p);
     border-left-color: var(--p); font-weight: 700;
 }
-.sidebar-btn i { width: 18px; text-align: center; font-size: .9rem; }
-.sidebar-divider { height: 1px; background: var(--border); margin: 6px 0; }
+.sidebar-btn i { width: 18px; text-align: center; font-size: .88rem; }
 
-/* Top nav (mobile) */
+/* Hide redundant top navigation on mobile */
 .admin-top-nav {
-    display: none; gap: 6px; flex-wrap: wrap;
-    margin-bottom: 16px;
+    display: none !important;
 }
-.top-nav-btn {
-    padding: 7px 12px; background: var(--surface);
-    border: 1px solid var(--border); border-radius: 8px;
-    font-family: inherit; font-size: .78rem; font-weight: 600;
-    cursor: pointer; color: var(--text-mid); transition: var(--transition);
-}
-.top-nav-btn.active, .top-nav-btn:hover {
-    background: var(--p); color: white; border-color: var(--p);
-}
+
+/* Mobile Category Optimization - Turns layout into dashboard grid cards on mobile! */
+@media (max-width: 900px) {
+    .admin-layout { grid-template-columns: 1fr; }
+    .admin-sidebar {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 15px;
+        position: static;
+        margin-bottom: 20px;
+    }
+    .sidebar-header {
+        grid-column: 1 / -1;
+    }
+} 
 
 /* ============================================================
    CONTENT PANELS
@@ -546,52 +587,55 @@ input:checked + .slider::before { transform: translateX(26px); }
         </div>
     </div>
 
-    <!-- Mobile top nav -->
-    <div class="admin-top-nav" id="mobile-nav">
-        <button class="top-nav-btn active" onclick="switchTab('admin-info',event,this)"><i class="fas fa-info-circle"></i> তথ্য</button>
-        <button class="top-nav-btn" onclick="switchTab('admin-notice',event,this)"><i class="fas fa-bell"></i> নোটিশ</button>
-        <button class="top-nav-btn" onclick="switchTab('admin-onesignal',event,this)"><i class="fas fa-paper-plane"></i> নোটিফিকেশন</button>
-        <button class="top-nav-btn" onclick="switchTab('admin-hadith',event,this)"><i class="fas fa-book-open"></i> হাদিস</button>
-        <button class="top-nav-btn" onclick="switchTab('admin-teachers',event,this)"><i class="fas fa-users"></i> শিক্ষক</button>
-        <button class="top-nav-btn" onclick="switchTab('admin-results',event,this)"><i class="fas fa-graduation-cap"></i> ফলাফল</button>
-        <button class="top-nav-btn" onclick="switchTab('admin-exam-mgmt',event,this)"><i class="fas fa-calendar"></i> পরীক্ষা</button>
-        <button class="top-nav-btn" onclick="switchTab('admin-jamaat-mgmt',event,this)"><i class="fas fa-list-ol"></i> জামাত</button>
-        <button class="top-nav-btn" onclick="switchTab('admin-branch-mgmt',event,this)"><i class="fas fa-code-branch"></i> শাখা</button>
-        <button class="top-nav-btn" onclick="switchTab('admin-result-upload',event,this)"><i class="fas fa-cloud-upload-alt"></i> আপলোড</button>
-        <button class="top-nav-btn" onclick="switchTab('admin-bulk-upload',event,this)"><i class="fas fa-file-csv"></i> বাল্ক</button>
-        <button class="top-nav-btn" onclick="switchTab('admin-merit-settings',event,this)"><i class="fas fa-medal"></i> মেধা</button>
-        <button class="top-nav-btn" onclick="switchTab('admin-result-control',event,this)"><i class="fas fa-toggle-on"></i> কন্ট্রোল</button>
-        <button class="top-nav-btn" onclick="switchTab('admin-result-settings',event,this)"><i class="fas fa-clock"></i> সেটিংস</button>
-        <button class="top-nav-btn" onclick="switchTab('admin-gallery',event,this)"><i class="fas fa-images"></i> গ্যালারি</button>
-        <button class="top-nav-btn" onclick="switchTab('admin-banner',event,this)"><i class="fas fa-image"></i> ব্যানার</button>
-    </div>
+<div class="admin-layout">
 
-    <div class="admin-layout">
-
-        <!-- ========== SIDEBAR ========== -->
+        <!-- ========== SIDEBAR (PC & Mobile Category Grid) ========== -->
         <aside class="admin-sidebar">
-            <div class="sidebar-header"><i class="fas fa-th-large"></i> নেভিগেশন</div>
+            <div class="sidebar-header"><i class="fas fa-th-large"></i> নেভিগেশন প্যানেল</div>
 
-            <div class="nav-group-title">সাইট ম্যানেজমেন্ট</div>
-            <button class="sidebar-btn active" onclick="switchTab('admin-info',event,this)"><i class="fas fa-info-circle"></i> মাদরাসা তথ্য</button>
-            <button class="sidebar-btn" onclick="switchTab('admin-notice',event,this)"><i class="fas fa-bell"></i> নোটিশ বোর্ড</button>
-            <button class="sidebar-btn" onclick="switchTab('admin-onesignal',event,this)"><i class="fas fa-paper-plane"></i> নোটিফিকেশন পাঠান</button>
-            <button class="sidebar-btn" onclick="switchTab('admin-hadith',event,this)"><i class="fas fa-book-open"></i> হাদিস</button>
-            <button class="sidebar-btn" onclick="switchTab('admin-teachers',event,this)"><i class="fas fa-users"></i> শিক্ষক</button>
-            <button class="sidebar-btn" onclick="switchTab('admin-gallery',event,this)"><i class="fas fa-images"></i> গ্যালারি</button>
-            <button class="sidebar-btn" onclick="switchTab('admin-banner',event,this)"><i class="fas fa-image"></i> ব্যানার</button>
+            <!-- ক্যাটাগরি ১: সাধারণ সেটিংস -->
+            <div class="nav-category">
+                <div class="nav-category-title"><i class="fas fa-school"></i> সাধারণ সেটিংস</div>
+                <div class="nav-category-body">
+                    <button class="sidebar-btn active" onclick="switchTab('admin-info',event,this)"><i class="fas fa-info-circle"></i> মাদরাসা তথ্য</button>
+                    <button class="sidebar-btn" onclick="switchTab('admin-banner',event,this)"><i class="fas fa-image"></i> ব্যানার ম্যানেজার</button>
+                    <button class="sidebar-btn" onclick="switchTab('admin-gallery',event,this)"><i class="fas fa-images"></i> গ্যালারি আপলোড</button>
+                    <button class="sidebar-btn" onclick="switchTab('admin-teachers',event,this)"><i class="fas fa-users"></i> শিক্ষকবৃন্দ</button>
+                    <button class="sidebar-btn" onclick="switchTab('admin-hadith',event,this)"><i class="fas fa-book-open"></i> দৈনিক হাদিস</button>
+                </div>
+            </div>
 
-            <div class="sidebar-divider"></div>
-            <div class="nav-group-title">রেজাল্ট ম্যানেজমেন্ট</div>
-            <button class="sidebar-btn" onclick="switchTab('admin-exam-mgmt',event,this)"><i class="fas fa-calendar-alt"></i> পরীক্ষা সেশন</button>
-            <button class="sidebar-btn" onclick="switchTab('admin-jamaat-mgmt',event,this)"><i class="fas fa-list-ol"></i> জামাত ম্যানেজমেন্ট</button>
-            <button class="sidebar-btn" onclick="switchTab('admin-branch-mgmt',event,this)"><i class="fas fa-code-branch"></i> শাখা ম্যানেজমেন্ট</button>
-            <button class="sidebar-btn" onclick="switchTab('admin-result-upload',event,this)"><i class="fas fa-plus-circle"></i> রেজাল্ট আপলোড</button>
-            <button class="sidebar-btn" onclick="switchTab('admin-bulk-upload',event,this)"><i class="fas fa-file-csv"></i> বাল্ক আপলোড</button>
-            <button class="sidebar-btn" onclick="switchTab('admin-results',event,this)"><i class="fas fa-table"></i> রেজাল্ট তালিকা</button>
-            <button class="sidebar-btn" onclick="switchTab('admin-merit-settings',event,this)"><i class="fas fa-medal"></i> মেধা তালিকা সেটিংস</button>
-            <button class="sidebar-btn" onclick="switchTab('admin-result-control',event,this)"><i class="fas fa-toggle-on"></i> রেজাল্ট কন্ট্রোল</button>
-            <button class="sidebar-btn" onclick="switchTab('admin-result-settings',event,this)"><i class="fas fa-clock"></i> কাউন্টডাউন সেটিংস</button>
+            <!-- ক্যাটাগরি ২: নোটিশ ও পুশ প্রচার -->
+            <div class="nav-category">
+                <div class="nav-category-title"><i class="fas fa-bullhorn"></i> নোটিশ ও প্রচার</div>
+                <div class="nav-category-body">
+                    <button class="sidebar-btn" onclick="switchTab('admin-notice',event,this)"><i class="fas fa-bell"></i> নোটিশ বোর্ড</button>
+                    <button class="sidebar-btn" onclick="switchTab('admin-onesignal',event,this)"><i class="fas fa-paper-plane"></i> পুশ নোটিফিকেশন</button>
+                </div>
+            </div>
+
+            <!-- ক্যাটাগরি ৩: রেজাল্ট সেটিংস -->
+            <div class="nav-category">
+                <div class="nav-category-title"><i class="fas fa-sliders-h"></i> রেজাল্ট কনফিগারেশন</div>
+                <div class="nav-category-body">
+                    <button class="sidebar-btn" onclick="switchTab('admin-exam-mgmt',event,this)"><i class="fas fa-calendar-alt"></i> পরীক্ষা সেশন</button>
+                    <button class="sidebar-btn" onclick="switchTab('admin-jamaat-mgmt',event,this)"><i class="fas fa-list-ol"></i> জামাত সেটিংস</button>
+                    <button class="sidebar-btn" onclick="switchTab('admin-branch-mgmt',event,this)"><i class="fas fa-code-branch"></i> শাখা সেটিংস</button>
+                    <button class="sidebar-btn" onclick="switchTab('admin-merit-settings',event,this)"><i class="fas fa-medal"></i> মেধা তালিকা সেটিংস</button>
+                    <button class="sidebar-btn" onclick="switchTab('admin-result-control',event,this)"><i class="fas fa-toggle-on"></i> রেজাল্ট কন্ট্রোল</button>
+                    <button class="sidebar-btn" onclick="switchTab('admin-result-settings',event,this)"><i class="fas fa-clock"></i> কাউন্টডাউন টাইমার</button>
+                </div>
+            </div>
+
+            <!-- ক্যাটাগরি ৪: ফলাফল আপলোড ও তালিকা -->
+            <div class="nav-category">
+                <div class="nav-category-title"><i class="fas fa-database"></i> রেজাল্ট ডেটা</div>
+                <div class="nav-category-body">
+                    <button class="sidebar-btn" onclick="switchTab('admin-result-upload',event,this)"><i class="fas fa-plus-circle"></i> রেজাল্ট আপলোড</button>
+                    <button class="sidebar-btn" onclick="switchTab('admin-bulk-upload',event,this)"><i class="fas fa-file-csv"></i> বাল্ক আপলোড (Excel)</button>
+                    <button class="sidebar-btn" onclick="switchTab('admin-results',event,this)"><i class="fas fa-table"></i> ফলাফল তালিকা</button>
+                </div>
+            </div>
         </aside>
 
         <!-- ========== CONTENT ========== -->
@@ -624,30 +668,46 @@ input:checked + .slider::before { transform: translateX(26px); }
                     </button>
                 </div>
             </div>
-
-            <!-- =============================================
-                 TAB: নোটিফিকেশন পাঠান (OneSignal)
+<!-- =============================================
+                 TAB: নোটিফিকেশন পাঠান (OneSignal + Cloudinary Image Support)
                  ============================================= -->
             <div id="admin-onesignal" class="admin-section">
                 <div class="form-card">
                     <div class="form-card-title">
                         <i class="fas fa-paper-plane"></i> ওয়ান সিগন্যাল নোটিফিকেশন পাঠান
                     </div>
-                    <div class="form-group">
-                        <label>নোটিফিকেশনের শিরোনাম (Title)</label>
-                        <input type="text" id="notif-title" class="form-control" placeholder="যেমন: নতুন নোটিশ প্রকাশিত হয়েছে">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>নোটিফিকেশনের শিরোনাম (Title)</label>
+                            <input type="text" id="notif-title" class="form-control" placeholder="যেমন: নতুন নোটিশ প্রকাশিত হয়েছে">
+                        </div>
+                        <div class="form-group">
+                            <label>ক্লিক করলে যে পেজে যাবে (URL - ঐচ্ছিক)</label>
+                            <input type="url" id="notif-url" class="form-control" placeholder="যেমন: https://ashraful-uloom-madrasa.web.app/notice.html">
+                        </div>
                     </div>
                     <div class="form-group">
                         <label>নোটিফিকেশনের মূল বার্তা (Message)</label>
-                        <textarea id="notif-msg" class="form-control" rows="4" placeholder="এখানে আপনার বার্তাটি লিখুন..."></textarea>
+                        <textarea id="notif-msg" class="form-control" rows="3" placeholder="এখানে আপনার বার্তাটি লিখুন..."></textarea>
                     </div>
-                    <div class="form-group">
-                        <label>ক্লিক করলে যে পেজে যাবে (URL - ঐচ্ছিক)</label>
-                        <input type="url" id="notif-url" class="form-control" placeholder="যেমন: https://ashraful-uloom-madrasa.web.app/notice.html">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>নোটিফিকেশনের ছবি (ঐচ্ছিক - সরাসরি আপলোড)</label>
+                            <input type="file" id="notif-pic-file" class="form-control" accept="image/*">
+                            <small style="color:var(--text-soft);font-size:.75rem;">সিলেক্ট করা ছবি ক্লাউডিনারিতে আপলোড হয়ে স্বয়ংক্রিয়ভাবে ওয়ান সিগন্যালে চলে যাবে।</small>
+                        </div>
+                        <div class="form-group" style="display:flex; align-items:center; justify-content:center;">
+                            <div id="notif-pic-preview-wrap" style="display:none; text-align:center; background:var(--bg2); padding:10px; border-radius:8px; border:1px solid var(--border);">
+                                <img id="notif-pic-preview" src="" style="max-height:80px; max-width:100px; border-radius:6px; object-fit:cover;">
+                                <br><small style="color:var(--text-soft); font-size:0.7rem;">আপলোড প্রিভিউ</small>
+                            </div>
+                        </div>
                     </div>
-                    <button class="btn btn-primary" onclick="sendOneSignalNotification()">
-                        <i class="fas fa-bell"></i> নোটিফিকেশন পাঠান
-                    </button>
+                    <div style="margin-top: 15px;">
+                        <button class="btn btn-primary" onclick="sendOneSignalNotification()">
+                            <i class="fas fa-bell"></i> নোটিফিকেশন পাঠান
+                        </button>
+                    </div>
                 </div>
             </div>
                     <div class="form-group">
@@ -1322,6 +1382,10 @@ const auth = getAuth(app);
 /* ── Constants ── */
 const IMGBB_API_KEY  = "da4148f76289d909eb01bee3cc2268d4";
 const DEFAULT_AVATAR = "https://i.ibb.co.com/ycd9T2PK/IMG-20260311-233709.png";
+
+/* ── Cloudinary Config (নোটিফিকেশন ছবির জন্য) ── */
+const CLOUDINARY_CLOUD_NAME = "zknlko0a"; // আপনার ক্লাউডিনারি ক্লাউড নেম বসান
+const CLOUDINARY_UPLOAD_PRESET = "al_ashraf"; // আপনার আনসাইনড আপলোড প্রিসেট নেম বসান
 
 /* ── State ── */
 window.allResults        = [];
@@ -2298,12 +2362,33 @@ window.resetBulkUpload = () => {
 };
 
 /* ============================================================
-   ONESIGNAL NOTIFICATION SEND LOGIC
+   CLOUDINARY IMAGE UPLOADER
+   ============================================================ */
+async function uploadToCloudinary(file) {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+    
+    const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
+        method: 'POST',
+        body: formData
+    });
+    
+    if (!response.ok) {
+        throw new Error('Cloudinary upload failed');
+    }
+    const result = await response.json();
+    return result.secure_url;
+}
+
+/* ============================================================
+   DATABASE PUSH NOTIFICATION REQUEST LOGIC
    ============================================================ */
 window.sendOneSignalNotification = async () => {
     const title = document.getElementById('notif-title')?.value.trim() || '';
     const message = document.getElementById('notif-msg')?.value.trim() || '';
     const targetUrl = document.getElementById('notif-url')?.value.trim() || window.location.origin;
+    const fileInput = document.getElementById('notif-pic-file');
 
     if (!title || !message) {
         Swal.fire({
@@ -2315,55 +2400,63 @@ window.sendOneSignalNotification = async () => {
         return;
     }
 
-    // ১. আপনার ওয়ান সিগন্যাল ড্যাশবোর্ড থেকে পাওয়া App ID ও REST API Key এখানে বসিয়ে দিন
-    const appId = "7628254a-848b-4ea9-ae48-b490c49fd65a"; 
-    const restApiKey = "os_v2_app_oyucksuernhktlsiwsimjh6wlj7htehgrvmecdmwthrltuysgdet5wjku4mchy65lb7yft72xzlghpikvseeexiq6v3v7mfakajr6ai"; 
-
-    const payload = {
-        app_id: appId,
-        included_segments: ["All"], // সব ব্যবহারকারী নোটিফিকেশন পাবেন
-        headings: { "en": title, "bn": title },
-        contents: { "en": message, "bn": message },
-        url: targetUrl
-    };
-
     try {
         Swal.fire({
-            title: 'পাঠানো হচ্ছে...',
+            title: 'প্রক্রিয়াধীন...',
+            text: 'ছবি প্রসেস হচ্ছে...',
             allowOutsideClick: false,
             didOpen: () => { Swal.showLoading(); }
         });
 
-        const response = await fetch("https://onesignal.com/api/v1/notifications", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json; charset=utf-8",
-                "Authorization": `Basic ${restApiKey}`
-            },
-            body: JSON.stringify(payload)
+        let cloudinaryPicUrl = "";
+        if (fileInput && fileInput.files && fileInput.files.length > 0) {
+            try {
+                const compressedFile = await compressImage(fileInput.files[0]);
+                cloudinaryPicUrl = await uploadToCloudinary(compressedFile);
+            } catch (cloudErr) {
+                console.error("Cloudinary Upload Error:", cloudErr);
+                Swal.fire({
+                    title: 'ছবি আপলোড ব্যর্থ!',
+                    text: 'ছবি ক্লাউডিনারিতে পাঠানো যায়নি।',
+                    icon: 'error',
+                    confirmButtonColor: '#056C46'
+                });
+                return;
+            }
+        }
+
+        Swal.update({ text: 'ডাটাবেজে নোটিফিকেশন রিকোয়েস্ট পাঠানো হচ্ছে...' });
+
+        // ওয়ান সিগন্যালে সরাসরি ব্রাউজার থেকে না পাঠিয়ে ফায়ারবেস ডাটাবেজে সেভ করা হচ্ছে
+        const newNotifRef = push(ref(db, 'pending_notifications'));
+        await set(newNotifRef, {
+            title: title,
+            message: message,
+            url: targetUrl,
+            big_picture: cloudinaryPicUrl || "",
+            createdAt: Date.now()
         });
 
-        const data = await response.json();
+        Swal.fire({
+            title: 'সফল!',
+            text: 'নোটিফিকেশন রিকোয়েস্ট পাঠানো হয়েছে। ব্যাকএন্ড এটি কয়েক সেকেন্ডের মধ্যে ডেলিভার করে দেবে।',
+            icon: 'success',
+            confirmButtonColor: '#056C46'
+        });
 
-        if (response.ok && !data.errors) {
-            Swal.fire({
-                title: 'সফল!',
-                text: 'নোটিফিকেশনটি সবার কাছে পাঠানো হয়েছে।',
-                icon: 'success',
-                confirmButtonColor: '#056C46'
-            });
-            // ফরম ডাটা খালি করা
-            document.getElementById('notif-title').value = '';
-            document.getElementById('notif-msg').value = '';
-            document.getElementById('notif-url').value = '';
-        } else {
-            throw new Error(data.errors ? data.errors[0] : 'Unknown error');
-        }
+        // ফর্ম এবং প্রিভিউ রিসেট করা
+        document.getElementById('notif-title').value = '';
+        document.getElementById('notif-msg').value = '';
+        document.getElementById('notif-url').value = '';
+        if(fileInput) fileInput.value = '';
+        const previewWrap = document.getElementById('notif-pic-preview-wrap');
+        if (previewWrap) previewWrap.style.display = 'none';
+
     } catch (error) {
-        console.error("OneSignal Send Error:", error);
+        console.error("Database Write Error:", error);
         Swal.fire({
             title: 'ব্যর্থ হয়েছে!',
-            text: 'নোটিফিকেশন পাঠানো যায়নি। ভুলটি চেক করুন।',
+            text: 'ডাটাবেজে নোটিফিকেশন রিকোয়েস্ট পাঠানো যায়নি।',
             icon: 'error',
             confirmButtonColor: '#056C46'
         });
@@ -2416,6 +2509,26 @@ document.addEventListener('DOMContentLoaded', () => {
     /* Page transition reveal */
     const ov=document.getElementById('page-transition-overlay');
     if(ov&&ov.classList.contains('active')){ setTimeout(()=>ov.classList.remove('active'),200); }
+
+    /* OneSignal Notification Pic Local Preview Handler */
+    const notifPicInput = document.getElementById('notif-pic-file');
+    if (notifPicInput) {
+        notifPicInput.addEventListener('change', e => {
+            const file = e.target.files[0];
+            const previewWrap = document.getElementById('notif-pic-preview-wrap');
+            const previewImg = document.getElementById('notif-pic-preview');
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = ev => {
+                    if (previewImg) previewImg.src = ev.target.result;
+                    if (previewWrap) previewWrap.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                if (previewWrap) previewWrap.style.display = 'none';
+            }
+        });
+    }
 });
 
 </script>
