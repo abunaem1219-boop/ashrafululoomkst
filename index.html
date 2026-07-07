@@ -337,6 +337,40 @@
     <img src="" id="lightbox-img" alt="Gallery Image">
 </div>
 
+<!-- স্মৃতিচিত্র ও ভিডিও গ্যালারি (Home Pinned Featured Section) -->
+<section id="home-featured-gallery" style="background:var(--surface); padding:4rem 0;" data-aos="fade-up">
+    <div class="container">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2.2rem; flex-wrap:wrap; gap:12px;">
+            <div style="text-align:left;">
+                <h2 style="font-size:1.8rem; font-weight:800; color:var(--primary); margin:0;">স্মৃতিচিত্র ও ভিডিও গ্যালারি</h2>
+                <p style="color:var(--text-light); font-size:0.92rem; margin-top:3px;">মাদরাসার বিভিন্ন সুন্দর মুহূর্তের ভিডিও ও চিত্রসমগ্র</p>
+            </div>
+            <button class="btn btn-primary" onclick="navigateTo('gallery.html')" style="padding:10px 24px; font-size:0.9rem; border:2.5px solid var(--primary); border-radius:50px; background:transparent; color:var(--primary); box-shadow:none; font-weight:700;">
+                গ্যালারি দেখুন <i class="fas fa-arrow-left" style="transform:rotate(180deg); margin-left:6px;"></i>
+            </button>
+        </div>
+
+        <!-- গ্যালারি গ্রিড -->
+        <div class="gallery-grid" id="home-featured-gallery-container">
+            <div style="text-align:center;width:100%;grid-column:1/-1;padding:3rem;color:var(--text-light);">
+                <i class="fas fa-spinner fa-spin" style="font-size:2rem;"></i>
+                <p style="margin-top:1rem;">মিডিয়া ফাইল লোড হচ্ছে...</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- হোম পেজের জন্য কাস্টম গ্যালারি লাইটবক্স -->
+<div class="lightbox" id="home-lightbox">
+    <button class="lightbox-close-btn" onclick="closeHomeLightbox()" style="position:fixed; top:18px; right:22px; background:rgba(255,255,255,0.15); border:none; color:white; width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.3rem; cursor:pointer; transition:background 0.2s; z-index:9001;">
+        <i class="fas fa-times"></i>
+    </button>
+    <div class="lightbox-img-wrap" style="position:relative; max-width:92vw; max-height:84vh;">
+        <img src="" id="home-lightbox-img" style="max-width:92vw; max-height:82vh; border-radius:10px; box-shadow:0 20px 60px rgba(0,0,0,0.6); display:none;" alt="Featured Image">
+    </div>
+    <div class="lightbox-counter" id="home-lightbox-counter" style="color:rgba(255,255,255,0.7); font-size:0.85rem; margin-top:12px; text-align:center;"></div>
+</div>
+
 <!-- Footer -->
 <footer id="contact" data-aos="fade-up" data-aos-offset="50">
     <div class="container">
@@ -697,6 +731,120 @@
             rebuildSwiper(DEFAULT_BANNER_SLIDES);
         }
     });
+
+    // হোম পেজের জন্য পিন করা প্রিমিয়াম ফিচার্ড গ্যালারি ডাটা লোড
+    window.homeFeaturedItems = [];
+    
+    function getHomeYoutubeThumb(url) {
+        let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        let match = url.match(regExp);
+        if (match && match[2].length == 11) {
+            return `https://img.youtube.com/vi/${match[2]}/hqdefault.jpg`;
+        }
+        return "https://i.ibb.co.com/qFRmPqgK/20260310-005555.png";
+    }
+
+    onValue(ref(db, 'gallery'), (snap) => {
+        const container = document.getElementById('home-featured-gallery-container');
+        if(!container) return;
+        
+        const data = snap.val();
+        window.homeFeaturedItems = [];
+        
+        if(!data) {
+            container.innerHTML = `
+                <div class="empty-state" style="grid-column:1/-1;">
+                    <i class="fas fa-video-slash"></i>
+                    <p>ফিচার্ড কন্টেন্ট পাওয়া যায়নি।</p>
+                </div>`;
+            return;
+        }
+
+        // শুধুমাত্র 'pinned: true' করা আইটেম ফিল্টার করা হচ্ছে
+        Object.keys(data).forEach(key => {
+            if(data[key].pinned === true) {
+                window.homeFeaturedItems.push({ id: key, ...data[key] });
+            }
+        });
+
+        // ডেট অনুযায়ী সর্ট এবং সর্বোচ্চ প্রথম ৪ বা ৬টি দেখানো হবে
+        window.homeFeaturedItems.sort((a,b) => new Date(b.date || 0) - new Date(a.date || 0));
+        const limitItems = window.homeFeaturedItems.slice(0, 6); // সেরা ৬টি ছবি ও ভিডিও দেখাবে
+
+        if(limitItems.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state" style="grid-column:1/-1;">
+                    <i class="fas fa-photo-video"></i>
+                    <p>পিন করা কোনো ছবি বা ভিডিও পাওয়া যায়নি।</p>
+                </div>`;
+            return;
+        }
+
+        container.innerHTML = limitItems.map((item, idx) => {
+            const thumb = item.type === 'image' ? item.url : getHomeYoutubeThumb(item.url);
+            return `
+            <div class="gallery-card-premium fade-in" onclick="openHomeLightbox(${idx})" style="animation: fadeInUp 0.4s ease both;">
+                <div class="g-media-wrap">
+                    <span class="pinned-home-badge"><i class="fas fa-star"></i> Featured</span>
+                    <img src="${thumb}" crossorigin="anonymous" loading="lazy" alt="Home Media ${idx+1}">
+                    ${item.type === 'video' ? '<div class="video-play-badge"><i class="fas fa-play"></i></div>' : ''}
+                </div>
+                <div class="g-content">
+                    <div class="g-meta-date"><i class="fas fa-calendar-alt"></i> ${item.date || '—'}</div>
+                    <div class="g-caption">${item.caption || 'স্মৃতিচিত্র'}</div>
+                </div>
+            </div>`;
+        }).join('');
+    });
+
+    window.openHomeLightbox = (idx) => {
+        const item = window.homeFeaturedItems[idx];
+        const lb = document.getElementById('home-lightbox');
+        const img = document.getElementById('home-lightbox-img');
+        const counter = document.getElementById('home-lightbox-counter');
+        const wrap = lb.querySelector('.lightbox-img-wrap');
+
+        // পুরানো কোনো ভিডিও প্লেয়ার থাকলে মুছে ফেলুন
+        const existingPlayer = document.getElementById('home-lightbox-video-player');
+        if(existingPlayer) existingPlayer.remove();
+
+        if(item.type === 'image') {
+            img.style.display = 'block';
+            img.src = item.url;
+        } else {
+            img.style.display = 'none';
+            const videoFrame = document.createElement('iframe');
+            videoFrame.id = 'home-lightbox-video-player';
+            videoFrame.src = item.url + "?autoplay=1&rel=0";
+            videoFrame.style.width = '92vw';
+            videoFrame.style.height = '51.75vw';
+            videoFrame.style.maxWidth = '800px';
+            videoFrame.style.maxHeight = '450px';
+            videoFrame.style.border = 'none';
+            videoFrame.style.borderRadius = '10px';
+            videoFrame.setAttribute('allow', 'autoplay; encrypted-media');
+            videoFrame.setAttribute('allowfullscreen', 'true');
+            wrap.appendChild(videoFrame);
+        }
+
+        if(counter) {
+            counter.innerHTML = `
+                <div style="font-weight:700; color:white; font-size:1.05rem; margin-bottom:5px;">${item.caption || 'স্মৃতিচিত্র'}</div>
+                <div style="color:var(--primary-light); font-size:0.8rem;"><i class="fas fa-calendar-alt"></i> ${item.date || '—'}</div>
+            `;
+        }
+
+        if(lb) { lb.style.display = 'flex'; lb.classList.add('show'); }
+        document.body.style.overflow = 'hidden';
+    };
+
+    window.closeHomeLightbox = () => {
+        const lb = document.getElementById('home-lightbox');
+        if(lb) { lb.style.display = 'none'; lb.classList.remove('show'); }
+        const existingPlayer = document.getElementById('home-lightbox-video-player');
+        if(existingPlayer) existingPlayer.remove();
+        document.body.style.overflow = '';
+    };
 
     // ===== MODAL CONTROLS =====
     window.openModal = (id) => { const el = document.getElementById(id); if(el) el.style.display='flex'; };
