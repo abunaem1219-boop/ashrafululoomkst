@@ -112,6 +112,10 @@ html, body {
     margin: 0;
     padding: 0;
 }
+/* ডেস্কটপে উপাদান হাইড/শো করার জন্য নতুন ক্লাস */
+.only-desktop {
+    display: none !important;
+}
 a { text-decoration: none; color: inherit; }
 ul { list-style: none; }
 
@@ -948,28 +952,80 @@ body {
 
 /* ডেস্কটপ ও বড় ডিভাইসের জন্য সুনির্দিষ্ট সেটিংস */
 @media (min-width: 769px) {
+    .only-desktop {
+        display: list-item !important; /* লিংকের জন্য শো হবে */
+    }
     .drawer-header, .drawer-footer, .only-mobile {
         display: none !important;
     }
+    /* ডেস্কটপে গ্লাস-ইফেক্ট হেডার এবং চমৎকার হাইট */
+    .navbar {
+        height: 72px;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 24px;
+    }
+    .brand img {
+        height: 44px;
+        width: 44px;
+    }
+    .brand h1 {
+        font-size: 0.98rem;
+    }
     .nav-links {
         display: flex !important;
-        gap: 20px;
+        gap: 0px;
         box-shadow: none !important;
         background: transparent !important;
     }
+    /* মেনুর অ্যালাইনমেন্ট এবং গ্যাপ */
     .drawer-menu {
         display: flex;
         flex-direction: row;
-        gap: 20px;
+        align-items: center;
+        gap: 6px;
     }
+    /* আধুনিক রাউন্ডেড পিল ইফেক্ট */
     .drawer-menu li a {
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-size: 0.95rem;
         font-weight: 600;
-        color: var(--text-main);
-        transition: var(--transition);
+        color: var(--text-main) !important;
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-right: 0 !important;
     }
-    .drawer-menu li a i { display: none; }
-    .drawer-menu li a:hover, .drawer-menu li a.active {
-        color: var(--primary);
+    /* ডেস্কটপ মেনুতে আইকন হাইড থাকবে */
+    .drawer-menu li a i { 
+        display: none !important; 
+    }
+    /* হোভার এবং একটিভ পেজের চমৎকার কালার স্কিম */
+    .drawer-menu li a:hover {
+        background: rgba(5, 108, 70, 0.06);
+        color: var(--primary) !important;
+    }
+    .drawer-menu li a.active {
+        background: rgba(5, 108, 70, 0.08);
+        color: var(--primary) !important;
+    }
+    /* যোগাযোগ করুন বাটনটিকে ডেস্কটপে একটি প্রিমিয়াম CTA বাটনে রূপান্তর */
+    .drawer-menu li.nav-cta {
+        margin-left: 10px;
+    }
+    .drawer-menu li.nav-cta a {
+        background: var(--primary);
+        color: white !important;
+        border-radius: 50px;
+        padding: 10px 22px;
+        box-shadow: 0 4px 12px rgba(5, 108, 70, 0.18);
+    }
+    .drawer-menu li.nav-cta a:hover {
+        background: var(--primary-dark);
+        box-shadow: 0 6px 16px rgba(5, 108, 70, 0.28);
+        transform: translateY(-1px);
     }
     .bottom-nav {
         display: none !important;
@@ -1008,18 +1064,161 @@ body.drawer-open, body.drawer-open #main-wrapper {
     background-color: var(--bg-color);
 }
 
-/* নামাজের মেইন প্রিমিয়াম কার্ড */
-prayer-hero-card
+/* নামাজের মেইন প্রিমিয়াম কার্ড (গ্লাস-মরফিজম এবং বর্ডার) */
+.prayer-hero-card {
+    position: relative;
+    border-radius: 20px;
+    padding: 24px;
+    color: white;
+    overflow: hidden;
+    box-shadow: 0 12px 36px rgba(5, 108, 70, 0.15);
+    background: linear-gradient(135deg, #090d16 0%, #0f172a 100%);
+    transition: background 1.2s ease-in-out, border-color 0.5s ease;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-sizing: border-box;
+}
+
+/* ১. সময় অনুযায়ী ডাইনামিক ব্যাকগ্রাউন্ড গ্রেডিয়েন্ট */
+.prayer-hero-card.bg-fajr {
+    background: linear-gradient(135deg, #1e1b4b 0%, #31105e 50%, #22043b 100%);
+    border-color: rgba(252, 211, 77, 0.25);
+}
+.prayer-hero-card.bg-dhuhr {
+    background: linear-gradient(135deg, #026597 0%, #0284c7 60%, #0c4a6e 100%);
+    border-color: rgba(254, 240, 138, 0.25);
+}
+.prayer-hero-card.bg-asr {
+    background: linear-gradient(135deg, #075985 0%, #c2410c 60%, #7c2d12 100%);
+    border-color: rgba(251, 191, 36, 0.3);
+}
+.prayer-hero-card.bg-maghrib {
+    background: linear-gradient(135deg, #5c1b03 0%, #9a3412 40%, #1e1b4b 100%);
+    border-color: rgba(249, 115, 22, 0.35);
+}
+.prayer-hero-card.bg-isha {
+    background: linear-gradient(135deg, #060910 0%, #0f172a 60%, #1e293b 100%);
+    border-color: rgba(254, 240, 138, 0.18);
+}
 
 /* কার্ডের ভেতরের ব্যাকগ্রাউন্ড মস্ক ইলাস্ট্রেশন */
 .prayer-hero-card::after {
     content: '';
     position: absolute;
     bottom: 0; left: 0; right: 0;
-    height: 120px;
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%230b0f19' fill-opacity='0.6' d='M0,224L120,202.7C240,181,480,139,720,138.7C960,139,1200,181,1320,202.7L1440,224L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z'%3E%3C/path%3E%3C/svg%3E") no-repeat bottom/cover;
+    height: 100px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23000000' fill-opacity='0.25' d='M0,224L120,202.7C240,181,480,139,720,138.7C960,139,1200,181,1320,202.7L1440,224L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z'%3E%3C/path%3E%3C/svg%3E") no-repeat bottom/cover;
     pointer-events: none;
     z-index: 1;
+}
+
+/* ২. সূর্যের অ্যানিমেশন ও পালসিং ইফেক্ট */
+.prayer-card-icon {
+    font-size: 2.8rem;
+    position: relative;
+    z-index: 2;
+}
+.prayer-card-icon i.fa-sun {
+    color: #ffd700;
+    animation: sunGlowPulse 3s ease-in-out infinite, sunRotate 25s linear infinite;
+}
+.prayer-card-icon i.fa-moon {
+    color: #fef08a;
+    animation: moonGlowPulse 2.5s ease-in-out infinite;
+}
+@keyframes sunGlowPulse {
+    0%, 100% { filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.4)); transform: scale(1); }
+    50% { filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8)); transform: scale(1.04); }
+}
+@keyframes sunRotate {
+    100% { transform: rotate(360deg); }
+}
+@keyframes moonGlowPulse {
+    0%, 100% { filter: drop-shadow(0 0 6px rgba(254, 240, 138, 0.3)); transform: scale(1); }
+    50% { filter: drop-shadow(0 0 16px rgba(254, 240, 138, 0.7)); transform: scale(1.05); }
+}
+
+/* ৩. ডিজিটাল স্টাইল কাউন্টডাউন র্যাপার */
+.prayer-countdown-wrap {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 14px 10px;
+    margin: 18px 0;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+.prayer-countdown-wrap h3 {
+    font-size: 0.85rem;
+    opacity: 0.85;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.8);
+}
+#next-prayer-timer {
+    font-size: 2.3rem;
+    font-weight: 700;
+    font-family: 'Courier New', Courier, monospace;
+    color: #ffd700;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px rgba(254, 240, 138, 0.45);
+    margin-top: 6px;
+    line-height: 1;
+}
+
+/* ৪. হরাইজন্টাল প্রগতিশীল টাইমলাইন */
+.prayer-timeline {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+    margin: 18px 0 10px;
+    position: relative;
+    z-index: 2;
+}
+.timeline-item {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 10px;
+    padding: 8px 4px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.timeline-item .tl-name {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.65);
+}
+.timeline-item .tl-time {
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.45);
+}
+/* একটিভ নামাজ হাইলাইট এবং মৃদু স্পন্দন */
+.timeline-item.active {
+    background: rgba(252, 211, 77, 0.16);
+    border-color: #ffd700;
+    box-shadow: 0 0 12px rgba(254, 240, 138, 0.3);
+    transform: translateY(-2px);
+    animation: tlPulse 2s infinite;
+}
+.timeline-item.active .tl-name {
+    color: #ffd700;
+}
+.timeline-item.active .tl-time {
+    color: white;
+    font-weight: 700;
+}
+/* অতিবাহিত ওয়াক্তসমূহ */
+.timeline-item.passed {
+    opacity: 0.45;
+}
+@keyframes tlPulse {
+    0%, 100% { box-shadow: 0 0 8px rgba(254, 240, 138, 0.18); }
+    50% { box-shadow: 0 0 16px rgba(254, 240, 138, 0.4); }
 }
 
 .prayer-status-wrap {
