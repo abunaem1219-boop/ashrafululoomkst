@@ -114,10 +114,17 @@
                 <!-- ড্রয়ারের অপশন তালিকা -->
                 <ul class="drawer-menu">
                     <li class="only-mobile"><a href="#" onclick="Swal.fire({title: 'ইউজার প্রোফাইল', text: 'লগইন এবং প্রোফাইল সেকশনটি পরবর্তী আপডেটে যুক্ত করা হবে!', icon: 'info', confirmButtonColor: '#056C46'})"><i class="fas fa-user-circle"></i> প্রোফাইল</a></li>
-                    <li><a href="index.html#contact"><i class="fas fa-address-book"></i> যোগাযোগ করুন</a></li>
+                    <!-- ডেস্কটপ অনলি লিংকসমূহ (শিক্ষকবৃন্দ পেজ একটিভ) -->
+                    <li class="only-desktop"><a href="index.html"><i class="fas fa-home"></i> হোম</a></li>
+                    <li class="only-desktop"><a href="notice.html"><i class="fas fa-bell"></i> নোটিশ</a></li>
+                    <li class="only-desktop"><a href="results.html"><i class="fas fa-graduation-cap"></i> ফলাফল</a></li>
+                    <li class="only-desktop"><a href="gallery.html"><i class="fas fa-images"></i> গ্যালারি</a></li>
+                    <li class="only-desktop"><a href="teachers.html" class="active"><i class="fas fa-users"></i> শিক্ষকবৃন্দ</a></li>
+                    
+                    <li><a href="about.html"><i class="fas fa-info-circle"></i> মাদরাসা সম্পর্কে</a></li>
                     <li class="only-mobile"><a href="#" onclick="Swal.fire({title: 'প্রাইভেসি পলিসি', text: 'মাদরাসার সকল ডেটা ও ব্যবহারকারীর তথ্য এনক্রিপ্ট পদ্ধতিতে সুরক্ষিত থাকে।', icon: 'success', confirmButtonColor: '#056C46'})"><i class="fas fa-shield-alt"></i> প্রাইভেসি পলিসি</a></li>
                     <li class="only-mobile"><a href="#" onclick="navigator.share ? navigator.share({title: 'জামিয়া আরাবিয়া', url: window.location.href}) : Swal.fire({title: 'লিংক কপি করুন', text: window.location.href, icon: 'success'})"><i class="fas fa-share-alt"></i> শেয়ার করুন</a></li>
-                    <li><a href="about.html"><i class="fas fa-info-circle"></i> মাদরাসা সম্পর্কে</a></li>
+                    <li class="nav-cta"><a href="index.html#contact"><i class="fas fa-address-book"></i> যোগাযোগ করুন</a></li>
                 </ul>
 
                 <!-- ড্রয়ার ফুটার (ভার্সন কোড) -->
