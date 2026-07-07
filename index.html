@@ -178,10 +178,18 @@
                 <!-- ড্রয়ারের অপশন তালিকা -->
                 <ul class="drawer-menu">
                     <li class="only-mobile"><a href="#" onclick="Swal.fire({title: 'ইউজার প্রোফাইল', text: 'লগইন এবং প্রোফাইল সেকশনটি পরবর্তী আপডেটে যুক্ত করা হবে!', icon: 'info', confirmButtonColor: '#056C46'})"><i class="fas fa-user-circle"></i> প্রোফাইল</a></li>
-                    <li><a href="index.html#contact"><i class="fas fa-address-book"></i> যোগাযোগ করুন</a></li>
+                    <!-- ডেস্কটপ অনলি লিংকসমূহ (হোম পেজ একটিভ) -->
+                    <li class="only-desktop"><a href="index.html" class="active"><i class="fas fa-home"></i> হোম</a></li>
+                    <li class="only-desktop"><a href="notice.html"><i class="fas fa-bell"></i> নোটিশ</a></li>
+                    <li class="only-desktop"><a href="results.html"><i class="fas fa-graduation-cap"></i> ফলাফল</a></li>
+                    <li class="only-desktop"><a href="gallery.html"><i class="fas fa-images"></i> গ্যালারি</a></li>
+                    <li class="only-desktop"><a href="teachers.html"><i class="fas fa-users"></i> শিক্ষকবৃন্দ</a></li>
+                    
+                    <li><a href="about.html"><i class="fas fa-info-circle"></i> মাদরাসা সম্পর্কে</a></li>
                     <li class="only-mobile"><a href="#" onclick="Swal.fire({title: 'প্রাইভেসি পলিসি', text: 'মাদরাসার সকল ডেটা ও ব্যবহারকারীর তথ্য এনক্রিপ্ট পদ্ধতিতে সুরক্ষিত থাকে।', icon: 'success', confirmButtonColor: '#056C46'})"><i class="fas fa-shield-alt"></i> প্রাইভেসি পলিসি</a></li>
                     <li class="only-mobile"><a href="#" onclick="navigator.share ? navigator.share({title: 'জামিয়া আরাবিয়া', url: window.location.href}) : Swal.fire({title: 'লিংক কপি করুন', text: window.location.href, icon: 'success'})"><i class="fas fa-share-alt"></i> শেয়ার করুন</a></li>
-                    <li><a href="about.html"><i class="fas fa-info-circle"></i> মাদরাসা সম্পর্কে</a></li>
+                    <!-- যোগাযোগ করুন লিংকটি কাস্টম বাটনে রূপান্তর -->
+                    <li class="nav-cta"><a href="index.html#contact"><i class="fas fa-address-book"></i> যোগাযোগ করুন</a></li>
                 </ul>
 
                 <!-- ড্রয়ার ফুটার (ভার্সন কোড) -->
@@ -226,12 +234,36 @@
                     <h5 id="hijri-date-text" style="font-size: 0.78rem; opacity: 0.9; font-weight: 500; color: #fcd34d; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
                         <i class="fas fa-calendar-alt"></i> লোডিং হিজরি...
                     </h5>
-                    <h4>এখন সময়</h4>
-                    <h2 id="current-prayer-name">লোডিং...</h2>
-                    <p id="current-prayer-range"></p>
+                    <h4 style="font-size: 0.85rem; opacity: 0.8; font-weight: 500;">এখন সময়</h4>
+                    <h2 id="current-prayer-name" style="font-size: 2.2rem; font-weight: 700; margin-top: 4px; line-height:1.2;">লোডিং...</h2>
+                    <p id="current-prayer-range" style="font-size: 0.9rem; opacity: 0.9; margin-top: 2px;"></p>
                 </div>
                 <div class="prayer-card-icon" id="prayer-icon-div">
                     <i class="fas fa-moon"></i>
+                </div>
+            </div>
+            
+            <!-- ৫ ওয়াক্ত নামাজের প্রিমিয়াম টাইমলাইন -->
+            <div class="prayer-timeline" id="prayer-timeline-list">
+                <div class="timeline-item" data-prayer="fajr">
+                    <span class="tl-name">ফজর</span>
+                    <span class="tl-time" id="tl-fajr-time">--:--</span>
+                </div>
+                <div class="timeline-item" data-prayer="dhuhr">
+                    <span class="tl-name">যোহর</span>
+                    <span class="tl-time" id="tl-dhuhr-time">--:--</span>
+                </div>
+                <div class="timeline-item" data-prayer="asr">
+                    <span class="tl-name">আসর</span>
+                    <span class="tl-time" id="tl-asr-time">--:--</span>
+                </div>
+                <div class="timeline-item" data-prayer="maghrib">
+                    <span class="tl-name">মাগরিব</span>
+                    <span class="tl-time" id="tl-maghrib-time">--:--</span>
+                </div>
+                <div class="timeline-item" data-prayer="isha">
+                    <span class="tl-name">এশা</span>
+                    <span class="tl-time" id="tl-isha-time">--:--</span>
                 </div>
             </div>
             
@@ -468,13 +500,28 @@
     fetchPrayerTimes();
 
     function startPrayerCountdown(timings) {
+        // টাইমলাইনের কাজের জন্য ডাইনামিক 'key' সহ নামাজের তথ্য বিন্যাস
         const prayers = [
-            { name: "ফজর", time: timings.Fajr, icon: "fa-cloud-meatball", bgDay: false },
-            { name: "যোহর", time: timings.Dhuhr, icon: "fa-sun", bgDay: true },
-            { name: "আসর", time: timings.Asr, icon: "fa-cloud-sun", bgDay: true },
-            { name: "মাগরিব", time: timings.Maghrib, icon: "fa-wind", bgDay: false },
-            { name: "এশা", time: timings.Isha, icon: "fa-moon", bgDay: false }
+            { name: "ফজর", time: timings.Fajr, icon: "fa-cloud-meatball", bgDay: false, key: "fajr" },
+            { name: "যোহর", time: timings.Dhuhr, icon: "fa-sun", bgDay: true, key: "dhuhr" },
+            { name: "আসর", time: timings.Asr, icon: "fa-cloud-sun", bgDay: true, key: "asr" },
+            { name: "মাগরিব", time: timings.Maghrib, icon: "fa-wind", bgDay: false, key: "maghrib" },
+            { name: "এশা", time: timings.Isha, icon: "fa-moon", bgDay: false, key: "isha" }
         ];
+
+        // টাইমলাইনে নামাজের আসল সময় সেট করা (সাফ ডিজাইনের জন্য AM/PM বাদে)
+        const setTlTime = (id, v) => {
+            const el = document.getElementById(id);
+            if(el && v) {
+                const parts = convertTo12Hour(v).split(' ');
+                el.innerText = toBangali(parts[0]); // যেমন: '০৫:১২'
+            }
+        };
+        setTlTime('tl-fajr-time', timings.Fajr);
+        setTlTime('tl-dhuhr-time', timings.Dhuhr);
+        setTlTime('tl-asr-time', timings.Asr);
+        setTlTime('tl-maghrib-time', timings.Maghrib);
+        setTlTime('tl-isha-time', timings.Isha);
 
         function updateWidget() {
             const now = new Date();
@@ -513,9 +560,32 @@
             }
             if(npTitle) npTitle.innerText = `পরবর্তী নামাজ: ${next.name}`;
             
-            if(iconDiv) {
-                iconDiv.innerHTML = current.bgDay ? `<i class="fas fa-sun" style="color:#eab308;"></i>` : `<i class="fas fa-moon" style="color:#fef08a;"></i>`;
+            // উইজেটের ডাইনামিক ব্যাকগ্রাউন্ড গ্রেডিয়েন্ট ট্রানজিশন আপডেট
+            const card = document.querySelector('.prayer-hero-card');
+            if (card) {
+                card.classList.remove('bg-fajr', 'bg-dhuhr', 'bg-asr', 'bg-maghrib', 'bg-isha');
+                card.classList.add(`bg-${current.key}`);
             }
+
+            // মাইক্রো-অ্যানিমেশনের জন্য ক্লাসের আইকন সেট ও রিফ্রেশ
+            if(iconDiv) {
+                iconDiv.innerHTML = current.bgDay 
+                    ? `<i class="fas fa-sun"></i>` 
+                    : `<i class="fas fa-moon"></i>`;
+            }
+
+            // টাইমলাইন আইটেমগুলোর স্ট্যাটাস আপডেট (একটিভ ও অতিবাহিত ওয়াক্ত)
+            prayers.forEach((p, idx) => {
+                const tlItem = document.querySelector(`.timeline-item[data-prayer="${p.key}"]`);
+                if (tlItem) {
+                    tlItem.classList.remove('active', 'passed');
+                    if (idx === currentPrayerIdx) {
+                        tlItem.classList.add('active');
+                    } else if (idx < currentPrayerIdx) {
+                        tlItem.classList.add('passed');
+                    }
+                }
+            });
 
             // কাউন্টডাউন হিসাব
             let diffMin = 0;
