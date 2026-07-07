@@ -1301,22 +1301,70 @@ input:checked + .slider::before { transform: translateX(26px); }
             </div>
 
             <!-- =============================================
-                 TAB: গ্যালারি
+                 TAB: গ্যালারি (প্রিমিয়াম মিডিয়া ও ভিডিও সাপোর্ট)
                  ============================================= -->
             <div id="admin-gallery" class="admin-section">
                 <div class="form-card">
-                    <div class="form-card-title"><i class="fas fa-upload"></i> গ্যালারি ছবি আপলোড</div>
-                    <div class="form-group">
+                    <div class="form-card-title"><i class="fas fa-photo-video"></i> প্রিমিয়াম গ্যালারি আপলোড</div>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>মিডিয়ার ধরণ (Type)</label>
+                            <select id="g-type" class="form-control" onchange="toggleGalleryInputType(this.value)">
+                                <option value="image">ছবি (Image)</option>
+                                <option value="video">ভিডিও (Video Link)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>তারিখ (Date)</label>
+                            <input type="date" id="g-date" class="form-control">
+                        </div>
+                    </div>
+
+                    <!-- ছবি আপলোড অপশন -->
+                    <div class="form-group" id="g-image-upload-wrap">
                         <label>ছবি নির্বাচন করুন</label>
                         <input type="file" id="g-url-file" class="form-control" accept="image/*">
                     </div>
-                    <button class="btn btn-primary" onclick="saveGalleryImage()">
-                        <i class="fas fa-cloud-upload-alt"></i> ছবি আপলোড করুন
+
+                    <!-- ভিডিও লিংক অপশন -->
+                    <div class="form-group" id="g-video-link-wrap" style="display:none;">
+                        <label>ভিডিও লিংক (YouTube বা সরাসরি MP4 Link)</label>
+                        <input type="url" id="g-video-url" class="form-control" placeholder="যেমন: https://www.youtube.com/watch?v=...">
+                    </div>
+
+                    <div class="form-group">
+                        <label>ক্যাপশন / শিরোনাম (Caption)</label>
+                        <input type="text" id="g-caption" class="form-control" placeholder="মিডিয়ার সংক্ষিপ্ত বিবরণ">
+                    </div>
+
+                    <div class="form-group" style="display:flex;align-items:center;gap:10px;margin-top:10px;background:var(--p-light);padding:10px;border-radius:8px;">
+                        <input type="checkbox" id="g-pinned" style="width:18px;height:18px;accent-color:var(--p);">
+                        <label for="g-pinned" style="margin:0;font-weight:600;color:var(--p-dark);">Add to Home Page (হোম পেজে দেখান)</label>
+                    </div>
+
+                    <button class="btn btn-primary" onclick="saveGalleryItem()" style="margin-top:15px;">
+                        <i class="fas fa-cloud-upload-alt"></i> মিডিয়া পাবলিশ করুন
                     </button>
                 </div>
                 <div class="form-card">
-                    <div class="form-card-title"><i class="fas fa-images"></i> গ্যালারি তালিকা</div>
-                    <div id="admin-gallery-list" style="display:flex;gap:10px;flex-wrap:wrap;"></div>
+                    <div class="form-card-title"><i class="fas fa-list-ul"></i> গ্যালারি তালিকা</div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>মিডিয়া</th>
+                                    <th>বিবরণ/ক্যাপশন</th>
+                                    <th>তারিখ</th>
+                                    <th>হোম পেজ</th>
+                                    <th>অ্যাকশন</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-premium-gallery-list">
+                                <tr><td colspan="5" style="text-align:center;padding:1rem;">লোড হচ্ছে...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
@@ -1911,17 +1959,139 @@ window.saveTeacher = async () => {
 };
 
 /* Gallery */
-window.saveGalleryImage = async () => {
-    const fileInput=document.getElementById('g-url-file');
-    if (!fileInput||fileInput.files.length===0) return alert('ছবি নির্বাচন করুন');
-    Swal.fire({title:'আপলোড হচ্ছে...',allowOutsideClick:false,didOpen:()=>Swal.showLoading()});
-    try {
-        const c=await compressImage(fileInput.files[0]);
-        const url=await uploadImageToImgBB(c);
-        push(ref(db,'gallery'),{url})
-            .then(()=>{Swal.fire({icon:'success',title:'সফল!',text:'ছবি যোগ হয়েছে!',timer:2000,showConfirmButton:false});fileInput.value='';});
-    } catch(e){ Swal.fire({icon:'error',title:'ত্রুটি!',text:'আপলোড ব্যর্থ।'}); }
-};
+/* ============================================================
+       PREMIUM GALLERY WITH VIDEO AND HOME PAGE PIN SUPPORT
+       ============================================================ */
+    window.toggleGalleryInputType = (type) => {
+        const imgWrap = document.getElementById('g-image-upload-wrap');
+        const vidWrap = document.getElementById('g-video-link-wrap');
+        if(type === 'image') {
+            if(imgWrap) imgWrap.style.display = 'block';
+            if(vidWrap) vidWrap.style.display = 'none';
+        } else {
+            if(imgWrap) imgWrap.style.display = 'none';
+            if(vidWrap) vidWrap.style.display = 'block';
+        }
+    };
+
+    // ইউটিউব ওয়াচ লিংক থেকে এমবেড লিংকে রূপান্তর করার জন্য বিশেষ ফাংশন
+    function convertToYoutubeEmbed(url) {
+        if(!url) return "";
+        let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        let match = url.match(regExp);
+        if (match && match[2].length == 11) {
+            return "https://www.youtube.com/embed/" + match[2];
+        }
+        return url;
+    }
+
+    // ইউটিউব থাম্বনেইল পাওয়ার জন্য ইউটিলিটি
+    function getYoutubeThumbnail(url) {
+        if(!url) return "";
+        let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        let match = url.match(regExp);
+        if (match && match[2].length == 11) {
+            return `https://img.youtube.com/vi/${match[2]}/hqdefault.jpg`;
+        }
+        return "https://i.ibb.co.com/qFRmPqgK/20260310-005555.png"; // Fallback logo
+    }
+
+    window.saveGalleryItem = async () => {
+        const type = document.getElementById('g-type')?.value || 'image';
+        const date = document.getElementById('g-date')?.value || new Date().toISOString().slice(0,10);
+        const caption = document.getElementById('g-caption')?.value.trim() || '';
+        const pinned = document.getElementById('g-pinned')?.checked || false;
+        
+        let mediaUrl = "";
+
+        if (type === 'image') {
+            const fileInput = document.getElementById('g-url-file');
+            if (!fileInput || fileInput.files.length === 0) {
+                Swal.fire('ত্রুটি', 'অনুগ্রহ করে একটি ছবি নির্বাচন করুন।', 'error');
+                return;
+            }
+            Swal.fire({title:'আপলোড হচ্ছে...', text:'ছবি কম্প্রেস ও ক্লাউডে পাঠানো হচ্ছে...', allowOutsideClick:false, didOpen:()=>Swal.showLoading()});
+            try {
+                const c = await compressImage(fileInput.files[0]);
+                mediaUrl = await uploadImageToImgBB(c);
+            } catch(e) {
+                Swal.fire({icon:'error',title:'ত্রুটি!',text:'ছবি আপলোড ব্যর্থ হয়েছে।'});
+                return;
+            }
+        } else {
+            const videoUrlInput = document.getElementById('g-video-url')?.value.trim() || '';
+            if(!videoUrlInput) {
+                Swal.fire('ত্রুটি', 'অনুগ্রহ করে ভিডিওর সোর্স ইউআরএল দিন।', 'error');
+                return;
+            }
+            // ইউটিউব লিংক হলে কনভার্ট করে এমবেড লিংক করবে
+            mediaUrl = convertToYoutubeEmbed(videoUrlInput);
+            Swal.fire({title:'প্রক্রিয়াধীন...', allowOutsideClick:false, didOpen:()=>Swal.showLoading()});
+        }
+
+        const payload = {
+            type: type,
+            url: mediaUrl,
+            caption: caption,
+            date: date,
+            pinned: pinned,
+            createdAt: Date.now()
+        };
+
+        push(ref(db, 'gallery'), payload)
+            .then(() => {
+                Swal.fire({icon:'success',title:'সফল!',text:'গ্যালারি আইটেম পাবলিশ হয়েছে!',timer:2000,showConfirmButton:false});
+                // ফর্ম রিসেট করা
+                document.getElementById('g-caption').value = '';
+                document.getElementById('g-pinned').checked = false;
+                const fileInput = document.getElementById('g-url-file');
+                if(fileInput) fileInput.value = '';
+                const videoUrl = document.getElementById('g-video-url');
+                if(videoUrl) videoUrl.value = '';
+            })
+            .catch(() => Swal.fire('ত্রুটি', 'ডাটাবেজে সেভ করা যায়নি।', 'error'));
+    };
+
+    // রিয়েল-টাইম গ্যালারি ডাটা এন্ট্রি পর্যবেক্ষণ ও তালিকা রেন্ডারিং
+    onValue(ref(db, 'gallery'), (snap) => {
+        const tbody = document.getElementById('admin-premium-gallery-list');
+        if(!tbody) return;
+        tbody.innerHTML = '';
+        const data = snap.val();
+        if(data) {
+            Object.keys(data).forEach(key => {
+                const item = data[key];
+                const isPinned = item.pinned ? '<span class="badge badge-green">Pinned</span>' : '<span class="badge badge-gray">No</span>';
+                const dateText = item.date || '—';
+                const capText = item.caption || '—';
+                
+                let thumbSrc = "";
+                if(item.type === 'image') {
+                    thumbSrc = item.url;
+                } else {
+                    thumbSrc = getYoutubeThumbnail(item.url);
+                }
+
+                tbody.innerHTML += `
+                <tr>
+                    <td>
+                        <div style="position:relative; width:65px; height:45px; border-radius:6px; overflow:hidden; border:1px solid var(--border);">
+                            <img src="${thumbSrc}" style="width:100%; height:100%; object-fit:cover;" crossorigin="anonymous">
+                            ${item.type === 'video' ? '<span style="position:absolute; inset:0; background:rgba(0,0,0,0.3); display:flex; align-items:center; justify-content:center; color:white; font-size:0.8rem;"><i class="fas fa-play"></i></span>' : ''}
+                        </div>
+                    </td>
+                    <td><strong style="font-size:0.85rem; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">${capText}</strong></td>
+                    <td><small style="color:var(--text-soft); font-weight:600;">${dateText}</small></td>
+                    <td>${isPinned}</td>
+                    <td>
+                        <button class="delete-btn btn-sm" onclick="deleteRecord('gallery/${key}')"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>`;
+            });
+        } else {
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--text-soft);">কোনো গ্যালারি আইটেম পাওয়া যায়নি।</td></tr>';
+        }
+    });
 
 /* Banner */
 window.saveBanner = () => {
