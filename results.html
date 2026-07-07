@@ -1087,9 +1087,16 @@ footer ul a:hover { color: var(--gold-light); }
             </div>
             <ul class="drawer-menu">
                 <li class="only-mobile"><a href="#" onclick="showToast('প্রোফাইল শীঘ্রই আসছে')"><i class="fas fa-user-circle"></i> প্রোফাইল</a></li>
-                <li><a href="index.html#contact"><i class="fas fa-address-book"></i> যোগাযোগ করুন</a></li>
+                <!-- ডেস্কটপ অনলি লিংকসমূহ (ফলাফল পেজ একটিভ) -->
+                <li class="only-desktop"><a href="index.html"><i class="fas fa-home"></i> হোম</a></li>
+                <li class="only-desktop"><a href="notice.html"><i class="fas fa-bell"></i> নোটিশ</a></li>
+                <li class="only-desktop"><a href="results.html" class="active"><i class="fas fa-graduation-cap"></i> ফলাফল</a></li>
+                <li class="only-desktop"><a href="gallery.html"><i class="fas fa-images"></i> গ্যালারি</a></li>
+                <li class="only-desktop"><a href="teachers.html"><i class="fas fa-users"></i> শিক্ষকবৃন্দ</a></li>
+                
                 <li><a href="about.html"><i class="fas fa-info-circle"></i> মাদরাসা সম্পর্কে</a></li>
                 <li class="only-mobile"><a href="#" onclick="navigator.share ? navigator.share({title:'জামিয়া আরাবিয়া',url:window.location.href}) : showToast('লিংক কপি করুন')"><i class="fas fa-share-alt"></i> শেয়ার করুন</a></li>
+                <li class="nav-cta"><a href="index.html#contact"><i class="fas fa-address-book"></i> যোগাযোগ করুন</a></li>
             </ul>
             <div class="drawer-footer"><p>ভার্সন ২.০.০ (Build 2026)</p></div>
         </div>
