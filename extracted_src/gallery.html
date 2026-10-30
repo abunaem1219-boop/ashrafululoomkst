@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#056C46">
+    <title>গ্যালারি — জামিয়া আরাবিয়া আশরাফুল উলূম কুষ্টিয়া</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Noto+Sans+Bengali:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 14px;
+        }
+        .gallery-item {
+            position: relative;
+            border-radius: var(--radius);
+            overflow: hidden;
+            cursor: pointer;
+            aspect-ratio: 4/3;
+            background: #e2e8f0;
+        }
+        .gallery-item img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform 0.45s ease;
+            display: block;
+        }
+        .gallery-item:hover img { transform: scale(1.08); }
+        .gallery-overlay {
+            position: absolute; inset: 0;
+            background: rgba(5,108,70,0);
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.3s;
+        }
+        .gallery-item:hover .gallery-overlay { background: rgba(5,108,70,0.35); }
+        .gallery-overlay i {
+            color: white; font-size: 2rem;
+            opacity: 0; transform: scale(0.6);
+            transition: all 0.3s;
+        }
+        .gallery-item:hover .gallery-overlay i { opacity: 1; transform: scale(1); }
+
+        /* Lightbox enhanced */
+        .lightbox {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.94);
+            display: none; align-items: center; justify-content: center;
+            z-index: 9000;
+            flex-direction: column;
+        }
+        .lightbox.show { display: flex; animation: fadeIn 0.25s ease; }
+        .lightbox-img-wrap {
+            position: relative;
+            max-width: 92vw;
+            max-height: 84vh;
+        }
+        .lightbox-img-wrap img {
+            max-width: 92vw;
+            max-height: 82vh;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            display: block;
+        }
+        .lightbox-nav {
+            position: absolute;
+            top: 50%; transform: translateY(-50%);
+            display: flex; gap: 8px;
+            width: 100%;
+            justify-content: space-between;
+            padding: 0 8px;
+            pointer-events: none;
+        }
+        .lb-nav-btn {
+            background: rgba(255,255,255,0.18);
+            border: none;
+            color: white;
+            font-size: 1.4rem;
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.2s;
+            pointer-events: all;
+        }
+        .lb-nav-btn:hover { background: rgba(255,255,255,0.32); }
+        .lightbox-counter {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.85rem;
+            margin-top: 12px;
+        }
+        .lightbox-close-btn {
+            position: fixed;
+            top: 18px; right: 22px;
+            background: rgba(255,255,255,0.15);
+            border: none; color: white;
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            z-index: 9001;
+        }
+        .lightbox-close-btn:hover { background: rgba(255,255,255,0.28); }
+
+        /* Skeleton loader */
+        .gallery-skeleton {
+            background: linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: skeleton-loading 1.5s infinite;
+            border-radius: var(--radius);
+            aspect-ratio: 4/3;
+        }
+        @keyframes skeleton-loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Page Transition Overlay -->
+<div id="page-transition-overlay">
+    <div class="glass-loader-card">
+        <div class="glass-spinner-wrap">
+            <div class="glass-spinner-ring"></div>
+            <img class="glass-spinner-logo" src="https://i.ibb.co.com/qFRmPqgK/20260310-005555.png" alt="Logo" crossorigin="anonymous">
+        </div>
+    </div>
+</div>
+<div id="main-wrapper">
+
+<!-- Header -->
+    <header>
+        <div class="container navbar">
+            <div class="brand" id="brand-logo" onclick="navigateTo('index.html')">
+                <img src="https://i.ibb.co.com/qFRmPqgK/20260310-005555.png" crossorigin="anonymous" alt="Logo">
+                <h1>জামিয়া আরাবিয়া<br>আশরাফুল উলূম কুষ্টিয়া</h1>
+            </div>
+            <div class="hamburger" id="hamburger"><i class="fas fa-bars"></i></div>
+            
+            <div class="nav-links" id="nav-links">
+                <!-- ড্রয়ার হেডার -->
+                <div class="drawer-header">
+                    <img src="https://i.ibb.co.com/qFRmPqgK/20260310-005555.png" alt="Logo" crossorigin="anonymous">
+                    <div class="drawer-header-info">
+                        <h3>জামিয়া আরাবিয়া আশরাফুল উলূম</h3>
+                        <p>কুষ্টিয়া, বাংলাদেশ</p>
+                    </div>
+                </div>
+
+                <!-- ড্রয়ারের অপশন তালিকা -->
+                <ul class="drawer-menu">
+                    <li class="only-mobile"><a href="#" onclick="Swal.fire({title: 'ইউজার প্রোফাইল', text: 'লগইন এবং প্রোফাইল সেকশনটি পরবর্তী আপডেটে যুক্ত করা হবে!', icon: 'info', confirmButtonColor: '#056C46'})"><i class="fas fa-user-circle"></i> প্রোফাইল</a></li>
+                    <!-- ডেস্কটপ অনলি লিংকসমূহ (গ্যালারি পেজ একটিভ) -->
+                    <li class="only-desktop"><a href="index.html"><i class="fas fa-home"></i> হোম</a></li>
+                    <li class="only-desktop"><a href="notice.html"><i class="fas fa-bell"></i> নোটিশ</a></li>
+                    <li class="only-desktop"><a href="results.html"><i class="fas fa-graduation-cap"></i> ফলাফল</a></li>
+                    <li class="only-desktop"><a href="gallery.html" class="active"><i class="fas fa-images"></i> গ্যালারি</a></li>
+                    <li class="only-desktop"><a href="teachers.html"><i class="fas fa-users"></i> শিক্ষকবৃন্দ</a></li>
+                    
+                    <li><a href="about.html"><i class="fas fa-info-circle"></i> মাদরাসা সম্পর্কে</a></li>
+                    <li class="only-mobile"><a href="#" onclick="Swal.fire({title: 'প্রাইভেসি পলিসি', text: 'মাদরাসার সকল ডেটা ও ব্যবহারকারীর তথ্য এনক্রিপ্ট পদ্ধতিতে সুরক্ষিত থাকে।', icon: 'success', confirmButtonColor: '#056C46'})"><i class="fas fa-shield-alt"></i> প্রাইভেসি পলিসি</a></li>
+                    <li class="only-mobile"><a href="#" onclick="navigator.share ? navigator.share({title: 'জামিয়া আরাবিয়া', url: window.location.href}) : Swal.fire({title: 'লিংক কপি করুন', text: window.location.href, icon: 'success'})"><i class="fas fa-share-alt"></i> শেয়ার করুন</a></li>
+                    <li class="nav-cta"><a href="index.html#contact"><i class="fas fa-address-book"></i> যোগাযোগ করুন</a></li>
+                </ul>
+
+                <!-- ড্রয়ার ফুটার (ভার্সন কোড) -->
+                <div class="drawer-footer">
+                    <p>ভার্সন ১.০.০ (Build 2026)</p>
+                </div>
+            </div> <!-- nav-links এর শেষ ট্যাগ -->
+        </div> <!-- container navbar এর শেষ ট্যাগ -->
+    </header>
+
+<!-- Page Hero -->
+<div class="page-hero">
+    <div class="container">
+        <button class="back-btn" onclick="navigateTo('index.html')">
+            <i class="fas fa-arrow-left"></i> হোমে ফিরুন
+        </button>
+        <h2><i class="fas fa-images" style="margin-right:10px;"></i>ফটো গ্যালারি</h2>
+        <p>মাদরাসার বিভিন্ন মুহূর্তের স্মৃতিচিত্র</p>
+    </div>
+</div>
+
+<!-- Gallery Section -->
+<section id="gallery" style="padding-top:3rem;">
+    <div class="container">
+        <p id="gallery-count" style="text-align:center;color:var(--text-light);margin-bottom:1.5rem;" data-aos="fade-up"></p>
+
+        <!-- Skeleton -->
+        <div class="gallery-grid" id="gallery-skeleton">
+            <div class="gallery-skeleton"></div>
+            <div class="gallery-skeleton"></div>
+            <div class="gallery-skeleton"></div>
+            <div class="gallery-skeleton"></div>
+            <div class="gallery-skeleton"></div>
+            <div class="gallery-skeleton"></div>
+        </div>
+
+        <!-- Real Grid (hidden until loaded) -->
+        <div class="gallery-grid" id="gallery-container" style="display:none;" data-aos="fade-up"></div>
+    </div>
+</section>
+
+<!-- Enhanced Lightbox -->
+<div class="lightbox" id="lightbox">
+    <button class="lightbox-close-btn" onclick="closeLightbox()">
+        <i class="fas fa-times"></i>
+    </button>
+    <div class="lightbox-img-wrap">
+        <img src="" id="lightbox-img" alt="Gallery Image">
+        <div class="lightbox-nav">
+            <button class="lb-nav-btn" onclick="lightboxPrev()" title="Previous">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="lb-nav-btn" onclick="lightboxNext()" title="Next">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+    <div class="lightbox-counter" id="lightbox-counter"></div>
+</div>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="footer-content">
+            <div>
+                <h2 style="color:var(--primary-light);margin-bottom:1rem;">জামিয়া আরাবিয়া আশরাফুল উলূম কুষ্টিয়া</h2>
+                <p><i class="fas fa-map-marker-alt"></i> ঠিকানা: কুষ্টিয়া সদর, কুষ্টিয়া</p>
+                <p><i class="fas fa-phone"></i> মোবাইল: +880 1775-431464</p>
+            </div>
+            <div>
+                <h3 style="margin-bottom:1rem;">লিংক</h3>
+                <ul style="line-height:2;">
+                    <li><a href="index.html">হোম</a></li>
+                    <li><a href="notice.html">নোটিশ</a></li>
+                    <li><a href="results.html">ফলাফল</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 1999 Jamia Arabia Ashraful Uloom Kushtia. All Rights Reserved.</p>
+        </div>
+    </div>
+</footer>
+
+</div><!-- /main-wrapper -->
+
+<!-- Bottom Navigation -->
+<nav class="bottom-nav" id="bottom-nav" role="navigation">
+    <button class="bottom-nav-item" onclick="handleNavClick('index.html', this)" aria-label="হোম">
+        <span class="nav-icon"><i class="fas fa-home"></i></span>
+        <span class="nav-label">হোম</span>
+    </button>
+    <button class="bottom-nav-item" onclick="handleNavClick('notice.html', this)" aria-label="নোটিশ">
+        <span class="nav-icon"><i class="fas fa-bell"></i></span>
+        <span class="nav-label">নোটিশ</span>
+    </button>
+    <button class="bottom-nav-item" onclick="handleNavClick('results.html', this)" aria-label="ফলাফল">
+        <span class="nav-icon"><i class="fas fa-graduation-cap"></i></span>
+        <span class="nav-label">ফলাফল</span>
+    </button>
+    <button class="bottom-nav-item active" onclick="handleNavClick('gallery.html', this)" aria-label="গ্যালারি">
+        <span class="nav-icon"><i class="fas fa-images"></i></span>
+        <span class="nav-label">গ্যালারি</span>
+    </button>
+    <button class="bottom-nav-item" onclick="handleNavClick('teachers.html', this)" aria-label="শিক্ষকবৃন্দ">
+        <span class="nav-icon"><i class="fas fa-users"></i></span>
+        <span class="nav-label">শিক্ষকবৃন্দ</span>
+    </button>
+</nav>
+
+<!-- Firebase -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+    const app = initializeApp({
+        apiKey:"AIzaSyBXBgFGqDyPiE6ZVER249FA0a91ukICO_U",
+        authDomain:"ashraful-uloom-madrasa.firebaseapp.com",
+        databaseURL:"https://ashraful-uloom-madrasa-default-rtdb.firebaseio.com",
+        projectId:"ashraful-uloom-madrasa",
+        storageBucket:"ashraful-uloom-madrasa.firebasestorage.app",
+        messagingSenderId:"180777617285",
+        appId:"1:180777617285:web:f4ab13a6a2aa0d6cda66ec"
+    });
+    const db = getDatabase(app);
+
+    window.galleryImages = [];
+    window.lightboxIndex = 0;
+
+    // ইউটিউব থাম্বনেইল পাওয়ার জন্য ইউটিলিটি
+    function getYoutubeThumb(url) {
+        if(!url) return "";
+        let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        let match = url.match(regExp);
+        if (match && match[2].length == 11) {
+            return `https://img.youtube.com/vi/${match[2]}/hqdefault.jpg`;
+        }
+        return "https://i.ibb.co.com/qFRmPqgK/20260310-005555.png";
+    }
+
+    window.galleryItems = []; // রেন্ডারিংয়ের জন্য অবজেক্ট স্টোর করা হচ্ছে
+    window.lightboxIndex = 0;
+
+    onValue(ref(db, 'gallery'), (snap) => {
+        const skeleton = document.getElementById('gallery-skeleton');
+        const container = document.getElementById('gallery-container');
+        const countEl = document.getElementById('gallery-count');
+        if(skeleton) skeleton.style.display = 'none';
+        if(container) container.style.display = 'grid';
+
+        const data = snap.val();
+        window.galleryItems = [];
+
+        if(!data) {
+            if(container) container.innerHTML = `
+                <div class="empty-state" style="grid-column:1/-1;">
+                    <i class="fas fa-image"></i>
+                    <p>গ্যালারিতে কোনো কন্টেন্ট নেই।</p>
+                </div>`;
+            return;
+        }
+
+        Object.keys(data).forEach(key => {
+            window.galleryItems.push({
+                id: key,
+                ...data[key]
+            });
+        });
+
+        // ডেট অনুযায়ী সর্ট করবে
+        window.galleryItems.sort((a,b) => new Date(b.date || 0) - new Date(a.date || 0));
+
+        if(countEl) countEl.textContent = `মোট ${window.galleryItems.length}টি ছবি ও ভিডিও`;
+
+        if(container) {
+            container.innerHTML = window.galleryItems.map((item, idx) => {
+                const thumb = item.type === 'image' ? item.url : getYoutubeThumb(item.url);
+                return `
+                <div class="gallery-card-premium" onclick="openLightbox(${idx})">
+                    <div class="g-media-wrap">
+                        <img src="${thumb}" crossorigin="anonymous" loading="lazy" alt="Media ${idx+1}">
+                        ${item.type === 'video' ? '<div class="video-play-badge"><i class="fas fa-play"></i></div>' : ''}
+                    </div>
+                    <div class="g-content">
+                        <div class="g-meta-date"><i class="fas fa-calendar-alt"></i> ${item.date || '—'}</div>
+                        <div class="g-caption">${item.caption || 'জামিয়া আরাফিয়া স্মৃতিচিত্র'}</div>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+    });
+
+    window.openLightbox = (idx) => {
+        window.lightboxIndex = idx;
+        updateLightboxImage();
+        const lb = document.getElementById('lightbox');
+        if(lb) { lb.style.display = 'flex'; lb.classList.add('show'); }
+        document.body.style.overflow = 'hidden';
+    };
+
+    window.closeLightbox = () => {
+        const lb = document.getElementById('lightbox');
+        if(lb) { lb.style.display = 'none'; lb.classList.remove('show'); }
+        // ভিডিও প্লেয়ার কন্টেইনার ক্লিয়ার করে সাউন্ড বন্ধ করা হচ্ছে
+        const wrap = document.querySelector('.lightbox-img-wrap');
+        const img = document.getElementById('lightbox-img');
+        if(img) img.style.display = 'block';
+        const existingPlayer = document.getElementById('lightbox-video-player');
+        if(existingPlayer) existingPlayer.remove();
+        document.body.style.overflow = '';
+    };
+
+    window.lightboxPrev = () => {
+        const len = window.galleryItems.length;
+        window.lightboxIndex = (window.lightboxIndex - 1 + len) % len;
+        updateLightboxImage();
+    };
+
+    window.lightboxNext = () => {
+        const len = window.galleryItems.length;
+        window.lightboxIndex = (window.lightboxIndex + 1) % len;
+        updateLightboxImage();
+    };
+
+    function updateLightboxImage() {
+        const img = document.getElementById('lightbox-img');
+        const counter = document.getElementById('lightbox-counter');
+        const wrap = document.querySelector('.lightbox-img-wrap');
+        const item = window.galleryItems[window.lightboxIndex];
+        
+        // পুরাতন ভিডিও প্লেয়ার থাকলে মুছে ফেলুন
+        const existingPlayer = document.getElementById('lightbox-video-player');
+        if(existingPlayer) existingPlayer.remove();
+
+        if(item.type === 'image') {
+            if(img) {
+                img.style.display = 'block';
+                img.style.opacity = '0';
+                img.style.transform = 'scale(0.96)';
+                img.src = item.url;
+                img.onload = () => {
+                    img.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+                    img.style.opacity = '1';
+                    img.style.transform = 'scale(1)';
+                };
+            }
+        } else {
+            // ভিডিও রেন্ডারিং
+            if(img) img.style.display = 'none';
+            const videoFrame = document.createElement('iframe');
+            videoFrame.id = 'lightbox-video-player';
+            videoFrame.src = item.url + "?autoplay=1&rel=0";
+            videoFrame.style.width = '92vw';
+            videoFrame.style.height = '51.75vw'; // 16:9 Aspect Ratio
+            videoFrame.style.maxWidth = '800px';
+            videoFrame.style.maxHeight = '450px';
+            videoFrame.style.border = 'none';
+            videoFrame.style.borderRadius = '10px';
+            videoFrame.setAttribute('allow', 'autoplay; encrypted-media');
+            videoFrame.setAttribute('allowfullscreen', 'true');
+            if(wrap) wrap.insertBefore(videoFrame, img);
+        }
+
+        if(counter) {
+            // লাইটবক্সের নিচে ডেডিকেটেড ক্যাপশন ও তারিখ শো করানো হচ্ছে
+            counter.innerHTML = `
+                <div style="font-weight:700; color:white; font-size:1.05rem; margin-bottom:5px;">${item.caption || 'স্মৃতিচিত্র'}</div>
+                <div style="color:var(--primary-light); font-size:0.8rem; margin-bottom:8px;"><i class="fas fa-calendar-alt"></i> ${item.date || '—'}</div>
+                <div style="color:rgba(255,255,255,0.5); font-size:0.8rem;">${window.lightboxIndex + 1} / ${window.galleryItems.length}</div>
+            `;
+        }
+    }
+</script>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>document.addEventListener('DOMContentLoaded', () => AOS.init({ duration:700, once:true, offset:80 }));</script>
+
+<script>
+function navigateTo(url) {
+    if(window.location.href.includes(url.split('#')[0])) return;
+    const ov = document.getElementById('page-transition-overlay');
+    if(ov) { 
+        ov.classList.remove('loaded'); /* স্পিনার আবার চালু করুন */
+        setTimeout(() => { window.location.href = url; }, 250); 
+    } else { 
+        window.location.href = url; 
+    }
+}
+
+// পেজ লোড সম্পন্ন হলে স্পিনারটি আড়াল করার ট্রিগার
+document.addEventListener('DOMContentLoaded', () => {
+    const ov = document.getElementById('page-transition-overlay');
+    if(ov) {
+        // সামান্য ডিলে দিয়ে হাইড করলে ট্রানজিশনটি চোখের পলকে অত্যন্ত প্রিমিয়াম লাগে
+        setTimeout(() => {
+            ov.classList.add('loaded');
+        }, 120);
+    }
+});
+function handleNavClick(url, el) {
+    const rip = document.createElement('span'); rip.className = 'ripple-circle';
+    el.appendChild(rip); setTimeout(() => { if(rip.parentNode) rip.parentNode.removeChild(rip); }, 550);
+    navigateTo(url);
+}
+document.addEventListener('DOMContentLoaded', function() {
+    const ham = document.getElementById('hamburger');
+    const nav = document.getElementById('nav-links');
+    if(ham && nav) {
+        ham.addEventListener('click', (e) => {
+            e.stopPropagation();
+            nav.classList.toggle('active');
+            document.body.classList.toggle('drawer-open');
+        });
+
+        // ড্রয়ারের বাইরে ক্লিক করলে ড্রয়ার বন্ধ হওয়ার নেটিভ ফিচার
+        document.addEventListener('click', (e) => {
+            if(!nav.contains(e.target) && !ham.contains(e.target)) {
+                nav.classList.remove('active');
+                document.body.classList.remove('drawer-open');
+            }
+        });
+    }
+});
+
+    // Swipe support for lightbox
+    let touchStartX = 0;
+    const lb = document.getElementById('lightbox');
+    if(lb) {
+        lb.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+        lb.addEventListener('touchend', (e) => {
+            const diff = touchStartX - e.changedTouches[0].screenX;
+            if(Math.abs(diff) > 50) { if(diff > 0) lightboxNext(); else lightboxPrev(); }
+        });
+        // Close on backdrop tap
+        lb.addEventListener('click', (e) => { if(e.target === lb) closeLightbox(); });
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        const lb = document.getElementById('lightbox');
+        if(!lb || lb.style.display !== 'flex') return;
+        if(e.key === 'ArrowRight') lightboxNext();
+        else if(e.key === 'ArrowLeft') lightboxPrev();
+        else if(e.key === 'Escape') closeLightbox();
+    });
+// ===== BOTTOM NAV AUTO-HIDE ON SCROLL (Native Android Feel) =====
+let lastScrollY = window.scrollY;
+window.addEventListener('scroll', () => {
+    const bottomNav = document.getElementById('bottom-nav');
+    if (!bottomNav) return;
+    
+    const currentScrollY = window.scrollY;
+    
+    // পেজের একদম নিচে পৌঁছালে স্বয়ংক্রিয়ভাবে মেনুবার ভেসে উঠবে (Pro UX Feature)
+    const isAtBottom = (window.innerHeight + window.scrollY) >= (document.documentElement.scrollHeight - 30);
+    
+    if (isAtBottom) {
+        bottomNav.classList.remove('bottom-nav-hidden');
+    } else if (currentScrollY > lastScrollY && currentScrollY > 80) {
+        // নিচে স্ক্রল করলে হাইড হবে
+        bottomNav.classList.add('bottom-nav-hidden');
+    } else {
+        // ওপরে স্ক্রল করলে ভেসে উঠবে
+        bottomNav.classList.remove('bottom-nav-hidden');
+    }
+    
+    lastScrollY = currentScrollY;
+}, { passive: true });
+</script>
+
+</body>
+</html>

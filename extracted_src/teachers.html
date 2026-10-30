@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#056C46">
+    <title>শিক্ষকবৃন্দ — জামিয়া আরাবিয়া আশরাফুল উলূম কুষ্টিয়া</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Noto+Sans+Bengali:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .teacher-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            text-align: center;
+            padding: 2rem 1.5rem;
+            transition: var(--transition);
+            position: relative;
+        }
+        .teacher-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            border-radius: var(--radius) var(--radius) 0 0;
+        }
+        .teacher-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-lg);
+        }
+        .teacher-photo {
+            width: 90px; height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 1rem;
+            border: 4px solid white;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .teacher-name {
+            font-size: 1.1rem; font-weight: 700;
+            color: var(--primary); margin-bottom: 4px;
+        }
+        .teacher-phone {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 12px;
+            background: var(--bg-color);
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+        .teacher-phone i { color: var(--primary); }
+        .search-teacher-box {
+            display: flex;
+            gap: 12px;
+            max-width: 500px;
+            margin: 0 auto 2rem;
+        }
+        .search-teacher-box input {
+            flex: 1;
+            padding: 12px 18px;
+            border: 2px solid var(--border);
+            border-radius: 50px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+            font-family: 'Hind Siliguri', sans-serif;
+        }
+        .search-teacher-box input:focus { border-color: var(--primary); }
+    </style>
+</head>
+<body>
+
+<!-- Page Transition Overlay -->
+<div id="page-transition-overlay">
+    <div class="glass-loader-card">
+        <div class="glass-spinner-wrap">
+            <div class="glass-spinner-ring"></div>
+            <img class="glass-spinner-logo" src="https://i.ibb.co.com/qFRmPqgK/20260310-005555.png" alt="Logo" crossorigin="anonymous">
+        </div>
+    </div>
+</div>
+<div id="main-wrapper">
+
+<!-- Header -->
+    <header>
+        <div class="container navbar">
+            <div class="brand" id="brand-logo" onclick="navigateTo('index.html')">
+                <img src="https://i.ibb.co.com/qFRmPqgK/20260310-005555.png" crossorigin="anonymous" alt="Logo">
+                <h1>জামিয়া আরাবিয়া<br>আশরাফুল উলূম কুষ্টিয়া</h1>
+            </div>
+            <div class="hamburger" id="hamburger"><i class="fas fa-bars"></i></div>
+            
+            <div class="nav-links" id="nav-links">
+                <!-- ড্রয়ার হেডার -->
+                <div class="drawer-header">
+                    <img src="https://i.ibb.co.com/qFRmPqgK/20260310-005555.png" alt="Logo" crossorigin="anonymous">
+                    <div class="drawer-header-info">
+                        <h3>জামিয়া আরাবিয়া আশরাফুল উলূম</h3>
+                        <p>কুষ্টিয়া, বাংলাদেশ</p>
+                    </div>
+                </div>
+
+                <!-- ড্রয়ারের অপশন তালিকা -->
+                <ul class="drawer-menu">
+                    <li class="only-mobile"><a href="#" onclick="Swal.fire({title: 'ইউজার প্রোফাইল', text: 'লগইন এবং প্রোফাইল সেকশনটি পরবর্তী আপডেটে যুক্ত করা হবে!', icon: 'info', confirmButtonColor: '#056C46'})"><i class="fas fa-user-circle"></i> প্রোফাইল</a></li>
+                    <!-- ডেস্কটপ অনলি লিংকসমূহ (শিক্ষকবৃন্দ পেজ একটিভ) -->
+                    <li class="only-desktop"><a href="index.html"><i class="fas fa-home"></i> হোম</a></li>
+                    <li class="only-desktop"><a href="notice.html"><i class="fas fa-bell"></i> নোটিশ</a></li>
+                    <li class="only-desktop"><a href="results.html"><i class="fas fa-graduation-cap"></i> ফলাফল</a></li>
+                    <li class="only-desktop"><a href="gallery.html"><i class="fas fa-images"></i> গ্যালারি</a></li>
+                    <li class="only-desktop"><a href="teachers.html" class="active"><i class="fas fa-users"></i> শিক্ষকবৃন্দ</a></li>
+                    
+                    <li><a href="about.html"><i class="fas fa-info-circle"></i> মাদরাসা সম্পর্কে</a></li>
+                    <li class="only-mobile"><a href="#" onclick="Swal.fire({title: 'প্রাইভেসি পলিসি', text: 'মাদরাসার সকল ডেটা ও ব্যবহারকারীর তথ্য এনক্রিপ্ট পদ্ধতিতে সুরক্ষিত থাকে।', icon: 'success', confirmButtonColor: '#056C46'})"><i class="fas fa-shield-alt"></i> প্রাইভেসি পলিসি</a></li>
+                    <li class="only-mobile"><a href="#" onclick="navigator.share ? navigator.share({title: 'জামিয়া আরাবিয়া', url: window.location.href}) : Swal.fire({title: 'লিংক কপি করুন', text: window.location.href, icon: 'success'})"><i class="fas fa-share-alt"></i> শেয়ার করুন</a></li>
+                    <li class="nav-cta"><a href="index.html#contact"><i class="fas fa-address-book"></i> যোগাযোগ করুন</a></li>
+                </ul>
+
+                <!-- ড্রয়ার ফুটার (ভার্সন কোড) -->
+                <div class="drawer-footer">
+                    <p>ভার্সন ১.০.০ (Build 2026)</p>
+                </div>
+            </div> <!-- nav-links এর শেষ ট্যাগ -->
+        </div> <!-- container navbar এর শেষ ট্যাগ -->
+    </header>
+
+<!-- Page Hero -->
+<div class="page-hero">
+    <div class="container">
+        <button class="back-btn" onclick="navigateTo('index.html')">
+            <i class="fas fa-arrow-left"></i> হোমে ফিরুন
+        </button>
+        <h2><i class="fas fa-users" style="margin-right:10px;"></i>আমাদের শিক্ষকবৃন্দ</h2>
+        <p>অভিজ্ঞ ও যোগ্য উস্তাজদের তত্ত্বাবধানে ইসলামী শিক্ষার আলো</p>
+    </div>
+</div>
+
+<!-- Teachers Section -->
+<section id="teachers" style="padding-top:3rem;">
+    <div class="container">
+
+        <!-- Search -->
+        <div class="search-teacher-box" data-aos="fade-up">
+            <input type="text" id="teacher-search" placeholder="শিক্ষকের নাম খুঁজুন..." oninput="searchTeachers(this.value)">
+        </div>
+
+        <!-- Teachers Count -->
+        <p id="teacher-count" style="text-align:center;color:var(--text-light);margin-bottom:1.5rem;" data-aos="fade-up"></p>
+
+        <!-- Grid -->
+        <div class="teachers-grid" id="teachers-container" data-aos="fade-up">
+            <div style="text-align:center;width:100%;grid-column:1/-1;padding:3rem;color:var(--text-light);">
+                <i class="fas fa-spinner fa-spin" style="font-size:2rem;"></i>
+                <p style="margin-top:1rem;">লোড হচ্ছে...</p>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="footer-content">
+            <div>
+                <h2 style="color:var(--primary-light);margin-bottom:1rem;">জামিয়া আরাবিয়া আশরাফুল উলূম কুষ্টিয়া</h2>
+                <p><i class="fas fa-map-marker-alt"></i> ঠিকানা: কুষ্টিয়া সদর, কুষ্টিয়া</p>
+                <p><i class="fas fa-phone"></i> মোবাইল: +880 1775-431464</p>
+            </div>
+            <div>
+                <h3 style="margin-bottom:1rem;">লিংক</h3>
+                <ul style="line-height:2;">
+                    <li><a href="index.html">হোম</a></li>
+                    <li><a href="notice.html">নোটিশ</a></li>
+                    <li><a href="results.html">ফলাফল</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 1999 Jamia Arabia Ashraful Uloom Kushtia. All Rights Reserved.</p>
+        </div>
+    </div>
+</footer>
+
+</div><!-- /main-wrapper -->
+
+<!-- Bottom Navigation -->
+<nav class="bottom-nav" id="bottom-nav" role="navigation">
+    <button class="bottom-nav-item" onclick="handleNavClick('index.html', this)" aria-label="হোম">
+        <span class="nav-icon"><i class="fas fa-home"></i></span>
+        <span class="nav-label">হোম</span>
+    </button>
+    <button class="bottom-nav-item" onclick="handleNavClick('notice.html', this)" aria-label="নোটিশ">
+        <span class="nav-icon"><i class="fas fa-bell"></i></span>
+        <span class="nav-label">নোটিশ</span>
+    </button>
+    <button class="bottom-nav-item" onclick="handleNavClick('results.html', this)" aria-label="ফলাফল">
+        <span class="nav-icon"><i class="fas fa-graduation-cap"></i></span>
+        <span class="nav-label">ফলাফল</span>
+    </button>
+    <button class="bottom-nav-item" onclick="handleNavClick('gallery.html', this)" aria-label="গ্যালারি">
+        <span class="nav-icon"><i class="fas fa-images"></i></span>
+        <span class="nav-label">গ্যালারি</span>
+    </button>
+    <button class="bottom-nav-item active" onclick="handleNavClick('teachers.html', this)" aria-label="শিক্ষকবৃন্দ">
+        <span class="nav-icon"><i class="fas fa-users"></i></span>
+        <span class="nav-label">শিক্ষকবৃন্দ</span>
+    </button>
+</nav>
+
+<!-- Firebase -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+    const app = initializeApp({
+        apiKey:"AIzaSyBXBgFGqDyPiE6ZVER249FA0a91ukICO_U",
+        authDomain:"ashraful-uloom-madrasa.firebaseapp.com",
+        databaseURL:"https://ashraful-uloom-madrasa-default-rtdb.firebaseio.com",
+        projectId:"ashraful-uloom-madrasa",
+        storageBucket:"ashraful-uloom-madrasa.firebasestorage.app",
+        messagingSenderId:"180777617285",
+        appId:"1:180777617285:web:f4ab13a6a2aa0d6cda66ec"
+    });
+    const db = getDatabase(app);
+    const DEFAULT_AVATAR = "https://i.ibb.co.com/ycd9T2PK/IMG-20260311-233709.png";
+    window.allTeachers = {};
+
+    onValue(ref(db, 'teachers'), (snap) => {
+        window.allTeachers = snap.val() || {};
+        renderTeachers('');
+    });
+
+    window.renderTeachers = (query) => {
+        const container = document.getElementById('teachers-container');
+        const countEl = document.getElementById('teacher-count');
+        if(!container) return;
+        const keys = Object.keys(window.allTeachers).filter(k => {
+            if(!query) return true;
+            const t = window.allTeachers[k];
+            return t.name && t.name.includes(query);
+        });
+        if(countEl) countEl.textContent = keys.length > 0 ? `মোট ${keys.length} জন শিক্ষক` : '';
+        if(keys.length === 0) {
+            container.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-user-slash"></i><p>${query ? 'কোনো শিক্ষক পাওয়া যায়নি।' : 'কোনো শিক্ষক যোগ করা হয়নি।'}</p></div>`;
+            return;
+        }
+        container.innerHTML = keys.map(key => {
+            const t = window.allTeachers[key];
+            return `
+                <div class="teacher-card" data-aos="fade-up">
+                    <div style="height:60px;"></div>
+                    <img src="${t.photo||DEFAULT_AVATAR}" alt="${t.name}" class="teacher-photo" crossorigin="anonymous" loading="lazy">
+                    <div class="teacher-name">${t.name}</div>
+                    <div style="color:var(--text-light);font-size:0.9rem;">${t.designation||''}</div>
+                    ${t.phone ? `<div class="teacher-phone"><i class="fas fa-phone"></i>${t.phone}</div>` : ''}
+                </div>`;
+        }).join('');
+    };
+
+    window.searchTeachers = (q) => renderTeachers(q.trim());
+</script>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>document.addEventListener('DOMContentLoaded', () => AOS.init({ duration:700, once:true, offset:80 }));</script>
+<script>
+function navigateTo(url) {
+    if(window.location.href.includes(url.split('#')[0])) return;
+    const ov = document.getElementById('page-transition-overlay');
+    if(ov) { 
+        ov.classList.remove('loaded'); /* স্পিনার আবার চালু করুন */
+        setTimeout(() => { window.location.href = url; }, 250); 
+    } else { 
+        window.location.href = url; 
+    }
+}
+
+// পেজ লোড সম্পন্ন হলে স্পিনারটি আড়াল করার ট্রিগার
+document.addEventListener('DOMContentLoaded', () => {
+    const ov = document.getElementById('page-transition-overlay');
+    if(ov) {
+        // সামান্য ডিলে দিয়ে হাইড করলে ট্রানজিশনটি চোখের পলকে অত্যন্ত প্রিমিয়াম লাগে
+        setTimeout(() => {
+            ov.classList.add('loaded');
+        }, 120);
+    }
+});
+function handleNavClick(url, el) {
+    const rip = document.createElement('span'); rip.className = 'ripple-circle';
+    el.appendChild(rip); setTimeout(() => { if(rip.parentNode) rip.parentNode.removeChild(rip); }, 550);
+    navigateTo(url);
+}
+document.addEventListener('DOMContentLoaded', function() {
+    const ham = document.getElementById('hamburger');
+    const nav = document.getElementById('nav-links');
+    if(ham && nav) {
+        ham.addEventListener('click', (e) => {
+            e.stopPropagation();
+            nav.classList.toggle('active');
+            document.body.classList.toggle('drawer-open');
+        });
+
+        // ড্রয়ারের বাইরে ক্লিক করলে ড্রয়ার বন্ধ হওয়ার নেটিভ ফিচার
+        document.addEventListener('click', (e) => {
+            if(!nav.contains(e.target) && !ham.contains(e.target)) {
+                nav.classList.remove('active');
+                document.body.classList.remove('drawer-open');
+            }
+        });
+    }
+});
+// ===== BOTTOM NAV AUTO-HIDE ON SCROLL (Native Android Feel) =====
+let lastScrollY = window.scrollY;
+window.addEventListener('scroll', () => {
+    const bottomNav = document.getElementById('bottom-nav');
+    if (!bottomNav) return;
+    
+    const currentScrollY = window.scrollY;
+    
+    // পেজের একদম নিচে পৌঁছালে স্বয়ংক্রিয়ভাবে মেনুবার ভেসে উঠবে (Pro UX Feature)
+    const isAtBottom = (window.innerHeight + window.scrollY) >= (document.documentElement.scrollHeight - 30);
+    
+    if (isAtBottom) {
+        bottomNav.classList.remove('bottom-nav-hidden');
+    } else if (currentScrollY > lastScrollY && currentScrollY > 80) {
+        // নিচে স্ক্রল করলে হাইড হবে
+        bottomNav.classList.add('bottom-nav-hidden');
+    } else {
+        // ওপরে স্ক্রল করলে ভেসে উঠবে
+        bottomNav.classList.remove('bottom-nav-hidden');
+    }
+    
+    lastScrollY = currentScrollY;
+}, { passive: true });
+</script>
+
+</body>
+</html>

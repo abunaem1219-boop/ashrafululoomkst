@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#056C46">
+    <title>সালাত ও নামাজ — জামিয়া আরাবিয়া আশরাফুল উলূম কুষ্টিয়া</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Hind+Siliguri:wght@300;400;500;600;700&family=Noto+Sans+Bengali:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* সালাত পেজের প্রিমিয়াম থিম ও স্ক্রলযোগ্য লেআউট */
+        
+        /* পাশাপাশি স্ক্রলযোগ্য নামাজের সময়সূচী কন্টেইনার */
+        .prayer-times-wrapper {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+        .prayer-times-scroller {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding: 5px 5px 15px 5px;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE/Edge */
+        }
+        .prayer-times-scroller::-webkit-scrollbar {
+            display: none; /* Chrome/Safari */
+        }
+        
+        /* নামাজের কার্ড ডিজাইন */
+        .prayer-card {
+            flex: 0 0 105px;
+            background: white;
+            border-radius: 16px;
+            padding: 14px 10px;
+            text-align: center;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+        }
+        .prayer-card.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 6px 15px rgba(5, 108, 70, 0.25);
+        }
+        .prayer-card.active .prayer-time {
+            color: rgba(255, 255, 255, 0.9);
+        }
+        .prayer-card.active .prayer-icon {
+            color: #ffeb3b;
+        }
+        .prayer-icon {
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+            color: var(--primary);
+            display: block;
+        }
+        .prayer-name {
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+            display: block;
+        }
+        .prayer-time {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            font-weight: 500;
+            display: block;
+        }
+
+        /* ক্যাটাগরি ট্যাব ডিজাইন */
+        .namaz-tabs {
+            display: flex;
+            background: rgba(5, 108, 70, 0.06);
+            padding: 5px;
+            border-radius: 12px;
+            gap: 4px;
+            margin-bottom: 1.5rem;
+        }
+        .namaz-tab-btn {
+            flex: 1;
+            background: none;
+            border: none;
+            padding: 10px 2px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--text-light);
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.25s ease;
+            text-align: center;
+            white-space: nowrap;
+        }
+        .namaz-tab-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 2px 8px rgba(5, 108, 70, 0.2);
+        }
+
+        @media (min-width: 480px) {
+            .namaz-tab-btn {
+                font-size: 0.95rem;
+            }
+        }
+
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* কার্ড এবং টেক্সট ডিজাইন */
+        .dua-card {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border);
+        }
+        .dua-title-badge {
+            background: rgba(5, 108, 70, 0.08);
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+        .dua-arabic {
+            font-family: 'Amiri', serif;
+            font-size: 1.6rem;
+            line-height: 2.1;
+            color: #1a1a1a;
+            text-align: right;
+            direction: rtl;
+            margin: 1.2rem 0;
+            word-wrap: break-word;
+        }
+        .dua-meta {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--text-main);
+            background: var(--bg-color);
+            padding: 1rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+        }
+
+        /* অ্যাকোর্ডিয়ান মাসায়েল (নন-ক্লিপিং) */
+        .accordion-item {
+            background: white;
+            border-radius: 14px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: border-color 0.2s;
+        }
+        .accordion-item.active {
+            border-color: var(--primary);
+        }
+        .accordion-header {
+            padding: 16px 20px;
+            background: white;
+            font-weight: 700;
+            color: var(--text-main);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+        .accordion-header:hover {
+            background: var(--bg-color);
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s cubic-bezier(0, 1, 0, 1);
+            background: #fafafa;
+        }
+        .accordion-inner {
+            padding: 18px 20px;
+            border-top: 1px solid var(--border);
+            color: var(--text-main);
+            line-height: 1.8;
+            font-size: 0.98rem;
+        }
+        .accordion-inner ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .accordion-inner ul li {
+            margin-bottom: 8px;
+        }
+        .accordion-inner ul li:last-child {
+            margin-bottom: 0;
+        }
+        .accordion-icon {
+            transition: transform 0.2s ease;
+            color: var(--text-light);
+        }
+        .accordion-item.active .accordion-icon {
+            transform: rotate(180deg);
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+
+<div id="page-transition-overlay">
+    <div class="glass-loader-card">
+        <div class="glass-spinner-wrap">
+            <div class="glass-spinner-ring"></div>
+            <img class="glass-spinner-logo" src="https://i.ibb.co.com/qFRmPqgK/20260310-005555.png" alt="Logo" crossorigin="anonymous">
+        </div>
+    </div>
+</div>
+
+<div id="main-wrapper">
+    <header>
+        <div class="container navbar">
+            <div class="brand" id="brand-logo" onclick="navigateTo('index.html')">
+                <img src="https://i.ibb.co.com/qFRmPqgK/20260310-005555.png" crossorigin="anonymous" alt="Logo">
+                <h1>জামিয়া আরাবিয়া<br>আশরাফুল উলূম কুষ্টিয়া</h1>
+            </div>
+            <div class="hamburger" id="hamburger"><i class="fas fa-bars"></i></div>
+            
+            <div class="nav-links" id="nav-links">
+                <div class="drawer-header">
+                    <img src="https://i.ibb.co.com/qFRmPqgK/20260310-005555.png" alt="Logo" crossorigin="anonymous">
+                    <div class="drawer-header-info">
+                        <h3>জামিয়া আরাবিয়া আশরাফুল উলূম</h3>
+                        <p>কুষ্টিয়া, বাংলাদেশ</p>
+                    </div>
+                </div>
+                <ul class="drawer-menu">
+                    <li><a href="index.html#contact"><i class="fas fa-address-book"></i> যোগাযোগ করুন</a></li>
+                    <li><a href="about.html"><i class="fas fa-info-circle"></i> মাদরাসা সম্পর্কে</a></li>
+                </ul>
+                <div class="drawer-footer"><p>ভার্সন ১.০.০ (Build 2026)</p></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-hero">
+        <div class="container">
+            <button class="back-btn" onclick="navigateTo('index.html')"><i class="fas fa-arrow-left"></i> হোমে ফিরুন</button>
+            <h2><i class="fas fa-clock" style="margin-right:10px;"></i>সালাত ও নামাজ</h2>
+            <p>নামাজের সময়সূচী, ফজিলত, প্রয়োজনীয় দুআ ও মাসআলা-মাসায়েল</p>
+        </div>
+    </div>
+
+    <section style="padding-top:1.5rem; padding-bottom: 5rem;">
+        <div class="container">
+            
+            <!-- পাশাপাশি স্ক্রলযোগ্য নামাজের সময়সূচী কার্ডস -->
+            <div class="prayer-times-wrapper">
+                <div class="prayer-times-scroller" id="prayer-scroller">
+                    <div class="prayer-card">
+                        <i class="fas fa-cloud-sun prayer-icon"></i>
+                        <span class="prayer-name">ফজর</span>
+                        <span class="prayer-time">৪:৫২ AM</span>
+                    </div>
+                    <div class="prayer-card">
+                        <i class="fas fa-sun prayer-icon"></i>
+                        <span class="prayer-name">সূর্যোদয়</span>
+                        <span class="prayer-time">৬:১৫ AM</span>
+                    </div>
+                    <div class="prayer-card active">
+                        <i class="fas fa-cloud-sun-fill prayer-icon"></i>
+                        <span class="prayer-name">যোহর</span>
+                        <span class="prayer-time">১২:১৫ PM</span>
+                    </div>
+                    <div class="prayer-card">
+                        <i class="fas fa-cloud-ambient prayer-icon"></i>
+                        <span class="prayer-name">আসর</span>
+                        <span class="prayer-time">৪:১৫ PM</span>
+                    </div>
+                    <div class="prayer-card">
+                        <i class="fas fa-sunset prayer-icon"></i>
+                        <span class="prayer-name">মাগরিব</span>
+                        <span class="prayer-time">৬:১০ PM</span>
+                    </div>
+                    <div class="prayer-card">
+                        <i class="fas fa-moon prayer-icon"></i>
+                        <span class="prayer-name">এশা</span>
+                        <span class="prayer-time">৭:৩০ PM</span>
+                    </div>
+                    <div class="prayer-card">
+                        <i class="fas fa-mosque prayer-icon"></i>
+                        <span class="prayer-name">জুমুআ</span>
+                        <span class="prayer-time">১২:৩০ PM</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- উন্নত ক্যাটাগরি ট্যাবসমূহ -->
+            <div class="namaz-tabs">
+                <button class="namaz-tab-btn active" onclick="switchTab('fajilat')">ফজিলত</button>
+                <button class="namaz-tab-btn" onclick="switchTab('dua')">গুরুত্বপূর্ণ দোয়া</button>
+                <button class="namaz-tab-btn" onclick="switchTab('masail')">মাসায়েল</button>
+            </div>
+
+            <!-- ফজিলত ট্যাব -->
+            <div id="tab-fajilat" class="tab-content active">
+                <div class="dua-card">
+                    <h3 style="color:var(--primary); margin-bottom: 1rem;"><i class="fas fa-star"></i> সালাতের গুরুত্ব ও ফজিলত</h3>
+                    <p style="line-height:1.8; color: var(--text-main); margin-bottom: 1rem;">
+                        ইসলামের দ্বিতীয় স্তম্ভ হলো নামাজ বা সালাত। ঈমানের পর নামাজই একজন মুমিনের প্রধান পরিচয় এবং আখেরাতে সর্বপ্রথম নামাজেরই হিসাব নেওয়া হবে।
+                    </p>
+                    
+                    <div style="background:var(--bg-color); padding:1.2rem; border-radius:15px; margin-bottom:1.2rem;">
+                        <h4 style="color:var(--primary); margin-bottom:8px;"><i class="fas fa-quote-left"></i> কুরআনের নির্দেশ:</h4>
+                        <p style="font-style: italic; line-height: 1.7; color: var(--text-main); font-size: 0.95rem;">
+                            "নিশ্চয়ই নামাজ মানুষকে অশ্লীল ও মন্দ কাজ থেকে বিরত রাখে।" (সূরা আল-আনকাবুত: ৪৫)
+                        </p>
+                    </div>
+
+                    <div style="background:var(--bg-color); padding:1.2rem; border-radius:15px;">
+                        <h4 style="color:var(--primary); margin-bottom:8px;"><i class="fas fa-quote-left"></i> হাদীসের বাণী:</h4>
+                        <p style="font-style: italic; line-height: 1.7; color: var(--text-main); font-size: 0.95rem;">
+                            "রাসূলুল্লাহ (সা.) বলেছেন, একজন মুমিন বান্দা এবং শিরক ও কুফরের মধ্যে পার্থক্য হলো নামাজ ছেড়ে দেওয়া।" (সহীহ মুসলিম)
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- গুরুত্বপূর্ণ দোয়া ট্যাব -->
+            <div id="tab-dua" class="tab-content">
+                <!-- সানা -->
+                <div class="dua-card">
+                    <span class="dua-title-badge">নামাজের সানা</span>
+                    <div class="dua-arabic">سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ وَتَبَارَكَ اسْمُكَ وَتَعَالَىٰ جَدُّكَ وَلَا إِلَٰهَ غَيْرُكَ</div>
+                    <div class="dua-meta">
+                        <strong>উচ্চারণ:</strong> সুবহানাকা আল্লাহুম্মা ওয়া বিহামদিকা ওয়া তাবারাকাসমুকা ওয়া তাআলা জাদ্দুকা ওয়া লা ইলাহা গাইরুকা।<br><br>
+                        <strong>অর্থ:</strong> হে আল্লাহ! আমি তোমার প্রশংসা ও পবিত্রতা ঘোষণা করছি। তোমার নাম কল্যাণময়, তোমার মর্যাদা অত্যন্ত উন্নত এবং তুমি ব্যতীত কোনো উপাস্য নেই।
+                    </div>
+                </div>
+
+                <!-- তাশাহহুদ -->
+                <div class="dua-card">
+                    <span class="dua-title-badge">তাশাহহুদ (আত্তাহিয়্যাতু)</span>
+                    <div class="dua-arabic">التَّحِيَّاتُ لِلَّهِ وَالصَّلَوَاتُ وَالطَّيِّبَاتُ السَّلَامُ عَلَيْكَ أَيُّهَا النَّبِيُّ وَرَحْمَةُ اللَّهِ وَبَرَكَاتُهُ السَّلَامُ عَلَيْنَا وَعَلَىٰ عِبَادِ اللَّهِ الصَّالِحِينَ أَشْهَدُ أَنْ لَا إِلَٰهَ إِلَّا اللَّهُ وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ</div>
+                    <div class="dua-meta">
+                        <strong>উচ্চারণ:</strong> আত্তাহিয়্যাতু লিল্লাহি ওয়াসসালাওয়াতু ওয়াত্তায়্যিবাতু আসসালামু আলাইকা আইয়্যুহান নাবিইয়্যু ওয়া রাহমাতুল্লাহি ওয়া বারাকাতুহু আসসালামু আলাইনা ওয়া আলা ইবাদিল্লাহিস সালিহীন আশহাদু আল্লা ইলাহা ইল্লাল্লাহু ওয়া আশহাদু আন্না মুহাম্মাদান আবদুহু ওয়া রাসুলুহু।<br><br>
+                        <strong>অর্থ:</strong> আমাদের সমস্ত মৌখিক, শারীরিক ও আর্থিক ইবাদত আল্লাহর জন্য। হে নবী, আপনার উপর শান্তি, আল্লাহর রহমত ও বরকত বর্ষিত হোক। আমাদের উপর এবং আল্লাহর নেক বান্দাদের উপর শান্তি বর্ষিত হোক। আমি সাক্ষ্য দিচ্ছি যে আল্লাহ ছাড়া কোনো মাবুদ নেই এবং মুহাম্মদ (সা.) তাঁর বান্দা ও রাসূল।
+                    </div>
+                </div>
+
+                <!-- দোয়া কুনুত -->
+                <div class="dua-card">
+                    <span class="dua-title-badge">দোয়া কুনুত (বিতর নামাজের জন্য)</span>
+                    <div class="dua-arabic">اللَّهُمَّ إِنَّا نَسْتَعِينُكَ وَنَسْتَغْفِرُكَ وَنُؤْمِنُ بِكَ وَنَتَوَكَّلُ عَلَيْكَ وَنُثْنِي عَلَيْكَ الْخَيْرَ وَنَشْكُرُكَ وَلَا نَكْفُرُكَ وَنَخْلَعُ وَنَتْرُكُ مَنْ يَفْجُرُكَ اللَّهُمَّ إِيَّاكَ نَعْبُدُ وَلَكَ نُصَلِّي وَنَسْجُدُ وَإِلَيْكَ نَسْعَىٰ وَنَحْفِدُ وَنَرْجُو رَحْمَتَكَ وَنَخْشَىٰ عَذَابَكَ إِنَّ عَذَابَكَ بِالْكُفَّارِ مُلْحِقٌ</div>
+                    <div class="dua-meta">
+                        <strong>উচ্চারণ:</strong> আল্লাহুম্মা ইন্না নাসতাঈনুকা ওয়া নাসতাগফিরুকা ওয়া নু'মিনু বিকা ওয়া নাতাওয়াককালু আলাইকা ওয়া নুছনি আলাইকাল খাইর, ওয়া নাশকুরুকা ওয়া লা নাকফুরুকা ওয়া নাখলাউ ওয়া নাতরুকু মাই ইয়াফজুরুকা। আল্লাহুম্মা ইয়্যাকা নাবুদু ওয়া লাকা নুসল্লি ওয়া নাসজুদু ওয়া ইলাইকা নাস’আ ওয়া নাহফিদু ওয়া নারজু রাহমাতাকা ওয়া নাখশা আজাবাকা ইন্না আজাবাকা বিল কুফফারি মুলহিক।
+                    </div>
+                </div>
+            </div>
+
+            <!-- মাসায়েল ট্যাব -->
+            <div id="tab-masail" class="tab-content">
+                <div style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-book-open" style="color: var(--primary); font-size: 1.2rem;"></i>
+                    <h3 style="color:var(--primary); margin:0;">নামাজের ফরজ ও ওয়াজিবসমূহ</h3>
+                </div>
+
+                <!-- ১. নামাজের ফরজসমূহ -->
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>১. নামাজের মোট ১৩টি ফরজ (আহকাম ও আরকান)</span>
+                        <i class="fas fa-chevron-down accordion-icon"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-inner">
+                            <strong>নামাজের বাইরের ৭টি ফরজ (আহকাম):</strong>
+                            <ul style="margin-top: 5px; margin-bottom: 15px;">
+                                <li>শরীর পবিত্র হওয়া।</li>
+                                <li>পরিধেয় কাপড় পবিত্র হওয়া।</li>
+                                <li>নামাজ পড়ার স্থান পবিত্র হওয়া।</li>
+                                <li>সতর ঢাকা (পুরুষের নাভি থেকে হাঁটু পর্যন্ত এবং নারীর মুখমণ্ডল, হাতের কব্জি ও পায়ের পাতা বাদে পুরো শরীর)।</li>
+                                <li>কিবলামুখী হওয়া।</li>
+                                <li>ওয়াক্তমতো নামাজ পড়া।</li>
+                                <li>নামাজের নিয়ত করা।</li>
+                            </ul>
+                            <strong>নামাজের ভেতরের ৬টি ফরজ (আরকান):</strong>
+                            <ul style="margin-top: 5px;">
+                                <li>তাকবীরে তাহরীমা (আল্লাহু আকবার বলে নামাজ শুরু করা)।</li>
+                                <li>দাঁড়িয়ে নামাজ পড়া (অক্ষম হলে বসে)।</li>
+                                <li>ক্বিরাত বা কুরআন পাঠ করা।</li>
+                                <li>রুকু করা।</li>
+                                <li>দুই সিজদা করা।</li>
+                                <li>শেষ বৈঠক (আত্তাহিয়্যাতু পড়ার পরিমাণ বসা)।</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ২. নামাজের ওয়াজিবসমূহ -->
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>২. নামাজের প্রধান প্রধান ওয়াজিবসমূহ</span>
+                        <i class="fas fa-chevron-down accordion-icon"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-inner">
+                            <ul>
+                                <li>আলহামদু তথা সূরা ফাতিহা সম্পূর্ণ পড়া।</li>
+                                <li>সূরা ফাতিহার সাথে অন্য একটি সূরা বা ছোট ৩ আয়াত মেলানো।</li>
+                                <li>ফরজ নামাজের প্রথম দুই রাকাতে ক্বিরাত পড়া।</li>
+                                <li>নামাজের রুকনগুলো ক্রমানুসারে আদায় করা।</li>
+                                <li>রুকু থেকে সোজা হয়ে সোজা দাঁড়িয়ে স্থির হওয়া (কওমা)।</li>
+                                <li>দুই সিজদার মাঝখানে সোজা হয়ে বসা (জলসা)।</li>
+                                <li>প্রথম বৈঠক করা (৩ বা ৪ রাকাতবিশিষ্ট নামাজে দ্বিতীয় রাকাতে বসা)।</li>
+                                <li>উভয় বৈঠকে আত্তাহিয়্যাতু (তাশাহহুদ) পড়া।</li>
+                                <li>সালাম ফিরিয়ে নামাজ শেষ করা।</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ৩. নামাজ ভঙ্গের কারণসমূহ -->
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>৩. যে সকল কারণে নামাজ ভেঙে যায়</span>
+                        <i class="fas fa-chevron-down accordion-icon"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-inner">
+                            <ul>
+                                <li>নামাজে অশুদ্ধ পড়া (এমন অশুদ্ধ যার দ্বারা অর্থ সম্পূর্ণ পরিবর্তিত হয়)।</li>
+                                <li>নামাজের ভেতর কথা বলা (ইচ্ছায় হোক বা অনিচ্ছায়)।</li>
+                                <li>কাউকে সালাম দেওয়া বা সালামের উত্তর দেওয়া।</li>
+                                <li>দুঃখ বা বেদনার কারণে শব্দ করে কাঁদা (জাহান্নামের ভয়ে কাঁদা ব্যতীত)।</li>
+                                <li>বিনা ওজরে কাশি বা গলা খাকড়ি দেওয়া।</li>
+                                <li>আমলে কাছীর করা (এমন কাজ করা যা দূর থেকে দেখলে মনে হয় নামাজে নেই)।</li>
+                                <li>নামাজের ভেতর কিছু খাওয়া বা পান করা।</li>
+                                <li>নামাজ অবস্থায় ওজু ভেঙে যাওয়া।</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>
+
+<nav class="bottom-nav" id="bottom-nav">
+    <button class="bottom-nav-item active" onclick="handleNavClick('index.html', this)"><span class="nav-icon"><i class="fas fa-home"></i></span><span class="nav-label">হোম</span></button>
+    <button class="bottom-nav-item" onclick="handleNavClick('notice.html', this)"><span class="nav-icon"><i class="fas fa-bell"></i></span><span class="nav-label">নোটিশ</span></button>
+    <button class="bottom-nav-item" onclick="handleNavClick('results.html', this)"><span class="nav-icon"><i class="fas fa-graduation-cap"></i></span><span class="nav-label">ফলাফল</span></button>
+    <button class="bottom-nav-item" onclick="handleNavClick('gallery.html', this)"><span class="nav-icon"><i class="fas fa-images"></i></span><span class="nav-label">গ্যালারি</span></button>
+    <button class="bottom-nav-item" onclick="handleNavClick('teachers.html', this)"><span class="nav-icon"><i class="fas fa-users"></i></span><span class="nav-label">শিক্ষকবৃন্দ</span></button>
+</nav>
+
+<script>
+    // ডাইনামিক হরাইজোন্টাল স্ক্রলার ফোকাস
+    document.addEventListener('DOMContentLoaded', () => {
+        const scroller = document.getElementById('prayer-scroller');
+        const activeCard = scroller.querySelector('.prayer-card.active');
+        if (activeCard) {
+            // অ্যাক্টিভ কার্ডটিকে স্ক্রলারের মাঝে ফোকাস করার কোড
+            const offsetLeft = activeCard.offsetLeft - (scroller.clientWidth / 2) + (activeCard.clientWidth / 2);
+            scroller.scrollTo({ left: offsetLeft, behavior: 'smooth' });
+        }
+    });
+
+    // ট্যাব পরিবর্তন করার ফাংশন
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.remove('active');
+        });
+        document.querySelectorAll('.namaz-tab-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+
+        document.getElementById('tab-' + tabId).classList.add('active');
+        
+        const event = window.event;
+        if(event && event.target) {
+            event.target.classList.add('active');
+        } else {
+            const targetBtn = Array.from(document.querySelectorAll('.namaz-tab-btn')).find(btn => btn.getAttribute('onclick').includes(tabId));
+            if(targetBtn) targetBtn.classList.add('active');
+        }
+    }
+
+    // অ্যাকোর্ডিয়ান ট্রানজিশন হ্যান্ডলার (নন-ক্লিপিং)
+    function toggleAccordion(header) {
+        const item = header.parentElement;
+        const content = item.querySelector('.accordion-content');
+        const inner = item.querySelector('.accordion-inner');
+        const isActive = item.classList.contains('active');
+
+        document.querySelectorAll('.accordion-item').forEach(el => {
+            el.classList.remove('active');
+            el.querySelector('.accordion-content').style.maxHeight = "0px";
+        });
+
+        if (!isActive) {
+            item.classList.add('active');
+            content.style.maxHeight = inner.scrollHeight + 2 + "px";
+        } else {
+            item.classList.remove('active');
+            content.style.maxHeight = "0px";
+        }
+    }
+
+    // ===== SHARED PAGE JS =====
+    function navigateTo(url) { if(window.location.href.includes(url.split('#')[0])) return; const ov = document.getElementById('page-transition-overlay'); if(ov) { ov.classList.remove('loaded'); setTimeout(() => { window.location.href = url; }, 250); } else { window.location.href = url; } }
+    function handleNavClick(url, el) { const rip = document.createElement('span'); rip.className = 'ripple-circle'; el.appendChild(rip); setTimeout(() => { if(rip.parentNode) rip.parentNode.removeChild(rip); }, 550); navigateTo(url); }
+    document.addEventListener('DOMContentLoaded', () => { const ham = document.getElementById('hamburger'); const nav = document.getElementById('nav-links'); if(ham && nav) { ham.addEventListener('click', (e) => { e.stopPropagation(); nav.classList.toggle('active'); document.body.classList.toggle('drawer-open'); }); document.addEventListener('click', (e) => { if(!nav.contains(e.target) && !ham.contains(e.target)) { nav.classList.remove('active'); document.body.classList.remove('drawer-open'); } }); } });
+    window.addEventListener('DOMContentLoaded', () => { const ov = document.getElementById('page-transition-overlay'); if(ov) setTimeout(() => { ov.classList.add('loaded'); }, 150); });
+</script>
+</body>
+</html>
