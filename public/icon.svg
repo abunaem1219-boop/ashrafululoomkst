@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" rx="128" fill="#033624"/>
+  <circle cx="256" cy="256" r="230" fill="none" stroke="#f59e0b" stroke-width="8" stroke-dasharray="16,12" opacity="0.6"/>
+  <!-- Dome & Crescent -->
+  <g transform="translate(0, 10)">
+    <path d="M256 110 C210 170 170 230 170 300 L342 300 C342 230 302 170 256 110 Z" fill="#055136" stroke="#fbbf24" stroke-width="6"/>
+    <!-- Minarets -->
+    <rect x="130" y="220" width="24" height="120" rx="4" fill="#055136" stroke="#fbbf24" stroke-width="4"/>
+    <path d="M130 220 L142 190 L154 220 Z" fill="#fbbf24"/>
+    <rect x="358" y="220" width="24" height="120" rx="4" fill="#055136" stroke="#fbbf24" stroke-width="4"/>
+    <path d="M358 220 L370 190 L382 220 Z" fill="#fbbf24"/>
+    <!-- Crescent on top -->
+    <path d="M256 80 A18 18 0 1 0 270 102 A14 14 0 1 1 256 80 Z" fill="#f59e0b"/>
+    <!-- Open Book / Rehal -->
+    <path d="M190 310 Q256 325 322 310 L330 360 Q256 380 182 360 Z" fill="#10b981" stroke="#f59e0b" stroke-width="4"/>
+    <path d="M256 320 L256 373" stroke="#f59e0b" stroke-width="4"/>
+    <!-- Arabic Calligraphy style ornament -->
+    <circle cx="256" cy="235" r="18" fill="#f59e0b"/>
+  </g>
+</svg>

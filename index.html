@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="bn">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    <meta name="theme-color" content="#033624" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="আশরাফুল উলূম" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <title>জামিয়া আরাবিয়া আশরাফুল উলূম কুষ্টিয়া</title>
+    <meta name="description" content="জামিয়া আরাবিয়া আশরাফুল উলূম কুষ্টিয়া এর পূর্ণাঙ্গ আধুনিক ও ইসলামিক ডিজিটাল পোর্টাল — অনলাইন রেজাল্ট, নোটিশ বোর্ড, ইসলামিক টুলস ও এডমিন প্যানেল।" />
+    <meta property="og:title" content="জামিয়া আরাবিয়া আশরাফুল উলূম কুষ্টিয়া" />
+    <meta property="og:description" content="জামিয়া আরাবিয়া আশরাফুল উলূম কুষ্টিয়া এর পূর্ণাঙ্গ আধুনিক ও ইসলামিক ডিজিটাল পোর্টাল — অনলাইন রেজাল্ট, নোটিশ বোর্ড, ইসলামিক টুলস ও এডমিন প্যানেল।" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Hind+Siliguri:wght@300;400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <script>
+      // Suppress Vite dev server HMR WebSocket disconnect errors in sandboxed preview iframe
+      window.addEventListener('error', function (e) {
+        if (e && e.message && (e.message.includes('WebSocket') || e.message.includes('ws'))) {
+          e.stopImmediatePropagation();
+        }
+      }, true);
+      window.addEventListener('unhandledrejection', function (e) {
+        if (e && e.reason && String(e.reason).includes('WebSocket')) {
+          e.preventDefault();
+        }
+      });
+    </script>
+  </head>
+  <body class="bg-[#f8f9fa] text-slate-800 antialiased selection:bg-emerald-700 selection:text-white">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

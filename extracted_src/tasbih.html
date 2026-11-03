@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#056C46">
+    <title>ডিজিটাল তসবীহ — জামিয়া আরাবিয়া আশরাফুল উলূম কুষ্টিয়া</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Noto+Sans+Bengali:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="page-transition-overlay">
+    <div class="glass-loader-card">
+        <div class="glass-spinner-wrap">
+            <div class="glass-spinner-ring"></div>
+            <img class="glass-spinner-logo" src="https://i.ibb.co.com/qFRmPqgK/20260310-005555.png" alt="Logo" crossorigin="anonymous">
+        </div>
+    </div>
+</div>
+
+<div id="main-wrapper">
+    <header>
+        <div class="container navbar">
+            <div class="brand" id="brand-logo" onclick="navigateTo('index.html')">
+                <img src="https://i.ibb.co.com/qFRmPqgK/20260310-005555.png" crossorigin="anonymous" alt="Logo">
+                <h1>জামিয়া আরাবিয়া<br>আশরাফুল উলূম কুষ্টিয়া</h1>
+            </div>
+            <div class="hamburger" id="hamburger"><i class="fas fa-bars"></i></div>
+            
+            <div class="nav-links" id="nav-links">
+                <div class="drawer-header">
+                    <img src="https://i.ibb.co.com/qFRmPqgK/20260310-005555.png" alt="Logo" crossorigin="anonymous">
+                    <div class="drawer-header-info">
+                        <h3>জামিয়া আরাবিয়া আশরাফুল উলূম</h3>
+                        <p>কুষ্টিয়া, বাংলাদেশ</p>
+                    </div>
+                </div>
+                <ul class="drawer-menu">
+                    <li><a href="index.html#contact"><i class="fas fa-address-book"></i> যোগাযোগ করুন</a></li>
+                    <li><a href="about.html"><i class="fas fa-info-circle"></i> মাদরাসা সম্পর্কে</a></li>
+                </ul>
+                <div class="drawer-footer"><p>ভার্সন ১.০.০ (Build 2026)</p></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-hero">
+        <div class="container">
+            <button class="back-btn" onclick="navigateTo('index.html')"><i class="fas fa-arrow-left"></i> হোমে ফিরুন</button>
+            <h2><i class="fas fa-calculator" style="margin-right:10px;"></i>ডিজিটাল তসবীহ</h2>
+            <p>সুবহানাল্লাহ, আলহামদুলিল্লাহ, আল্লাহু আকবার</p>
+        </div>
+    </div>
+
+    <section style="padding-top:2rem;">
+        <div class="container">
+            <div style="background:white; padding:3rem 2rem; border-radius:24px; box-shadow:var(--shadow-md); text-align:center; max-width:450px; margin:0 auto;">
+                <div id="p-tasbih-count" style="font-size:5rem; font-weight:700; color:var(--primary); font-family:monospace; margin-bottom:1.5rem;">০</div>
+                <button onclick="countPress()" style="width:140px; height:140px; border-radius:50%; background:linear-gradient(135deg, var(--primary), var(--primary-light)); color:white; border:none; font-size:1.5rem; font-weight:700; box-shadow:0 12px 30px rgba(5,108,70,0.35); cursor:pointer; outline:none; -webkit-tap-highlight-color:transparent; margin-bottom:1.5rem;">পড়ুন</button>
+                <br>
+                <button onclick="countReset()" style="background:#f1f5f9; border:none; padding:8px 24px; border-radius:50px; font-size:0.9rem; color:var(--text-light); font-weight:600; cursor:pointer;">পুনরায় শুরু</button>
+            </div>
+        </div>
+    </section>
+</div>
+
+<nav class="bottom-nav" id="bottom-nav">
+    <button class="bottom-nav-item active" onclick="handleNavClick('index.html', this)"><span class="nav-icon"><i class="fas fa-home"></i></span><span class="nav-label">হোম</span></button>
+    <button class="bottom-nav-item" onclick="handleNavClick('notice.html', this)"><span class="nav-icon"><i class="fas fa-bell"></i></span><span class="nav-label">নোটিশ</span></button>
+    <button class="bottom-nav-item" onclick="handleNavClick('results.html', this)"><span class="nav-icon"><i class="fas fa-graduation-cap"></i></span><span class="nav-label">ফলাফল</span></button>
+    <button class="bottom-nav-item" onclick="handleNavClick('gallery.html', this)"><span class="nav-icon"><i class="fas fa-images"></i></span><span class="nav-label">গ্যালারি</span></button>
+    <button class="bottom-nav-item" onclick="handleNavClick('teachers.html', this)"><span class="nav-icon"><i class="fas fa-users"></i></span><span class="nav-label">শিক্ষকবৃন্দ</span></button>
+</nav>
+
+<script>
+    let count = 0;
+    const trans = { '0':'০', '1':'১', '2':'২', '3':'৩', '4':'৪', '5':'৫', '6':'৬', '7':'৭', '8':'৮', '9':'৯' };
+    function toB(n) { return String(n).split('').map(c => trans[c] || c).join(''); }
+
+    function countPress() {
+        count++;
+        document.getElementById('p-tasbih-count').innerText = toB(count);
+        if(navigator.vibrate) navigator.vibrate(60); // হ্যাপটিক টাচ ভাইব্রেশন
+    }
+    function countReset() {
+        count = 0;
+        document.getElementById('p-tasbih-count').innerText = "০";
+    }
+
+    // ===== SHARED PAGE JS =====
+    function navigateTo(url) { if(window.location.href.includes(url.split('#')[0])) return; const ov = document.getElementById('page-transition-overlay'); if(ov) { ov.classList.remove('loaded'); setTimeout(() => { window.location.href = url; }, 250); } else { window.location.href = url; } }
+    function handleNavClick(url, el) { const rip = document.createElement('span'); rip.className = 'ripple-circle'; el.appendChild(rip); setTimeout(() => { if(rip.parentNode) rip.parentNode.removeChild(rip); }, 550); navigateTo(url); }
+    document.addEventListener('DOMContentLoaded', () => { const ham = document.getElementById('hamburger'); const nav = document.getElementById('nav-links'); if(ham && nav) { ham.addEventListener('click', (e) => { e.stopPropagation(); nav.classList.toggle('active'); document.body.classList.toggle('drawer-open'); }); document.addEventListener('click', (e) => { if(!nav.contains(e.target) && !ham.contains(e.target)) { nav.classList.remove('active'); document.body.classList.remove('drawer-open'); } }); } });
+    window.addEventListener('DOMContentLoaded', () => { const ov = document.getElementById('page-transition-overlay'); if(ov) setTimeout(() => { ov.classList.add('loaded'); }, 150); });
+</script>
+</body>
+</html>

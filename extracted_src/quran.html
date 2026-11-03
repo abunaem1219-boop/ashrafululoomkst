@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#056C46">
+    <title>আল-কুরআন — জামিয়া আরাবিয়া আশরাফুল উলূম কুষ্টিয়া</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Hind+Siliguri:wght@300;400;500;600;700&family=Noto+Sans+Bengali:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        :root {
+            --arabic-font: 'Amiri', serif;
+        }
+        
+        /* ট্যাব বাটন */
+        .quran-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 10px;
+        }
+        .quran-tab-btn {
+            background: none;
+            border: none;
+            padding: 8px 16px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-light);
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .quran-tab-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* সার্চ বার */
+        .search-container {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        .search-container input {
+            width: 100%;
+            padding: 12px 20px 12px 45px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: 1rem;
+            outline: none;
+            font-family: 'Hind Siliguri', sans-serif;
+            transition: border-color 0.3s;
+        }
+        .search-container input:focus {
+            border-color: var(--primary);
+        }
+        .search-container i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+        }
+
+        /* সূরা কার্ড গ্রিড */
+        .surah-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+            margin-bottom: 3rem;
+        }
+        .surah-card {
+            background: white;
+            border-radius: 16px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--shadow-sm);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid var(--border);
+        }
+        .surah-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary);
+        }
+        .surah-info-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .surah-number-design {
+            width: 40px;
+            height: 40px;
+            background: rgba(5, 108, 70, 0.1);
+            color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            border: 1px dashed var(--primary);
+        }
+        .surah-details h3 {
+            font-size: 1.1rem;
+            margin-bottom: 2px;
+            color: var(--text-main);
+        }
+        .surah-details p {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+        .surah-info-right {
+            text-align: right;
+        }
+        .surah-arabic-name {
+            font-family: var(--arabic-font);
+            font-size: 1.4rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+        .type-badge {
+            display: inline-block;
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 20px;
+            margin-top: 5px;
+            font-weight: 500;
+        }
+        .type-maki { background: #e3f2fd; color: #0d47a1; }
+        .type-madani { background: #e8f5e9; color: #1b5e20; }
+
+        /* রিডার ভিউ */
+        .reader-view {
+            display: none;
+            background: white;
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 3rem;
+        }
+        .reader-header {
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+
+        /* প্রিমিয়াম সূরা প্লেয়ার উইজেট */
+        .surah-player-box {
+            background: rgba(5, 108, 70, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 15px;
+            margin: 15px auto;
+            max-width: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+        .player-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .player-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: background 0.2s, transform 0.1s;
+        }
+        .player-btn:active { transform: scale(0.95); }
+        .player-info {
+            flex-grow: 1;
+            text-align: left;
+        }
+        .player-title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+        .player-progress-bar {
+            width: 100%;
+            height: 5px;
+            background: var(--border);
+            border-radius: 5px;
+            margin-top: 6px;
+            position: relative;
+            cursor: pointer;
+        }
+        .player-progress-fill {
+            width: 0%;
+            height: 100%;
+            background: var(--primary);
+            border-radius: 5px;
+            transition: width 0.1s linear;
+        }
+
+        .bismillah {
+            font-family: var(--arabic-font);
+            font-size: 2rem;
+            color: var(--text-main);
+            text-align: center;
+            margin: 20px 0;
+            direction: rtl;
+        }
+        
+        /* সেটিংস প্যানেল */
+        .reader-settings {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            background: var(--bg-color);
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .setting-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+        .setting-item input[type="range"] {
+            width: 80px;
+            accent-color: var(--primary);
+        }
+
+        /* আয়াত তালিকা */
+        .ayah-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .ayah-card {
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 20px;
+        }
+        .ayah-card:last-child {
+            border-bottom: none;
+        }
+        .ayah-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        .ayah-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .ayah-btn {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            font-size: 1rem;
+            transition: color 0.2s;
+        }
+        .ayah-btn:hover, .ayah-btn.active {
+            color: var(--primary);
+        }
+        .ayah-arabic {
+            font-family: var(--arabic-font);
+            font-size: 1.8rem;
+            line-height: 2.2;
+            color: #1a1a1a;
+            text-align: right;
+            direction: rtl;
+            margin-bottom: 10px;
+            word-wrap: break-word;
+        }
+        .ayah-bangla {
+            font-size: 1.05rem;
+            line-height: 1.6;
+            color: var(--text-main);
+        }
+        
+        /* ব্যাক বাটন */
+        .back-to-list-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        /* লোডার */
+        .spinner-container {
+            display: none;
+            text-align: center;
+            padding: 3rem 0;
+        }
+        .spinner {
+            border: 4px solid rgba(0,0,0,0.1);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border-left-color: var(--primary);
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+<div id="page-transition-overlay">
+    <div class="glass-loader-card">
+        <div class="glass-spinner-wrap">
+            <div class="glass-spinner-ring"></div>
+            <img class="glass-spinner-logo" src="https://i.ibb.co.com/qFRmPqgK/20260310-005555.png" alt="Logo" crossorigin="anonymous">
+        </div>
+    </div>
+</div>
+
+<div id="main-wrapper">
+    <header>
+        <div class="container navbar">
+            <div class="brand" id="brand-logo" onclick="navigateTo('index.html')">
+                <img src="https://i.ibb.co.com/qFRmPqgK/20260310-005555.png" crossorigin="anonymous" alt="Logo">
+                <h1>জামিয়া আরাবিয়া<br>আশরাফুল উলূম কুষ্টিয়া</h1>
+            </div>
+            <div class="hamburger" id="hamburger"><i class="fas fa-bars"></i></div>
+            
+            <div class="nav-links" id="nav-links">
+                <div class="drawer-header">
+                    <img src="https://i.ibb.co.com/qFRmPqgK/20260310-005555.png" alt="Logo" crossorigin="anonymous">
+                    <div class="drawer-header-info">
+                        <h3>জামিয়া আরাবিয়া আশরাফুল উলূম</h3>
+                        <p>কুষ্টিয়া, বাংলাদেশ</p>
+                    </div>
+                </div>
+                <ul class="drawer-menu">
+                    <li><a href="index.html#contact"><i class="fas fa-address-book"></i> যোগাযোগ করুন</a></li>
+                    <li><a href="about.html"><i class="fas fa-info-circle"></i> মাদরাসা সম্পর্কে</a></li>
+                </ul>
+                <div class="drawer-footer"><p>ভার্সন ১.০.০ (Build 2026)</p></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-hero">
+        <div class="container">
+            <button class="back-btn" onclick="navigateTo('index.html')"><i class="fas fa-arrow-left"></i> হোমে ফিরুন</button>
+            <h2><i class="fas fa-quran" style="margin-right:10px;"></i>আল-কুরআনুল কারীম</h2>
+            <p>সহজ বাংলা অনুবাদ ও অডিওসহ কুরআন তিলাওয়াত</p>
+        </div>
+    </div>
+
+    <section style="padding-top:2rem;">
+        <div class="container">
+            
+            <!-- ট্যাব বাটনসমূহ -->
+            <div class="quran-tabs">
+                <button class="quran-tab-btn active" id="tab-all" onclick="switchTab('all')">সূরাসমূহ</button>
+                <button class="quran-tab-btn" id="tab-bookmarks" onclick="switchTab('bookmarks')">বুকমার্ক</button>
+            </div>
+
+            <!-- সূরার তালিকা ভিউ -->
+            <div id="surah-list-view">
+                <div class="search-container">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="search-input" placeholder="সূরা খুঁজুন (যেমন: ফাতিহা, Fatihah, ১...)" oninput="filterSurahs()">
+                </div>
+                
+                <div class="surah-grid" id="surah-grid">
+                    <!-- ডাইনামিকভাবে সূরার তালিকা এখানে লোড হবে -->
+                </div>
+            </div>
+
+            <!-- লোডিং এনিমেশন -->
+            <div class="spinner-container" id="api-loader">
+                <div class="spinner"></div>
+                <p style="margin-top:10px; color:var(--text-light);">তথ্য লোড করা হচ্ছে...</p>
+            </div>
+
+            <!-- কুরআন রিডার ভিউ -->
+            <div class="reader-view" id="quran-reader">
+                <button class="back-to-list-btn" onclick="backToList()"><i class="fas fa-arrow-left"></i> সূরার তালিকায় ফিরুন</button>
+                
+                <div class="reader-header" id="reader-header">
+                    <!-- সূরার বিস্তারিত এখানে আসবে -->
+                </div>
+
+                <!-- সুরা ভিত্তিক প্রিমিয়াম অডিও প্লেয়ার উইজেট -->
+                <div class="surah-player-box">
+                    <div class="player-controls">
+                        <button class="player-btn" id="surah-play-btn" onclick="toggleSurahAudio()"><i class="fas fa-play"></i></button>
+                    </div>
+                    <div class="player-info">
+                        <div class="player-title" id="player-surah-title">সূরা তিলাওয়াত</div>
+                        <div class="player-progress-bar" id="player-progress-bar" onclick="seekSurahAudio(event)">
+                            <div class="player-progress-fill" id="player-progress-fill"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reader-settings">
+                    <div class="setting-item">
+                        <label>আরби সাইজ:</label>
+                        <input type="range" min="20" max="45" value="28" oninput="changeFontSize('arabic', this.value)">
+                    </div>
+                    <div class="setting-item">
+                        <label>বাংলা সাইজ:</label>
+                        <input type="range" min="14" max="28" value="17" oninput="changeFontSize('bangla', this.value)">
+                    </div>
+                    <div class="setting-item">
+                        <label style="cursor:pointer;"><input type="checkbox" id="toggle-translation" checked onchange="toggleTranslation(this.checked)"> অনুবাদ দেখান</label>
+                    </div>
+                </div>
+
+                <div class="bismillah" id="bismillah-block">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+
+                <div class="ayah-container" id="ayah-list">
+                    <!-- আয়াতসমূহ এখানে লোড হবে -->
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>
+
+<nav class="bottom-nav" id="bottom-nav">
+    <button class="bottom-nav-item active" onclick="handleNavClick('index.html', this)"><span class="nav-icon"><i class="fas fa-home"></i></span><span class="nav-label">হোম</span></button>
+    <button class="bottom-nav-item" onclick="handleNavClick('notice.html', this)"><span class="nav-icon"><i class="fas fa-bell"></i></span><span class="nav-label">নোটিশ</span></button>
+    <button class="bottom-nav-item" onclick="handleNavClick('results.html', this)"><span class="nav-icon"><i class="fas fa-graduation-cap"></i></span><span class="nav-label">ফলাফল</span></button>
+    <button class="bottom-nav-item" onclick="handleNavClick('gallery.html', this)"><span class="nav-icon"><i class="fas fa-images"></i></span><span class="nav-label">গ্যালারি</span></button>
+    <button class="bottom-nav-item" onclick="handleNavClick('teachers.html', this)"><span class="nav-icon"><i class="fas fa-users"></i></span><span class="nav-label">শিক্ষকবৃন্দ</span></button>
+</nav>
+
+<script>
+    // ১১৪টি সূরার সংক্ষিপ্ত ডেটা অ্যারে
+    const surahList = [
+        {"id":1,"name":"আল-ফাতিহা","trans":"Al-Fatihah","ar":"الفاتحة","type":"Makkah","ayahs":7},
+        {"id":2,"name":"আল-বাকারাহ","trans":"Al-Baqarah","ar":"البقرة","type":"Madinah","ayahs":286},
+        {"id":3,"name":"আলি 'ইমরান","trans":"Ali 'Imran","ar":"آل عمران","type":"Madinah","ayahs":200},
+        {"id":4,"name":"আন-নিসা","trans":"An-Nisa","ar":"النساء","type":"Madinah","ayahs":176},
+        {"id":5,"name":"আল-মায়িদাহ","trans":"Al-Ma'idah","ar":"المائدة","type":"Madinah","ayahs":120},
+        {"id":6,"name":"আল-আন'আম","trans":"Al-An'am","ar":"الأنعام","type":"Makkah","ayahs":165},
+        {"id":7,"name":"আল-আ'রাফ","trans":"Al-A'raf","ar":"الأعراف","type":"Makkah","ayahs":206},
+        {"id":8,"name":"আল-আনফাল","trans":"Al-Anfal","ar":"الأنفال","type":"Madinah","ayahs":75},
+        {"id":9,"name":"আত-তাওবাহ","trans":"At-Tawbah","ar":"التوبة","type":"Madinah","ayahs":129},
+        {"id":10,"name":"ইউনুস","trans":"Yunus","ar":"يونس","type":"Makkah","ayahs":109},
+        {"id":11,"name":"হুদ","trans":"Hud","ar":"هود","type":"Makkah","ayahs":123},
+        {"id":12,"name":"ইউসুফ","trans":"Yusuf","ar":"يوسف","type":"Makkah","ayahs":111},
+        {"id":13,"name":"আর-রা'দ","trans":"Ar-Ra'd","ar":"الرعد","type":"Madinah","ayahs":43},
+        {"id":14,"name":"ইব্রাহীম","trans":"Ibrahim","ar":"إبراهيم","type":"Makkah","ayahs":52},
+        {"id":15,"name":"আল-হিজর","trans":"Al-Hijr","ar":"الحجر","type":"Makkah","ayahs":99},
+        {"id":16,"name":"আন-নাহল","trans":"An-Nahl","ar":"النحل","type":"Makkah","ayahs":128},
+        {"id":17,"name":"আল-ইসরা","trans":"Al-Isra","ar":"الإسراء","type":"Makkah","ayahs":111},
+        {"id":18,"name":"আল-কাহফ","trans":"Al-Kahf","ar":"الكهف","type":"Makkah","ayahs":110},
+        {"id":19,"name":"মারয়াম","trans":"Maryam","ar":"مريم","type":"Makkah","ayahs":98},
+        {"id":20,"name":"ত্বহা","trans":"Ta-Ha","ar":"طه","type":"Makkah","ayahs":135},
+        {"id":21,"name":"আল-আம்பিয়া","trans":"Al-Anbiya","ar":"الأنبياء","type":"Makkah","ayahs":112},
+        {"id":22,"name":"আল-হাজ্জ","trans":"Al-Hajj","ar":"الحج","type":"Madinah","ayahs":78},
+        {"id":23,"name":"আল-মু'মিনুন","trans":"Al-Mu'minun","ar":"المؤمنون","type":"Makkah","ayahs":118},
+        {"id":24,"name":"আন-নূর","trans":"An-Nur","ar":"النور","type":"Madinah","ayahs":64},
+        {"id":25,"name":"আল-ফুরকান","trans":"Al-Furqan","ar":"الفرقان","type":"Makkah","ayahs":77},
+        {"id":26,"name":"আশ-শু'আরা","trans":"Ash-Shu'ara","ar":"الشعراء","type":"Makkah","ayahs":227},
+        {"id":27,"name":"আন-নামল","trans":"An-Naml","ar":"النمل","type":"Makkah","ayahs":93},
+        {"id":28,"name":"আল-কাসাস","trans":"Al-Qasas","ar":"القصص","type":"Makkah","ayahs":88},
+        {"id":29,"name":"আল-'আনকাবুত","trans":"Al-'Ankabut","ar":"العنكبوت","type":"Makkah","ayahs":69},
+        {"id":30,"name":"আর-রূম","trans":"Ar-Rum","ar":"الروم","type":"Makkah","ayahs":60},
+        {"id":31,"name":"লুকমান","trans":"Luqman","ar":"لقمان","type":"Makkah","ayahs":34},
+        {"id":32,"name":"আস-সাজদাহ","trans":"As-Sajdah","ar":"السجدة","type":"Makkah","ayahs":30},
+        {"id":33,"name":"আল-আহযাব","trans":"Al-Ahzab","ar":"الأحزاب","type":"Madinah","ayahs":73},
+        {"id":34,"name":"সাবা","trans":"Saba'","ar":"سبإ","type":"Makkah","ayahs":54},
+        {"id":35,"name":"ফাতির","trans":"Fatir","ar":"فاطر","type":"Makkah","ayahs":45},
+        {"id":36,"name":"ইয়াসীন","trans":"Ya-Sin","ar":"يس","type":"Makkah","ayahs":83},
+        {"id":37,"name":"আস-সাফফাত","trans":"As-Saffat","ar":"الصافات","type":"Makkah","ayahs":182},
+        {"id":38,"name":"সোয়াদ","trans":"Sad","ar":"ص","type":"Makkah","ayahs":88},
+        {"id":39,"name":"আয-যুমার","trans":"Az-Zumar","ar":"الزمر","type":"Makkah","ayahs":75},
+        {"id":40,"name":"গাফির","trans":"Ghafir","ar":"غافر","type":"Makkah","ayahs":85},
+        {"id":41,"name":"ফুসসিলাত","trans":"Fussilat","ar":"فصلت","type":"Makkah","ayahs":54},
+        {"id":42,"name":"আশ-শূরা","trans":"Ash-Shura","ar":"الشورى","type":"Makkah","ayahs":53},
+        {"id":43,"name":"আয-যুখরুফ","trans":"Az-Zukhruf","ar":"الزخرف","type":"Makkah","ayahs":89},
+        {"id":44,"name":"আদ-দুখান","trans":"Ad-Dukhan","ar":"الدخان","type":"Makkah","ayahs":59},
+        {"id":45,"name":"আল-জাছিয়াহ","trans":"Al-Jathiyah","ar":"الجاثية","type":"Makkah","ayahs":37},
+        {"id":46,"name":"আল-আহকাফ","trans":"Al-Ahqaf","ar":"الأحقاف","type":"Makkah","ayahs":35},
+        {"id":47,"name":"মুহাম্মদ","trans":"Muhammad","ar":"محمد","type":"Madinah","ayahs":38},
+        {"id":48,"name":"আল-ফাতাহ","trans":"Al-Fath","ar":"الفتح","type":"Madinah","ayahs":29},
+        {"id":49,"name":"আল-হুজুরাত","trans":"Al-Hujurat","ar":"الحجرات","type":"Madinah","ayahs":18},
+        {"id":50,"name":"ক্বাফ","trans":"Qaf","ar":"ق","type":"Makkah","ayahs":45},
+        {"id":51,"name":"আয-যারিয়াত","trans":"Adh-Dhariyat","ar":"الذاريات","type":"Makkah","ayahs":60},
+        {"id":52,"name":"আত-তূর","trans":"At-Tur","ar":"الطور","type":"Makkah","ayahs":49},
+        {"id":53,"name":"আন-নাজম","trans":"An-Najm","ar":"النجم","type":"Makkah","ayahs":62},
+        {"id":54,"name":"আল-ক্বামার","trans":"Al-Qamar","ar":"القمر","type":"Makkah","ayahs":55},
+        {"id":55,"name":"আর-রহমান","trans":"Ar-Rahman","ar":"الرحمن","type":"Madinah","ayahs":78},
+        {"id":56,"name":"আল-ওয়াক্বি'আহ","trans":"Al-Waqi'ah","ar":"الواقعة","type":"Makkah","ayahs":96},
+        {"id":57,"name":"আল-হাদীদ","trans":"Al-Hadid","ar":"الحديد","type":"Madinah","ayahs":29},
+        {"id":58,"name":"আল-মুজাদালাহ","trans":"Al-Mujadilah","ar":"المجادلة","type":"Madinah","ayahs":22},
+        {"id":59,"name":"আল-হাশর","trans":"Al-Hashr","ar":"الحشر","type":"Madinah","ayahs":24},
+        {"id":60,"name":"আল-মুমতাহানাহ","trans":"Al-Mumtahanah","ar":"الممتحنة","type":"Madinah","ayahs":13},
+        {"id":61,"name":"আস-সাফ","trans":"As-Saff","ar":"الصف","type":"Madinah","ayahs":14},
+        {"id":62,"name":"আল-জুমু'আহ","trans":"Al-Jumu'ah","ar":"الجمعة","type":"Madinah","ayahs":11},
+        {"id":63,"name":"আল-মুনাফিকুন","trans":"Al-Munafiqun","ar":"المنافقون","type":"Madinah","ayahs":11},
+        {"id":64,"name":"আত-তাগাবুন","trans":"At-Taghabun","ar":"التغابন","type":"Madinah","ayahs":18},
+        {"id":65,"name":"আত-ত্বলাক্ব","trans":"At-Talaq","ar":"الطلاق","type":"Madinah","ayahs":12},
+        {"id":66,"name":"আত-তাহরীম","trans":"At-Tahrim","ar":"التحريم","type":"Madinah","ayahs":12},
+        {"id":67,"name":"আল-মুলক","trans":"Al-Mulk","ar":"الملك","type":"Makkah","ayahs":30},
+        {"id":68,"name":"আল-ক্বলম","trans":"Al-Qalam","ar":"القلم","type":"Makkah","ayahs":52},
+        {"id":69,"name":"আল-হাক্বক্বাহ","trans":"Al-Haqqah","ar":"الحاقة","type":"Makkah","ayahs":52},
+        {"id":70,"name":"আল-মা'আরিজ","trans":"Al-Ma'arij","ar":"المعارج","type":"Makkah","ayahs":44},
+        {"id":71,"name":"নূহ","trans":"Nuh","ar":"نوح","type":"Makkah","ayahs":28},
+        {"id":72,"name":"আল-জীন","trans":"Al-Jinn","ar":"الجن","type":"Makkah","ayahs":28},
+        {"id":73,"name":"আল-মুযযাম্মিল","trans":"Al-Muzzammil","ar":"المزمل","type":"Makkah","ayahs":20},
+        {"id":74,"name":"আল-মুদ্দাসসির","trans":"Al-Muddaththir","ar":"المدثر","type":"Makkah","ayahs":56},
+        {"id":75,"name":"আল-ক্বিয়ামাহ","trans":"Al-Qiyamah","ar":"القيامة","type":"Makkah","ayahs":40},
+        {"id":76,"name":"আল-ইনসান","trans":"Al-Insan","ar":"الإنسان","type":"Madinah","ayahs":31},
+        {"id":77,"name":"আল-মুরসালাত","trans":"Al-Mursalat","ar":"المرسلات","type":"Makkah","ayahs":50},
+        {"id":78,"name":"আন-নাবা","trans":"An-Naba'","ar":"النبأ","type":"Makkah","ayahs":40},
+        {"id":79,"name":"আন-নাযি'আত","trans":"An-Nazi'at","ar":"النازعات","type":"Makkah","ayahs":46},
+        {"id":80,"name":"আবাসা","trans":"'Abasa","ar":"عبس","type":"Makkah","ayahs":42},
+        {"id":81,"name":"আত-তাকভীর","trans":"At-Takwir","ar":"التكوير","type":"Makkah","ayahs":29},
+        {"id":82,"name":"আল-ইনফিতার","trans":"Al-Infitar","ar":"الانفطار","type":"Makkah","ayahs":19},
+        {"id":83,"name":"আল-মুতাফফিফীন","trans":"Al-Mutaffifin","ar":"المطففين","type":"Makkah","ayahs":36},
+        {"id":84,"name":"আল-ইনশিক্বাক্ব","trans":"Al-Inshiqaq","ar":"الانشقاق","type":"Makkah","ayahs":25},
+        {"id":85,"name":"আল-বুরুজ","trans":"Al-Buruj","ar":"البروج","type":"Makkah","ayahs":22},
+        {"id":86,"name":"আত-ত্বারিক্ব","trans":"At-Tariq","ar":"الطارق","type":"Makkah","ayahs":17},
+        {"id":87,"name":"আল-আ'লা","trans":"Al-A'la","ar":"الأعلى","type":"Makkah","ayahs":19},
+        {"id":88,"name":"আল-গাশিয়াহ","trans":"Al-Ghashiyah","ar":"الغاشية","type":"Makkah","ayahs":26},
+        {"id":89,"name":"আল-ফাজর","trans":"Al-Fajr","ar":"الفجر","type":"Makkah","ayahs":30},
+        {"id":90,"name":"আল-বালাদ","trans":"Al-Balad","ar":"البلد","type":"Makkah","ayahs":20},
+        {"id":91,"name":"আশ-শামস","trans":"Ash-Shams","ar":"الشمس","type":"Makkah","ayahs":15},
+        {"id":92,"name":"আল-লায়ল","trans":"Al-Layl","ar":"الليل","type":"Makkah","ayahs":21},
+        {"id":93,"name":"আদ-দুহা","trans":"Ad-Duha","ar":"الضحى","type":"Makkah","ayahs":11},
+        {"id":94,"name":"আশ-শারহ","trans":"Ash-Sharh","ar":"الشرح","type":"Makkah","ayahs":8},
+        {"id":95,"name":"আত-তীন","trans":"At-Tin","ar":"التين","type":"Makkah","ayahs":8},
+        {"id":96,"name":"আল-'আলাক্ব","trans":"Al-'Alaq","ar":"العلق","type":"Makkah","ayahs":19},
+        {"id":97,"name":"আল-ক্বদর","trans":"Al-Qadr","ar":"القدر","type":"Makkah","ayahs":5},
+        {"id":98,"name":"আল-বাইয়্যিনাহ","trans":"Al-Bayyinah","ar":"البينة","type":"Madinah","ayahs":8},
+        {"id":99,"name":"আয-যালযালাহ","trans":"Az-Zalzalah","ar":"الزلزلة","type":"Madinah","ayahs":8},
+        {"id":100,"name":"আল-'আদিয়াত","trans":"Al-'Adiyat","ar":"العاديات","type":"Makkah","ayahs":11},
+        {"id":101,"name":"আল-ক্বারিয়াহ","trans":"Al-Qari'ah","ar":"القارعة","type":"Makkah","ayahs":11},
+        {"id":102,"name":"আত-তাকাসুর","trans":"At-Takathur","ar":"التكاثر","type":"Makkah","ayahs":8},
+        {"id":103,"name":"আল-'আসর","trans":"Al-'Asr","ar":"العصر","type":"Makkah","ayahs":3},
+        {"id":104,"name":"আল-হুমাযাহ","trans":"Al-Humazah","ar":"الهمزة","type":"Makkah","ayahs":9},
+        {"id":105,"name":"আল-ফীল","trans":"Al-Fil","ar":"الفيل","type":"Makkah","ayahs":5},
+        {"id":106,"name":"কুরাইশ","trans":"Quraysh","ar":"قريশ","type":"Makkah","ayahs":4},
+        {"id":107,"name":"আল-মা'ঊন","trans":"Al-Ma'un","ar":"الماعون","type":"Makkah","ayahs":7},
+        {"id":108,"name":"আল-কাওসার","trans":"Al-Kawthar","ar":"الكوثر","type":"Makkah","ayahs":3},
+        {"id":109,"name":"আল-কাফিরুন","trans":"Al-Kafirun","ar":"الكافرون","type":"Makkah","ayahs":6},
+        {"id":110,"name":"আন-নাসর","trans":"An-Nasr","ar":"النصر","type":"Madinah","ayahs":3},
+        {"id":111,"name":"আল-মাসাদ","trans":"Al-Masad","ar":"المسد","type":"Makkah","ayahs":5},
+        {"id":112,"name":"আল-ইখলাস","trans":"Al-Ikhlas","ar":"الإخلاص","type":"Makkah","ayahs":4},
+        {"id":113,"name":"আল-ফালাক্ব","trans":"Al-Falaq","ar":"الفلق","type":"Makkah","ayahs":5},
+        {"id":114,"name":"আন-নাস","trans":"An-Nas","ar":"الناس","type":"Makkah","ayahs":6}
+    ];
+
+    const transMap = { '0':'০', '1':'১', '2':'২', '3':'৩', '4':'৪', '5':'৫', '6':'৬', '7':'৭', '8':'৮', '9':'৯' };
+    function toBanglaNum(n) { return String(n).split('').map(c => transMap[c] || c).join(''); }
+
+    let currentTab = 'all';
+    let bookmarks = JSON.parse(localStorage.getItem('quran_bookmarks') || '[]');
+    let currentAudio = null;
+    let playingAyahKey = null;
+
+    let surahAudio = null;
+    let isSurahPlaying = false;
+    let currentSurahIdForAudio = null;
+
+    // সূরার তালিকা রেন্ডার করা
+    function renderSurahGrid(list) {
+        const grid = document.getElementById('surah-grid');
+        grid.innerHTML = '';
+        if(list.length === 0) {
+            grid.innerHTML = `<p style="grid-column: 1/-1; text-align:center; color:var(--text-light); padding: 2rem 0;">কোন সূরা পাওয়া যায়নি।</p>`;
+            return;
+        }
+
+        list.forEach(s => {
+            const isBookmarked = bookmarks.includes(s.id);
+            const card = document.createElement('div');
+            card.className = 'surah-card';
+            card.onclick = () => loadSurah(s.id);
+            card.innerHTML = `
+                <div class="surah-info-left">
+                    <div class="surah-number-design">${toBanglaNum(s.id)}</div>
+                    <div class="surah-details">
+                        <h3>${s.name}</h3>
+                        <p>${s.trans} • আয়াত: ${toBanglaNum(s.ayahs)}</p>
+                    </div>
+                </div>
+                <div class="surah-info-right">
+                    <div class="surah-arabic-name">${s.ar}</div>
+                    <span class="type-badge ${s.type === 'Makkah' ? 'type-maki' : 'type-madani'}">
+                        ${s.type === 'Makkah' ? 'মাক্কী' : 'মাদানী'}
+                    </span>
+                    ${isBookmarked ? '<i class="fas fa-bookmark" style="color:var(--primary); margin-left:8px; font-size:0.9rem;"></i>' : ''}
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+    }
+
+    // ফিল্টারিং ফাংশন
+    function filterSurahs() {
+        const query = document.getElementById('search-input').value.toLowerCase();
+        let sourceList = currentTab === 'all' ? surahList : surahList.filter(s => bookmarks.includes(s.id));
+        
+        const filtered = sourceList.filter(s => 
+            s.name.toLowerCase().includes(query) || 
+            s.trans.toLowerCase().includes(query) || 
+            s.id.toString() === query
+        );
+        renderSurahGrid(filtered);
+    }
+
+    // ট্যাব পরিবর্তন
+    function switchTab(tab) {
+        currentTab = tab;
+        document.getElementById('tab-all').classList.toggle('active', tab === 'all');
+        document.getElementById('tab-bookmarks').classList.toggle('active', tab === 'bookmarks');
+        document.getElementById('search-input').value = '';
+        
+        if(tab === 'bookmarks') {
+            const bookmarkedSurahs = surahList.filter(s => bookmarks.includes(s.id));
+            renderSurahGrid(bookmarkedSurahs);
+        } else {
+            renderSurahGrid(surahList);
+        }
+    }
+
+    // সূরা লোড করা (API-এর মাধ্যমে)
+    async function loadSurah(id) {
+        stopAudio();
+        stopSurahAudio();
+        
+        const loader = document.getElementById('api-loader');
+        const reader = document.getElementById('quran-reader');
+        const listView = document.getElementById('surah-list-view');
+
+        listView.style.display = 'none';
+        reader.style.display = 'none';
+        loader.style.display = 'block';
+
+        const sInfo = surahList.find(s => s.id === id);
+        currentSurahIdForAudio = id;
+        
+        // প্লেয়ার উইজেট আপডেট
+        document.getElementById('player-surah-title').innerText = `${sInfo.name} (সম্পূর্ণ সূরা তিলাওয়াত)`;
+        resetSurahPlayerUI();
+
+        // বিসমিল্লাহ ব্লক দেখানো বা লুকানো (সূরা তওবা ব্যতীত)
+        const bismillahBlock = document.getElementById('bismillah-block');
+        if (id === 9) {
+            bismillahBlock.style.display = 'none';
+        } else {
+            bismillahBlock.style.display = 'block';
+        }
+
+        try {
+            // একসাথে আরবি ও বাংলা অনুবাদ এপিআই কল
+            const [arRes, bnRes] = await Promise.all([
+                fetch(`https://api.alquran.cloud/v1/surah/${id}`),
+                fetch(`https://api.alquran.cloud/v1/surah/${id}/bn.bengali`)
+            ]);
+
+            const arData = await arRes.json();
+            const bnData = await bnRes.json();
+
+            if(arData.code === 200 && bnData.code === 200) {
+                renderReader(sInfo, arData.data.ayahs, bnData.data.ayahs);
+                loader.style.display = 'none';
+                reader.style.display = 'block';
+            } else {
+                alert('তথ্য লোড করতে সমস্যা হয়েছে। দয়া করে আবার চেষ্টা করুন।');
+                backToList();
+            }
+        } catch (error) {
+            console.error(error);
+            alert('ইন্টারনেট সংযোগ চেক করে পুনরায় চেষ্টা করুন।');
+            backToList();
+        }
+    }
+
+    // রিডার ইন্টারফেস রেন্ডারিং
+    function renderReader(info, arAyahs, bnAyahs) {
+        const isBookmarked = bookmarks.includes(info.id);
+        const header = document.getElementById('reader-header');
+        header.innerHTML = `
+            <h2 style="color:var(--primary); font-size:1.8rem;">${info.name}</h2>
+            <p style="color:var(--text-light); margin-top:5px;">${info.trans} • ${info.ar} • আয়াত সংখ্যা: ${toBanglaNum(info.ayahs)}</p>
+            <button class="ayah-btn" style="margin-top:10px; font-size:1.1rem; color: ${isBookmarked ? 'var(--primary)' : 'var(--text-light)'}" onclick="toggleBookmark(${info.id}, this)">
+                <i class="${isBookmarked ? 'fas' : 'far'} fa-bookmark"></i> ${isBookmarked ? 'বুকমার্ক করা হয়েছে' : 'বুকমার্ক করুন'}
+            </button>
+        `;
+
+        const listContainer = document.getElementById('ayah-list');
+        listContainer.innerHTML = '';
+
+        arAyahs.forEach((ayah, index) => {
+            const bnAyah = bnAyahs[index];
+            let arText = ayah.text;
+            
+            // প্রথম আয়াতের সুরার শুরু থেকে বিসমিল্লাহ বাদ দিয়ে দেখানো
+            if (index === 0 && info.id !== 1 && info.id !== 9) {
+                if (arText.startsWith('بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ')) {
+                    arText = arText.replace('بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ', '').trim();
+                }
+            }
+
+            const ayahCard = document.createElement('div');
+            ayahCard.className = 'ayah-card';
+            ayahCard.id = `ayah-card-${ayah.number}`;
+            ayahCard.innerHTML = `
+                <div class="ayah-top">
+                    <span class="surah-number-design" style="width:30px; height:30px; font-size:0.8rem;">${toBanglaNum(index + 1)}</span>
+                    <div class="ayah-actions">
+                        <!-- বিশ্বস্ত গ্লোবাল এবং ফাস্ট cdn.islamic.network থেকে আয়াত ভিত্তিক অডিও প্লেব্যাক -->
+                        <button class="ayah-btn" id="audio-btn-${ayah.number}" onclick="playAyahAudio('${ayah.number}', 'https://cdn.islamic.network/quran/audio/128/ar.alafasy/${ayah.number}.mp3')" title="তিলওয়াত শুনুন">
+                            <i class="fas fa-play"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="ayah-arabic">${arText}</div>
+                <div class="ayah-bangla">${bnAyah.text}</div>
+            `;
+            listContainer.appendChild(ayahCard);
+        });
+    }
+
+    // বুকমার্ক টগল
+    function toggleBookmark(id, btn) {
+        if(bookmarks.includes(id)) {
+            bookmarks = bookmarks.filter(b => b !== id);
+            btn.innerHTML = `<i class="far fa-bookmark"></i> বুকমার্ক করুন`;
+            btn.style.color = 'var(--text-light)';
+        } else {
+            bookmarks.push(id);
+            btn.innerHTML = `<i class="fas fa-bookmark"></i> বুকমার্ক করা হয়েছে`;
+            btn.style.color = 'var(--primary)';
+        }
+        localStorage.setItem('quran_bookmarks', JSON.stringify(bookmarks));
+        if(currentTab === 'bookmarks') {
+            const bookmarkedSurahs = surahList.filter(s => bookmarks.includes(s.id));
+            renderSurahGrid(bookmarkedSurahs);
+        }
+    }
+
+    // ব্যাক টু লিস্ট
+    function backToList() {
+        stopAudio();
+        stopSurahAudio();
+        document.getElementById('quran-reader').style.display = 'none';
+        document.getElementById('api-loader').style.display = 'none';
+        document.getElementById('surah-list-view').style.display = 'block';
+        if(currentTab === 'bookmarks') {
+            switchTab('bookmarks');
+        } else {
+            renderSurahGrid(surahList);
+        }
+    }
+
+    // ফন্ট সাইজ নিয়ন্ত্রণ
+    function changeFontSize(type, val) {
+        if(type === 'arabic') {
+            document.querySelectorAll('.ayah-arabic').forEach(el => el.style.fontSize = val + 'px');
+        } else {
+            document.querySelectorAll('.ayah-bangla').forEach(el => el.style.fontSize = val + 'px');
+        }
+    }
+
+    // অনুবাদ প্রদর্শন টগল
+    function toggleTranslation(visible) {
+        document.querySelectorAll('.ayah-bangla').forEach(el => {
+            el.style.display = visible ? 'block' : 'none';
+        });
+    }
+
+    // নির্দিষ্ট আয়াত প্লে ফাংশন (গ্লোবাল স্টেবল এবং সুপার ফাস্ট CDN)
+    function playAyahAudio(ayahId, audioUrl) {
+        stopSurahAudio(); // সুরা অডিও বন্ধ করা
+
+        if (currentAudio && playingAyahKey === ayahId) {
+            stopAudio();
+            return;
+        }
+
+        stopAudio();
+
+        currentAudio = new Audio(audioUrl);
+        playingAyahKey = ayahId;
+
+        const btn = document.getElementById(`audio-btn-${ayahId}`);
+        if(btn) btn.innerHTML = `<i class="fas fa-pause"></i>`;
+
+        currentAudio.play();
+
+        currentAudio.onended = () => {
+            stopAudio();
+        };
+
+        currentAudio.onerror = () => {
+            alert('অডিও ফাইলটি লোড করা সম্ভব হয়নি।');
+            stopAudio();
+        };
+    }
+
+    function stopAudio() {
+        if (currentAudio) {
+            currentAudio.pause();
+            const btn = document.getElementById(`audio-btn-${playingAyahKey}`);
+            if(btn) btn.innerHTML = `<i class="fas fa-play"></i>`;
+            currentAudio = null;
+            playingAyahKey = null;
+        }
+    }
+
+
+    /* ========================================================
+       সমগ্র সূরা ভিত্তিক অডিও প্লেয়ার কন্ট্রোলার (প্রিমিয়াম স্টাইল)
+       ======================================================== */
+
+    function toggleSurahAudio() {
+        stopAudio(); // একক আয়াত অডিও বন্ধ করা
+
+        if (!currentSurahIdForAudio) return;
+
+        const padId = String(currentSurahIdForAudio).padStart(3, '0');
+        
+        // অনলাইন ফাস্ট CDN লিংক (mp3quran সার্ভার)। 
+        // আপনি অফলাইনে আপনার ফোল্ডার থেকে চালাতে চাইলে নিচের লাইনে `audio/${padId}.mp3` লিখে ফাইল মেমোরিতে সেভ রাখতে পারেন।
+        const surahUrl = `https://server8.mp3quran.net/afs/${padId}.mp3`;
+
+        const playBtn = document.getElementById('surah-play-btn');
+
+        if (isSurahPlaying) {
+            surahAudio.pause();
+            isSurahPlaying = false;
+            playBtn.innerHTML = `<i class="fas fa-play"></i>`;
+        } else {
+            if (!surahAudio) {
+                surahAudio = new Audio(surahUrl);
+                
+                // প্রোগ্রেস বার রেন্ডারিং লিসেনার
+                surahAudio.ontimeupdate = () => {
+                    if (surahAudio) {
+                        const progress = (surahAudio.currentTime / surahAudio.duration) * 100;
+                        document.getElementById('player-progress-fill').style.width = `${progress}%`;
+                    }
+                };
+
+                surahAudio.onended = () => {
+                    stopSurahAudio();
+                };
+
+                surahAudio.onerror = () => {
+                    alert('সূরার সম্পূর্ণ অডিও ফাইলটি লোড করা সম্ভব হয়নি।');
+                    stopSurahAudio();
+                };
+            }
+            
+            surahAudio.play();
+            isSurahPlaying = true;
+            playBtn.innerHTML = `<i class="fas fa-pause"></i>`;
+        }
+    }
+
+    // অডিও টেনে আগে-পিছে করার ফাংশন
+    function seekSurahAudio(event) {
+        if (!surahAudio) return;
+        const progressBar = document.getElementById('player-progress-bar');
+        const rect = progressBar.getBoundingClientRect();
+        const clickX = event.clientX - rect.left;
+        const width = rect.width;
+        const percentage = clickX / width;
+        surahAudio.currentTime = percentage * surahAudio.duration;
+    }
+
+    function stopSurahAudio() {
+        if (surahAudio) {
+            surahAudio.pause();
+            surahAudio = null;
+        }
+        isSurahPlaying = false;
+        resetSurahPlayerUI();
+    }
+
+    function resetSurahPlayerUI() {
+        document.getElementById('surah-play-btn').innerHTML = `<i class="fas fa-play"></i>`;
+        document.getElementById('player-progress-fill').style.width = `0%`;
+    }
+
+    // প্রথমবার পেজ লোড হবার কাজ
+    document.addEventListener('DOMContentLoaded', () => {
+        renderSurahGrid(surahList);
+    });
+
+    // ===== SHARED PAGE JS =====
+    function navigateTo(url) { if(window.location.href.includes(url.split('#')[0])) return; const ov = document.getElementById('page-transition-overlay'); if(ov) { ov.classList.remove('loaded'); setTimeout(() => { window.location.href = url; }, 250); } else { window.location.href = url; } }
+    function handleNavClick(url, el) { const rip = document.createElement('span'); rip.className = 'ripple-circle'; el.appendChild(rip); setTimeout(() => { if(rip.parentNode) rip.parentNode.removeChild(rip); }, 550); navigateTo(url); }
+    document.addEventListener('DOMContentLoaded', () => { const ham = document.getElementById('hamburger'); const nav = document.getElementById('nav-links'); if(ham && nav) { ham.addEventListener('click', (e) => { e.stopPropagation(); nav.classList.toggle('active'); document.body.classList.toggle('drawer-open'); }); document.addEventListener('click', (e) => { if(!nav.contains(e.target) && !ham.contains(e.target)) { nav.classList.remove('active'); document.body.classList.remove('drawer-open'); } }); } });
+    window.addEventListener('DOMContentLoaded', () => { const ov = document.getElementById('page-transition-overlay'); if(ov) setTimeout(() => { ov.classList.add('loaded'); }, 150); });
+</script>
+</body>
+</html>

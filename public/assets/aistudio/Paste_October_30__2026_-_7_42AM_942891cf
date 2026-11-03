@@ -1,0 +1,647 @@
+MASTER PROMPT — Madrasa Website Upgrade
+
+PWA + Digital Meal Management + Premium Gallery + Security Hardening
+
+You are a senior full-stack engineer specializing in React, TypeScript, Firebase Realtime Database, Firebase Authentication, Express.js, Vite, Vercel deployment, Progressive Web Apps, and secure administration systems.
+
+I have an existing madrasa website built using Google AI Studio. Its source code is maintained on GitHub and deployed through Vercel.
+
+Your task is to UPGRADE THE EXISTING PROJECT, not rebuild it from scratch.
+
+The existing project includes React, TypeScript, Vite, Firebase Authentication, Firebase Realtime Database, Express APIs in "server.ts", an admin dashboard, user profiles, notices, examination results, teachers, an Islamic tools section, prayer times, and a gallery.
+
+Relevant existing files include:
+
+- "src/App.tsx"
+- "src/firebase.ts"
+- "src/types.ts"
+- "src/utils/api.ts"
+- "src/context/AuthContext.tsx"
+- "src/components/Navbar.tsx"
+- "src/components/BottomNav.tsx"
+- "src/components/Footer.tsx"
+- "src/pages/HomePage.tsx"
+- "src/pages/GalleryPage.tsx"
+- "src/pages/AdminDashboard.tsx"
+- "server.ts"
+- "package.json"
+- "vite.config.ts"
+- "index.html"
+
+These paths are based on the current source package. Inspect the actual repository before making changes, because files and implementations may have changed.
+
+NON-NEGOTIABLE RULES
+
+1. Preserve all existing working features, page routes, design elements, Firebase data, authentication methods, user profiles, role assignments, and admin functionality.
+2. Do not replace the entire application with a new template.
+3. Do not delete or overwrite existing Firebase database nodes.
+4. Do not change existing Firebase project identifiers, authentication providers, administrator identity, Cloudinary settings, or OneSignal configuration without a verified technical reason.
+5. Reuse existing components, utilities, styles, and data models whenever practical.
+6. Extend existing TypeScript interfaces carefully and maintain backward compatibility.
+7. Do not fabricate API responses, mock successful submissions, or leave essential buttons nonfunctional.
+8. Do not claim deployment, testing, or successful database writes unless actually verified.
+9. Inspect the existing Vercel deployment architecture before modifying server routing or configuration.
+10. If a critical deployment or security issue blocks a feature, explain the issue, fix it safely, and continue with the remaining work.
+11. Do not ask me to manually rewrite large sections of code. Implement the changes in the project wherever your environment permits.
+12. Do not expose secrets in source code, browser bundles, logs, generated reports, or the final response.
+
+PHASE 1 — AUDIT AND SECURITY
+
+Before implementing new features:
+
+- Inspect the entire project structure.
+- Identify existing Firebase database paths, API endpoints, authentication flow, role system, and gallery implementation.
+- Identify which pages use Express APIs and which access Firebase directly.
+- Review the existing Vite build process and actual Vercel deployment setup.
+- Determine whether "server.ts" runs as a persistent Express server or whether the deployment requires Vercel-compatible serverless functions or rewrites.
+- Check the TypeScript interfaces and current gallery data structure.
+- Run the available build and type-check commands before changing the application.
+- Record existing errors separately from newly introduced errors.
+
+Security requirements
+
+The existing source package may contain a Firebase service account key and a OneSignal REST API key.
+
+- Never copy existing private keys into new files or prompts.
+- Remove hardcoded server secrets from application code.
+- Read server credentials from environment variables or a securely mounted service-account configuration.
+- Use the deployment platform's secret-management facility for production credentials.
+- Do not expose Firebase Admin credentials or OneSignal REST keys to the frontend.
+- If a credential has been exposed, flag it for revocation and rotation. Removing it from the current file is not sufficient.
+- Keep public Firebase client configuration separate from privileged server credentials.
+- Do not change the Firebase project accidentally during migration.
+
+Implement secure server-side authentication:
+
+- Validate Firebase ID tokens using Firebase Admin Authentication.
+- Obtain the verified UID from the token, never from a client-supplied "requesterUid" or equivalent field.
+- Verify administrator and moderator roles on the server for every privileged action.
+- Do not rely only on React UI visibility or client-side "isAdmin" flags.
+- Preserve the existing designated root administrator and role system.
+- Prevent users from granting themselves administrator or moderator permissions.
+- Validate all incoming data and restrict upload size and content types.
+- Apply rate limiting to sensitive endpoints and public submission routes where appropriate.
+- Return safe error messages without exposing stack traces, service-account details, or private database data.
+- Review Firebase Realtime Database Security Rules for the new data paths.
+- Ensure public users cannot directly approve requests, change roles, publish gallery items, or edit another user's records.
+
+Do not deploy new features against insecure authorization assumptions.
+
+PHASE 2 — INSTALLABLE PROGRESSIVE WEB APP (PWA)
+
+Transform the existing responsive website into an installable PWA without breaking its normal browser functionality.
+
+Requirements
+
+Implement:
+
+- A valid web app manifest.
+- A registered service worker.
+- Appropriate 192×192 and 512×512 application icons.
+- "name", "short_name", "start_url", "scope", "display", "theme_color", and "background_color".
+- Suitable application metadata in "index.html".
+- An installation prompt/button when the browser supports the installation event.
+- A helpful installation guide for browsers that require manual installation.
+- Responsive layouts for Android phones, tablets, desktop browsers, and supported iOS devices.
+- A branded offline fallback page.
+- Safe caching of versioned static assets.
+- Service-worker update handling so users can receive new versions without being trapped on stale application code.
+
+Use the existing madrasa identity and visual theme. Prefer a polished emerald-green, white, and restrained gold design if consistent with the existing site.
+
+PWA behavior
+
+1. The website must continue working as a normal HTTPS website.
+2. Show an "অ্যাপ ইনস্টল করুন" or "Install App" control when installation is available.
+3. On Android, use the supported browser installation prompt when possible.
+4. On iOS, provide instructions for Safari's Share → Add to Home Screen workflow.
+5. If the installation prompt is unavailable or the app is already installed, display an appropriate alternative or hide the unnecessary button.
+6. Never display a fake success message.
+7. Do not cache authenticated API responses, personal information, admin pages, private Firebase data, or sensitive meal records in a public service-worker cache.
+8. Do not make private pages appear successfully loaded from stale cached content after logout.
+9. Never cache POST requests or falsely report offline form submissions as completed.
+10. If offline submission queuing is implemented, it must explicitly show pending synchronization and prevent duplicate requests. Do not implement it unless it can be made reliable and secure.
+
+Use HTTPS-compatible deployment configuration.
+
+Do not introduce a service-worker routing conflict with the existing Express API or Vercel deployment.
+
+PHASE 3 — DIGITAL KHANA JARI / KHANA BONDHO SYSTEM
+
+Build a complete meal-status request system for madrasa students.
+
+The madrasa currently maintains its meal counts using paper requests submitted to a box near the office. Staff process these requests and update Microsoft Excel during the daily 8:00 AM–10:00 AM accounting window.
+
+The website must digitize this workflow while retaining administrative control over the official meal schedule.
+
+A. Student request form
+
+Add a well-designed "খানা ব্যবস্থাপনা" section to the student-facing website.
+
+The form must contain:
+
+1. Student's full name.
+2. Class/year (বর্ষ বা জামাত).
+3. Branch (শাখা).
+4. Unique student ID, normally three or four digits.
+5. Request type:
+   - খানা বন্ধ করতে চাই
+   - খানা চালু করতে চাই
+6. Starting meal/service period:
+   - সকাল
+   - দুপুর
+   - রাত
+7. Meals affected:
+   - শুধু সকাল
+   - শুধু দুপুর
+   - শুধু রাত
+   - সকাল ও দুপুর
+   - সকাল ও রাত
+   - দুপুর ও রাত
+   - তিন বেলা
+8. An optional short note.
+9. Clear information about the proposed effective date and time.
+10. A review screen or summary before final submission.
+
+All visible labels, validation messages, status labels, and confirmation messages should be in natural Bengali.
+
+Use a responsive, accessible form with conditional fields, clear spacing, useful icons, and explicit validation errors.
+
+Do not use confusing combinations of radio buttons and checkboxes. Make the difference between the starting period and the recurring set of affected meals clear.
+
+B. Student identity verification
+
+The student ID is an identifier, not a password.
+
+Do not allow an anonymous visitor to submit arbitrary student IDs and immediately change meal records.
+
+- Use the existing Firebase Authentication system.
+- Associate a verified student ID with the appropriate authenticated user.
+- For the initial rollout, require administrator verification of the student's name, class/year, branch, and ID against the madrasa's authorized student records.
+- If the existing student database does not contain authoritative student identity records, create a secure admin-managed registry only after inspecting the existing data model.
+- Do not invent student records.
+- Do not expose the entire student registry to ordinary users.
+- Do not reveal whether arbitrary student IDs exist through public lookup endpoints.
+- If the authenticated account has no verified student association, explain how the student can request verification.
+- Prevent one account from impersonating another student.
+
+Administrators must be able to verify or correct a student's registered details using an auditable process.
+
+C. Exact meal scheduling rules
+
+Implement the following business rules.
+
+Daily accounting window
+
+The madrasa's normal accounting and spreadsheet update window is 8:00 AM to 10:00 AM Bangladesh time.
+
+Use the IANA time zone "Asia/Dhaka". Do not rely on the browser's local time or trust a timestamp supplied by the client.
+
+The system must distinguish:
+
+- Request submission time.
+- Administrative approval time.
+- Effective start date.
+- Effective starting meal.
+- Recurring affected meals.
+- Current approved meal status.
+
+Approval cutoff
+
+The intended rule is that requests approved by 10:00 AM may affect eligible meals for the current day, subject to the effective-period rules below.
+
+A request submitted before 10:00 AM is not automatically approved.
+
+Only an authorized administrator can approve it.
+
+A request submitted or approved after the cutoff must not silently modify an already prepared spreadsheet or retroactively change a meal that has already passed.
+
+For late requests, allow the administrator to select the next valid effective date and meal.
+
+Never automatically backdate a request.
+
+Meal period ordering
+
+The meal order for accounting purposes is:
+
+1. Today's lunch.
+2. Today's dinner.
+3. Tomorrow's breakfast.
+
+The recurring schedule then continues through subsequent days.
+
+Treat breakfast, lunch, and dinner as separate service periods with explicit dates. Do not assume that the next breakfast is on the same calendar day as dinner.
+
+For any request, the system must determine which service periods are still eligible to be changed.
+
+Examples:
+
+- A request for today's lunch may apply to today's lunch if it is approved in time and the lunch accounting has not been finalized.
+- A request for tonight's dinner may apply to tonight's dinner if it is approved in time and the dinner accounting has not been finalized.
+- A request concerning today's breakfast cannot change a breakfast that has already been served or finalized. The administrator must choose the next valid breakfast.
+- If a request is approved after the daily cutoff, the administrator must explicitly choose the next eligible service period.
+
+Use a configurable finalization state for meal periods if the existing workflow requires staff to mark a meal count as finalized.
+
+Regular recurring changes
+
+A normal approved request establishes a recurring meal rule.
+
+For example, if a student requests to stop dinner from an approved effective date, dinner remains stopped on subsequent days until a valid opposite request changes that rule.
+
+Similarly, starting dinner creates a recurring active rule for dinner.
+
+Do not interpret "three meals" as a one-day-only change.
+
+The rule must remain effective until a subsequent approved request changes the relevant meal periods, unless an administrator explicitly records a temporary exception.
+
+Combining the starting period with affected meals
+
+The "starting period" determines when the change begins.
+
+The selected meal set determines which recurring meals are affected.
+
+If the selected starting period has already passed, the request must be adjusted to the next eligible period before approval.
+
+For example, a request to stop breakfast and dinner beginning at lunch must not alter the already completed breakfast for that date. The administrator must see the actual resulting schedule before approving it.
+
+Display a human-readable preview of the resulting meal schedule and any meals that will remain unchanged.
+
+Conflict handling
+
+Prevent overlapping or contradictory rules from being applied silently.
+
+- If two pending requests conflict, flag them for administrative review.
+- If a request reverses a previous rule, show the previous rule and proposed new rule.
+- A new request must not rewrite the history of previously approved requests.
+- Cancelled, rejected, or superseded requests must retain their audit history.
+- The effective schedule must be calculated consistently on both the client and server, with the server as the authoritative source.
+
+If a request contains an ambiguous date or meal combination, do not guess. Require administrator clarification.
+
+D. Request statuses
+
+Use explicit statuses, for example:
+
+- "pending"
+- "approved"
+- "rejected"
+- "cancelled"
+- "superseded"
+
+Store the original submission, administrative decision, decision reason, and effective scheduling details.
+
+Students must be able to see their own request history and status.
+
+A pending or rejected request must never alter the official meal schedule.
+
+E. Admin meal-management dashboard
+
+Add a separate, polished "খানা ব্যবস্থাপনা" page inside the existing admin dashboard.
+
+Include:
+
+- Pending request count.
+- Approved request count.
+- Rejected request count.
+- Today's effective changes.
+- Upcoming changes.
+- Search by student ID and name.
+- Filters for class/year, branch, meal period, date, request type, and status.
+- A detailed request drawer or modal.
+- Approve and reject actions.
+- A mandatory reason for rejection.
+- Effective date and period adjustment before approval.
+- A clear preview of the resulting schedule.
+- A warning when the 10:00 AM cutoff has passed.
+- A warning when a meal period has already been finalized.
+- A per-student view of the currently effective meal schedule.
+- An audit trail showing who approved or changed each request and when.
+
+Use accessible tables on larger screens and responsive cards on mobile.
+
+Require a confirmation step for consequential actions.
+
+Do not give moderators meal-approval privileges unless the existing administrator explicitly assigns that permission.
+
+F. Daily meal accounting and Excel compatibility
+
+The official meal schedule must be queryable by service date and meal period.
+
+Provide a daily accounting view for:
+
+- Breakfast.
+- Lunch.
+- Dinner.
+
+Show counts for students whose approved schedules indicate that they should receive each meal, along with the list of affected students and recent changes.
+
+Before generating totals, deduplicate students by their authoritative student ID and apply only the rules effective for the relevant service period.
+
+Add a CSV export compatible with Microsoft Excel, with Bengali column headings where practical.
+
+The export should include:
+
+- Service date.
+- Meal period.
+- Student ID.
+- Student name.
+- Class/year.
+- Branch.
+- Effective meal status.
+- Relevant approved change.
+- Administrative approval timestamp.
+
+Protect exports with administrator authorization.
+
+Use a stable UTF-8 format and, if needed for Bengali Excel compatibility, a suitable UTF-8 BOM.
+
+Clearly distinguish the official calculated count from a manually finalized office count.
+
+Do not claim that the system has automatically updated the madrasa's existing Excel file unless a real, secure integration has been implemented and tested.
+
+G. Meal data model
+
+Inspect the existing database first. Then implement compatible data structures for:
+
+- Student registry or verified student association.
+- Meal applications.
+- Effective recurring meal schedules.
+- Meal-period finalization records, if needed.
+- Administrative audit logs.
+
+Each application should include a unique ID, verified student identity, request type, starting period, affected meals, submission timestamp, status, effective date, administrative decision, and relevant note.
+
+Use Firebase server timestamps where appropriate.
+
+Enforce authorization, input validation, duplicate prevention, and atomic or transactional updates where necessary.
+
+A rejected or pending request must never update the authoritative schedule.
+
+Do not delete historical records when a rule changes.
+
+PHASE 4 — PREMIUM GALLERY UPGRADE
+
+Upgrade the existing gallery instead of creating an unrelated second gallery.
+
+Inspect the current "GalleryPage.tsx", "GalleryItem" interface, existing API endpoints, Cloudinary integration, and database paths before implementing changes.
+
+A. Gallery design
+
+Create a polished, responsive photo gallery with:
+
+- Premium card design.
+- Consistent image ratios and optimized image loading.
+- Responsive grid or masonry-style presentation.
+- Category tabs and filtering.
+- Search where useful.
+- Image lightbox or full-screen preview.
+- Captions and upload dates.
+- Like and comment counts.
+- Empty, loading, and error states.
+- Pagination or efficient incremental loading for large galleries.
+
+Possible categories include:
+
+- মাদ্রাসা ক্যাম্পাস
+- শিক্ষা কার্যক্রম
+- মাহফিল ও অনুষ্ঠান
+- পুরস্কার বিতরণী
+- খেলাধুলা
+- ভ্রমণ ও স্মৃতিচারণ
+- অন্যান্য
+
+Administrators must be able to create, edit, rename, reorder, and disable categories.
+
+Use a visually consistent emerald, white, and restrained gold theme, adapting it to the existing design system rather than replacing the whole website's visual identity.
+
+B. Moderator upload permissions
+
+The root administrator must be able to manage gallery permissions through the existing admin dashboard.
+
+Implement separate permissions for:
+
+- Uploading images.
+- Editing one's own posts.
+- Editing other users' posts.
+- Publishing or approving gallery posts.
+- Deleting posts.
+- Moderating comments.
+- Managing categories.
+
+Do not assume every moderator automatically has all these permissions.
+
+A moderator without upload permission must not be able to upload by calling an API directly.
+
+A moderator without approval permission must not be able to publish a pending post.
+
+C. Image moderation
+
+Support an approval workflow:
+
+1. An authorized uploader submits a photo, category, and caption.
+2. The post is stored as pending.
+3. An authorized administrator or explicitly authorized moderator reviews it.
+4. The reviewer approves or rejects it.
+5. Only approved posts appear in the public gallery.
+6. Rejection reasons and review history are retained for authorized administrators.
+
+Use the existing Cloudinary setup where appropriate.
+
+Keep Cloudinary credentials and privileged upload credentials server-side. Validate file types, file size, and upload authorization.
+
+Do not allow arbitrary users to upload files through an unprotected endpoint.
+
+If a new database field is added, existing gallery posts must continue to display correctly with sensible backward-compatible defaults.
+
+D. Likes
+
+Add functional like/unlike buttons.
+
+- Only authenticated users can like or unlike a post.
+- Use the verified Firebase UID as the unique liker identity.
+- Prevent duplicate likes from the same user on the same post.
+- Make repeated requests idempotent.
+- Keep counts consistent with the underlying records.
+- Prevent unauthorized client writes to aggregate counters.
+- Update the UI responsively without displaying fabricated success.
+- Provide appropriate loading and error states.
+
+Use a transaction or another concurrency-safe approach appropriate to the current database structure.
+
+E. Comments
+
+Implement functional comments with:
+
+- Author display name and safe avatar.
+- Comment text.
+- Creation timestamp.
+- Comment count.
+- Appropriate loading and pagination.
+- Safe rendering of user-generated content.
+- Empty and error states.
+- Reporting or moderation controls.
+- Administrator deletion or hiding of inappropriate comments.
+- Editing or deletion only by the author or an appropriately authorized moderator.
+
+Require authentication for posting comments.
+
+Validate comment length and reject invalid or abusive payloads at the server/database authorization layer.
+
+Never insert user comment content as raw HTML.
+
+Provide a clear report option and maintain an appropriate moderation history.
+
+PHASE 5 — NAVIGATION AND USER EXPERIENCE
+
+Integrate the new features into the existing navigation without disrupting the current menu.
+
+Add suitable entries for:
+
+- অ্যাপ ইনস্টল
+- খানা ব্যবস্থাপনা
+- গ্যালারি
+
+Show administrative controls only to authorized users.
+
+Students should be able to find the meal request form and their own request history easily.
+
+Administrators should be able to reach the meal dashboard, gallery moderation queue, and moderator permissions without navigating through unrelated pages.
+
+Preserve the existing mobile bottom navigation where appropriate.
+
+Do not overcrowd the navigation. Use responsive menus and clear active states.
+
+Use proper Bengali typography, accessible contrast, keyboard navigation, focus indicators, and semantic form controls.
+
+Keep loading indicators, empty states, validation, success messages, and error messages consistent throughout the application.
+
+PHASE 6 — FIREBASE DATA MIGRATION AND AUTHORIZATION
+
+Before changing database structure:
+
+1. Document the relevant existing nodes and their purpose.
+2. Reuse existing user and gallery records where possible.
+3. Add only the required new nodes and fields.
+4. Do not rename existing nodes without a demonstrated need.
+5. Do not delete existing records or reset the database.
+6. Provide backward-compatible defaults for older records.
+7. Review Security Rules and verify the authorization model for every new write operation.
+8. Make schema changes additive wherever practical.
+
+The client must not be able to:
+
+- Approve meal applications.
+- Change another student's meal rules.
+- Edit authoritative meal schedules.
+- Assign itself a role.
+- Grant itself gallery permissions.
+- Publish unapproved images.
+- Manipulate authoritative like counts.
+- Delete another user's content without permission.
+- Read private student records or administrative audit logs.
+
+Perform privileged actions through authenticated and authorized server-side endpoints or another demonstrably secure Firebase authorization design.
+
+If the project lacks the appropriate backend structure, implement a deployment-compatible solution rather than relying on hidden buttons or client-side role checks.
+
+PHASE 7 — VERCEL DEPLOYMENT COMPATIBILITY
+
+The current repository contains an Express server and a Vite frontend. Do not assume that deploying the static "dist" folder automatically makes Express routes available.
+
+Inspect the actual Vercel project configuration and GitHub deployment workflow.
+
+Then:
+
+- Ensure all existing public routes continue to work.
+- Ensure API routes remain reachable in production.
+- Use the appropriate Vercel-compatible serverless function or supported server configuration where required.
+- Preserve SPA fallback behavior without accidentally routing "/api/*" requests to "index.html".
+- Avoid relying on persistent in-memory cache for authoritative data.
+- Do not store runtime-dependent uploads or important records only on an ephemeral filesystem.
+- Keep service-worker registration and asset paths correct for the production domain.
+- Ensure service-worker caching does not intercept or corrupt API requests.
+- Check environment variables and document any required configuration without exposing secret values.
+- Avoid adding an incompatible "vercel.json" blindly. Base changes on the actual deployment setup.
+
+Do not remove the existing build scripts or dependencies unless there is a clear technical reason.
+
+PHASE 8 — TESTING AND ACCEPTANCE CRITERIA
+
+Run the available checks and report the actual results.
+
+Build and regression
+
+- TypeScript type checking passes, or any remaining errors are explicitly identified.
+- Vite production build succeeds.
+- Existing home, notices, results, teachers, Islamic tools, prayer page, profile, authentication, and admin pages remain functional.
+- Existing Firebase records still load.
+- No unintended changes are made to the root administrator or current role assignments.
+- No new console errors or broken navigation are introduced.
+
+PWA
+
+- The manifest loads successfully.
+- Icons resolve correctly.
+- The service worker registers successfully in the deployed HTTPS environment.
+- Installation controls behave correctly on supported browsers.
+- The offline fallback works.
+- Private API responses are not exposed through shared caches.
+- New deployments can update the service worker safely.
+
+Meal system
+
+- An unverified user cannot submit an authoritative meal request.
+- A verified student can submit a valid request.
+- Pending requests do not alter the official schedule.
+- Only an authorized administrator can approve or reject requests.
+- Approval before the cutoff respects the actual eligible meal periods.
+- Approval after the cutoff cannot retroactively alter finalized meals.
+- A past breakfast cannot be silently changed.
+- A recurring change remains effective until an approved opposite change takes effect.
+- Contradictory or overlapping requests are flagged.
+- Daily meal totals are calculated by service date and meal period.
+- CSV exports require the appropriate permission and match the authoritative schedule.
+- Rejected, cancelled, and superseded records remain auditable.
+
+Gallery
+
+- Existing images still appear.
+- Categories filter correctly.
+- Moderator upload permissions are enforced on the server.
+- Pending images are not public.
+- Approved images appear in the correct category.
+- Likes cannot be duplicated by repeated requests.
+- Comments render safely and can be moderated.
+- Unauthorized users cannot modify posts or permissions.
+
+Security
+
+- No private keys are embedded in the frontend bundle.
+- Every privileged API checks a verified identity and the required permission.
+- Database rules prevent unauthorized direct writes.
+- User input is validated.
+- Sensitive endpoints have appropriate abuse protection.
+- Errors do not leak credentials or private records.
+
+Do not report a test as passed unless it was actually run.
+
+FINAL DELIVERY REQUIREMENTS
+
+After implementing the changes:
+
+1. Summarize the new features.
+2. List the files created and modified.
+3. Explain any required environment variables by name, without displaying their secret values.
+4. Identify any Firebase Security Rules or Vercel configuration changes required.
+5. Explain any manual setup that cannot be completed by the coding environment.
+6. Report the actual build and test results.
+7. Clearly identify any unresolved issues.
+8. Explain how to test the PWA installation, submit a meal request, approve it as an administrator, export daily meal counts, upload a gallery image, approve it, like it, and comment on it.
+9. Confirm that the existing website features were preserved to the extent verified by actual testing.
+
+Start by inspecting the current repository and its deployment structure. Then implement the upgrade in a controlled, backward-compatible manner.
+
+Do not stop after writing a plan. Make the code changes wherever possible, validate them, and provide an honest implementation report.
+
+If a critical design decision cannot be safely inferred from the existing project or the business rules above, identify the exact uncertainty and avoid silently implementing a risky assumption.
